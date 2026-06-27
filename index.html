@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="pageTitle">Digital Journal - Thoughtful Writing on Society & Governance</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <!-- Font Awesome 6 (for Grey Lens) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- Public CSS - FIXED PATH -->
+    <link rel="stylesheet" href="public/public-style.css" />
+    
+    <style>
+        /* ... keep all your existing styles ... */
+        
+        .hero-stat-pill {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(44, 62, 80, 0.85);
+            color: #FFFFFF;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-stat-pill i {
+            margin-right: 4px;
+            color: #B8945C;
+        }
+
+        .trending-bar {
+            background: var(--color-white);
+            padding: 10px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .trending-inner {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 4px 0;
+        }
+
+        .trending-inner::-webkit-scrollbar {
+            height: 2px;
+        }
+
+        .trending-inner::-webkit-scrollbar-thumb {
+            background: var(--color-accent);
+            border-radius: 10px;
+        }
+
+        .trending-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-accent);
+            flex-shrink: 0;
+        }
+
+        .trending-label i {
+            margin-right: 4px;
+        }
+
+        .trending-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .trending-links a {
+            font-size: 0.9rem;
+            color: var(--color-text);
+            transition: var(--transition);
+            opacity: 0.7;
+        }
+
+        .trending-links a:hover {
+            color: var(--color-primary);
+            opacity: 1;
+        }
+
+        .trending-links a::before {
+            content: '•';
+            color: var(--color-accent);
+            margin-right: 8px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-gray);
+            grid-column: 1 / -1;
+        }
+
+        .no-results i {
+            font-size: 2.5rem;
+            color: var(--color-border);
+            margin-bottom: 12px;
+        }
+
+        .no-results p {
+            font-size: 0.95rem;
+        }
+
+        .btn-write {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--color-accent);
+            color: #FFFFFF;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-write:hover {
+            background: #a04a4a;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: #FFFFFF;
+        }
+
+        .btn-write i {
+            font-size: 0.8rem;
+        }
+
+        .contributor-card-home {
+            background: var(--color-white);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--color-border);
+            transition: var(--transition);
+        }
+
+        .contributor-card-home:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-light);
+        }
+
+        .contributor-card-home .contributor-avatar {
+            font-size: 3.5rem;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .contributor-card-home .contributor-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-heading);
+            margin-bottom: 2px;
+        }
+
+        .contributor-card-home .contributor-role {
+            font-size: 0.8rem;
+            color: var(--color-primary);
+            font-weight: 500;
+        }
+
+        .contributor-card-home .contributor-bio {
+            font-size: 0.85rem;
+            color: var(--color-gray);
+            line-height: 1.5;
+            margin-top: 8px;
+            max-height: 2.7em;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .contributor-card-home .contributor-bio::after {
+            content: '...';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(to right, transparent, #FFFFFF 20%);
+            padding-left: 20px;
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 420px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid #4CAF50;
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .notification-toast.error {
+            border-left-color: #DC2626;
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: #FFFFFF;
+        }
+
+        /* Search Category Indicator */
+        .search-category-indicator {
+            display: none;
+            padding: 8px 16px;
+            background: rgba(184, 148, 92, 0.2);
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+            color: var(--color-white);
+            font-size: 0.9rem;
+            border-left: 3px solid var(--color-accent);
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-category-indicator.active {
+            display: flex;
+        }
+
+        .search-category-indicator .clear-category {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            margin-left: auto;
+            padding: 0 8px;
+            font-size: 1rem;
+        }
+
+        .search-category-indicator .clear-category:hover {
+            color: var(--color-white);
+        }
+
+        /* ============================================================
+           GREY LENS SLIDE DECK STYLES (integrated into hero)
+        ============================================================ */
+        .hero-slide-deck-wrapper {
+            flex: 0 0 420px;
+            max-width: 420px;
+            margin-left: 40px;
+        }
+
+        .slide-deck {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            perspective: 1200px;
+            cursor: pointer;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            border-radius: 2rem;
+            padding: 1.8rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.7s ease;
+            will-change: transform, opacity;
+            opacity: 0;
+            pointer-events: none;
+            transform: rotateY(0deg) scale(0.92) translateZ(-60px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-size: cover;
+            background-position: center;
+            background-color: #2c3e50;
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: rotateY(0deg) scale(1) translateZ(0px);
+            box-shadow: 0 30px 50px -18px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+        }
+
+        .slide.prev {
+            opacity: 0;
+            pointer-events: none;
+            transform: rotateY(-6deg) scale(0.92) translateZ(-80px);
+            z-index: 5;
+        }
+
+        .slide.next {
+            opacity: 0;
+            pointer-events: none;
+            transform: rotateY(4deg) scale(0.90) translateZ(-100px);
+        }
+
+        /* ---- SLIDE 1: FOUNDER ---- */
+        .slide-founder {
+            background-image: url('Public/Founder.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 0;
+        }
+
+        .founder-overlay {
+            width: 100%;
+            height: 100%;
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: linear-gradient(180deg,
+                        rgba(0,0,0,0.1) 0%,
+                        rgba(0,0,0,0.3) 40%,
+                        rgba(0,0,0,0.7) 75%,
+                        rgba(0,0,0,0.85) 100%);
+            border-radius: 2rem;
+            color: white;
+        }
+
+        .founder-label-top {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgb(240, 240, 240);
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+        }
+
+        .founder-name-big {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 0.1rem;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .founder-title-big {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 0.8rem;
+        }
+
+        .founder-tagline {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 75%;
+            line-height: 1.4;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 0.6rem;
+        }
+
+        .founder-tagline i {
+            color: rgba(255, 255, 255, 0.3);
+            margin-right: 6px;
+        }
+
+        /* ---- SLIDE 2: QUOTE CARD — LIBRARY ---- */
+        .slide-quote-bg {
+            background-image: url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&h=800&fit=crop&crop=center&auto=format');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-color: rgba(0, 0, 0, 0.45);
+        }
+
+        /* ---- SLIDE 3: PURPOSE ---- */
+        .slide-purpose {
+            background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1000&h=600&fit=crop&crop=center');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-color: rgba(0, 0, 0, 0.35);
+        }
+
+        /* ---- SLIDE 4: WHAT YOU'LL FIND ---- */
+        .slide-find {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuwrDIW8Bs0ZOnNzpE5FNmQOZU-gLepG6eWWgaUcJBRA&s=10');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- slide content (for slides 2-4) --- */
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            color: white;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 2;
+            border-radius: 1.5rem;
+            padding: 1rem 1.5rem;
+            margin: -0.3rem;
+        }
+
+        .slide-quote-bg .slide-content,
+        .slide-purpose .slide-content,
+        .slide-find .slide-content {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(3px);
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.8rem;
+            margin: -0.3rem;
+        }
+
+        .slide-title {
+            font-size: 1.7rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .slide-sub {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.4px;
+            margin-bottom: 0.8rem;
+            border-left: 3px solid rgba(255, 255, 255, 0.4);
+            padding-left: 0.8rem;
+        }
+
+        .slide-quote {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: white;
+            max-width: 85%;
+            font-weight: 350;
+            margin-bottom: 0.3rem;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
+            padding-left: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0 10px 10px 0;
+            padding: 0.7rem 1.2rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .slide-quote-bg .slide-quote {
+            font-size: 1.05rem;
+            max-width: 92%;
+        }
+
+        .slide-quote i {
+            color: rgba(255, 255, 255, 0.5);
+            margin-right: 6px;
+        }
+
+        /* tag list */
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem 0.8rem;
+            margin: 0.4rem 0 0.8rem 0;
+            font-weight: 350;
+        }
+        .tag-list span {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(6px);
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            letter-spacing: 0.3px;
+            color: white;
+            font-weight: 400;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .quote-subtitle {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .quote-attribution {
+            margin-top: 0.8rem;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* pause overlay */
+        .pause-overlay {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            color: #f0ebe4;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 20;
+            font-weight: 400;
+        }
+
+        .pause-overlay.show {
+            opacity: 1;
+        }
+
+        .pause-overlay i {
+            font-size: 0.6rem;
+            opacity: 0.8;
+        }
+
+        /* Grey Lens controls */
+        .hero-slide-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        .hero-slide-controls .ctrl-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            color: #3d3730;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(200, 190, 178, 0.3);
+        }
+
+        .hero-slide-controls .ctrl-btn:hover {
+            background: #1f1c18;
+            color: white;
+            border-color: #1f1c18;
+            transform: scale(1.04);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-slide-controls .ctrl-btn:active {
+            transform: scale(0.94);
+        }
+
+        .hero-slide-controls .slide-indicators {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hero-slide-controls .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 40px;
+            background: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        .hero-slide-controls .dot.active-dot {
+            background: #2f2a24;
+            width: 24px;
+            border-radius: 40px;
+        }
+
+        .hero-slide-controls .dot:hover {
+            background: #a89c8c;
+        }
+
+        .hero-slide-controls .status-badge {
+            font-size: 0.6rem;
+            font-weight: 400;
+            color: #6b6256;
+            background: rgba(235, 228, 218, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 0.15rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid rgba(200, 190, 178, 0.2);
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            user-select: none;
+        }
+
+        .hero-slide-controls .status-badge i {
+            font-size: 0.5rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-slide-deck-wrapper {
+                flex: 0 0 340px;
+                max-width: 340px;
+                margin-left: 30px;
+            }
+            .slide-deck {
+                height: 340px;
+            }
+            .founder-name-big {
+                font-size: 1.8rem;
+            }
+            .founder-tagline {
+                max-width: 95%;
+                font-size: 0.7rem;
+            }
+            .founder-overlay {
+                padding: 1.5rem 1.8rem;
+            }
+            .slide {
+                padding: 1.2rem 1.5rem;
+                border-radius: 1.5rem;
+            }
+            .slide-title {
+                font-size: 1.4rem;
+            }
+            .slide-quote {
+                font-size: 0.85rem;
+                max-width: 100%;
+                padding: 0.5rem 1rem;
+            }
+            .slide-quote-bg .slide-quote {
+                font-size: 0.9rem;
+            }
+            .slide-content {
+                padding: 0.8rem 1rem;
+            }
+            .slide-quote-bg .slide-content,
+            .slide-purpose .slide-content,
+            .slide-find .slide-content {
+                padding: 0.8rem 1.2rem;
+            }
+            .quote-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-slide-deck-wrapper {
+                flex: 0 0 100%;
+                max-width: 500px;
+                margin-left: 0;
+                margin-top: 30px;
+                width: 100%;
+            }
+            .slide-deck {
+                height: 360px;
+            }
+            .founder-name-big {
+                font-size: 1.8rem;
+            }
+            .founder-tagline {
+                max-width: 95%;
+                font-size: 0.7rem;
+            }
+            .founder-overlay {
+                padding: 1.5rem 1.8rem;
+            }
+            .slide {
+                padding: 1.2rem 1.5rem;
+                border-radius: 1.5rem;
+            }
+            .slide-title {
+                font-size: 1.4rem;
+            }
+            .slide-quote {
+                font-size: 0.85rem;
+                max-width: 100%;
+                padding: 0.5rem 1rem;
+            }
+            .slide-quote-bg .slide-quote {
+                font-size: 0.9rem;
+            }
+            .slide-content {
+                padding: 0.8rem 1rem;
+            }
+            .slide-quote-bg .slide-content,
+            .slide-purpose .slide-content,
+            .slide-find .slide-content {
+                padding: 0.8rem 1.2rem;
+            }
+            .quote-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 0.8rem;
+            }
+            .trending-inner {
+                gap: 12px;
+            }
+            .trending-links {
+                gap: 12px;
+            }
+            .trending-links a {
+                font-size: 0.8rem;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            .section-header-right {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .section-header-right .section-link {
+                align-self: flex-start;
+            }
+            .btn-write {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+            .btn-write span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-slide-deck-wrapper {
+                max-width: 100%;
+            }
+            .slide-deck {
+                height: 400px;
+            }
+            .founder-name-big {
+                font-size: 1.5rem;
+            }
+            .founder-title-big {
+                font-size: 0.75rem;
+            }
+            .founder-tagline {
+                font-size: 0.65rem;
+            }
+            .slide-title {
+                font-size: 1.2rem;
+            }
+            .slide-sub {
+                font-size: 0.7rem;
+            }
+            .slide-quote {
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+            .slide-quote-bg .slide-quote {
+                font-size: 0.8rem;
+            }
+            .tag-list span {
+                font-size: 0.6rem;
+                padding: 0.15rem 0.6rem;
+            }
+            .quote-subtitle {
+                font-size: 0.8rem;
+            }
+            .quote-attribution {
+                font-size: 0.6rem;
+            }
+            .founder-overlay {
+                padding: 1.2rem 1.4rem;
+            }
+            .slide {
+                padding: 0.8rem 1rem;
+            }
+            .slide-content {
+                padding: 0.5rem 0.8rem;
+            }
+            .slide-quote-bg .slide-content,
+            .slide-purpose .slide-content,
+            .slide-find .slide-content {
+                padding: 0.6rem 0.8rem;
+            }
+            .hero-stat-pill {
+                bottom: 12px;
+                right: 12px;
+                font-size: 0.7rem;
+                padding: 4px 10px;
+            }
+            .trending-links a::before {
+                margin-right: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    SEARCH OVERLAY
+    ============================================================ -->
+    <div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Search" aria-modal="true">
+        <div class="search-overlay-inner">
+            <button class="search-close" id="searchClose" aria-label="Close search">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-box">
+                <i class="fas fa-search search-icon-inner"></i>
+                <input type="text" id="searchInput" placeholder="Search articles, topics, authors…" autocomplete="off" />
+            </div>
+            <div class="search-suggestions">
+                <p class="search-suggestions-label">Popular topics</p>
+                <div class="search-tags">
+                    <button class="search-tag" data-query="Governance">Governance</button>
+                    <button class="search-tag" data-query="Law">Law</button>
+                    <button class="search-tag" data-query="Economics">Economics</button>
+                    <button class="search-tag" data-query="Society">Society</button>
+                    <button class="search-tag" data-query="Public Policy">Public Policy</button>
+                    <button class="search-tag" data-query="Culture">Culture</button>
+                </div>
+            </div>
+            <div class="search-category-indicator" id="categoryIndicator">
+                <i class="fas fa-tag"></i>
+                <span>Searching in category: <strong id="currentCategoryName"></strong></span>
+                <button class="clear-category" id="clearCategory">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MOBILE DRAWER
+    ============================================================ -->
+    <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <span class="drawer-logo" style="font-size:1.2rem;">
+    🔍 GREY LENS
+</span>
+        <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+        <nav class="drawer-nav">
+            <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
+            <a href="public/articles.html"><i class="fas fa-newspaper"></i> Articles</a>
+            <a href="public/contributors.html"><i class="fas fa-users"></i> Contributors</a>
+            <a href="public/about.html"><i class="fas fa-info-circle"></i> About</a>
+            <a href="public/contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        </nav>
+        <div class="drawer-divider"></div>
+        <div class="drawer-newsletter">
+            <p>Get articles in your inbox</p>
+            <div class="drawer-email-row">
+                <input type="email" id="drawerEmail" placeholder="Your email" />
+                <button class="btn btn-primary btn-sm" id="drawerSubscribe">Join</button>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <span class="logo-icon"><i class="fas fa-search" style="color:#a4a3a2;"></i></span>
+                    <span class="logo-text site-name" id="siteNameDisplay">GREY LENS</span>
+                </a>
+            </div>
+            <nav class="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="public/articles.html">Articles</a></li>
+                    <li><a href="public/contributors.html">Contributors</a></li>
+                    <li><a href="public/about.html">About</a></li>
+                    <li><a href="public/contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-icon" id="searchToggle" aria-label="Open search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="public/login.html" class="btn-write" title="Write Article" id="writeBtn">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>Write</span>
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    HERO SECTION - MODIFIED WITH GREY LENS SLIDE DECK
+    ============================================================ -->
+    <section class="hero" id="hero">
+        <div class="container hero-container" style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;">
+            <div class="hero-content" style="flex:1;min-width:280px;">
+                <span class="hero-badge"><i class="fas fa-star"></i> Welcome</span>
+                <h1 class="hero-title">
+                    Beyond <br />
+                    <span>Black &amp; White</span>
+                </h1>
+                <p class="hero-excerpt" id="heroTaglineDisplay">
+                    "Exploring history, law, politics, and public affairs—with attention to questions often overlooked and perspectives often left unexplored."
+                </p>
+                <div class="hero-stats" style="display:flex;gap:40px;margin-bottom:24px;">
+                    <div style="display:flex;flex-direction:column;">
+                        <span style="font-family:var(--font-serif);font-size:1.8rem;font-weight:700;color:var(--color-heading);" id="heroTotalArticles">0</span>
+                        <span style="font-size:0.8rem;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.5px;">Articles Published</span>
+                    </div>
+                    <div style="display:flex;flex-direction:column;">
+                        <span style="font-family:var(--font-serif);font-size:1.8rem;font-weight:700;color:var(--color-heading);" id="heroTotalContributors">0</span>
+                        <span style="font-size:0.8rem;color:var(--color-gray);text-transform:uppercase;letter-spacing:0.5px;">Contributors</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="public/articles.html" class="btn btn-primary">
+                        Explore Articles <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="public/about.html" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
+
+            <!-- GREY LENS SLIDE DECK -->
+            <div class="hero-slide-deck-wrapper">
+                <div class="slide-deck" id="slideDeck">
+                    <!-- pause overlay -->
+                    <div class="pause-overlay" id="pauseOverlay">
+                        <i class="fas fa-pause"></i> Paused
+                    </div>
+
+                    <!-- SLIDE 1: FOUNDER -->
+                    <div class="slide slide-founder active" data-index="0">
+                        <div class="founder-overlay">
+                            <div class="founder-label-top">MEET THE FOUNDER</div>
+                            <div class="founder-name-big">Affan Pervaiz Awan</div>
+                            <div class="founder-title-big">Advocate · Writer · Researcher</div>
+                            <div class="founder-tagline">
+                                <i class="fas fa-quote-left"></i> Exploring history, law, politics &amp; public affairs beyond conventional narratives.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 2: QUOTE CARD -->
+                    <div class="slide slide-quote-bg" data-index="1">
+                        <div class="slide-content" style="justify-content: center; align-items: center; text-align: center;">
+                            <div class="slide-title" style="font-size: 1.9rem; margin-bottom: 0.4rem;">The Grey Lens</div>
+                            <div class="quote-subtitle">
+                                <i class="fas fa-quote-left" style="opacity:0.4; margin-right: 8px;"></i> Perspective beyond black & white
+                            </div>
+                            <div class="slide-quote" style="max-width: 92%; border-left-color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.3); text-align: left; font-size: 1rem;">
+                                <i class="fas fa-quote-left"></i> 
+                                "Grey Lens is my attempt to explore history, law, politics, and public affairs beyond conventional narratives. It is a space for inquiry, analysis, and thoughtful discussion rather than easy conclusions."
+                            </div>
+                            <div class="quote-attribution">— Affan Pervaiz Awan</div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 3: PURPOSE -->
+                    <div class="slide slide-purpose" data-index="2">
+                        <div class="slide-content">
+                            <div class="slide-title">Why Grey Lens?</div>
+                            <div class="slide-sub">Purpose · Clarity · Depth</div>
+                            <div class="slide-quote">
+                                <i class="fas fa-quote-left"></i> 
+                                "In an age of instant opinions and simplified narratives, understanding often lies in the grey areas. Grey Lens seeks to examine the questions, assumptions, and perspectives that are frequently overlooked in public discourse."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SLIDE 4: What You'll Find -->
+                    <div class="slide slide-find" data-index="3">
+                        <div class="slide-content">
+                            <div class="slide-title">What You'll Read</div>
+                            <div class="slide-sub">Essays · Current Affairs · History · Law · Governance · Book Reviews</div>
+                            <div class="tag-list">
+                                <span>Essays</span><span>Current Affairs</span><span>History</span>
+                                <span>Law</span><span>Governance</span><span>Book Reviews</span>
+                            </div>
+                            <div class="slide-quote" style="border-left-color: rgba(255,255,255,0.5);">
+                                <i class="fas fa-quote-left"></i> 
+                                "From constitutional debates and historical analysis to contemporary issues and book reviews, Grey Lens is dedicated to informed and reasoned discussion."
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grey Lens Controls -->
+                <div class="hero-slide-controls">
+                    <button class="ctrl-btn" id="prevBtn" aria-label="Previous slide">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div class="slide-indicators" id="dotsContainer">
+                        <span class="dot active-dot" data-dot="0"></span>
+                        <span class="dot" data-dot="1"></span>
+                        <span class="dot" data-dot="2"></span>
+                        <span class="dot" data-dot="3"></span>
+                    </div>
+
+                    <button class="ctrl-btn" id="nextBtn" aria-label="Next slide">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+
+                    <span class="status-badge" id="statusBadge">
+                        <i class="fas fa-play"></i> Auto 3s
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    LATEST ARTICLES (No Categories Filter)
+    ============================================================ -->
+    <section class="articles-section" id="articles">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <span class="section-eyebrow">Latest</span>
+                    <h2 class="section-title">Articles</h2>
+                </div>
+                <a href="public/articles.html" class="section-link">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="article-grid" id="articleGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <div id="noResults" class="no-results" style="display:none;">
+                <i class="fas fa-search"></i>
+                <p>No articles found.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CONTRIBUTORS PREVIEW
+    ============================================================ -->
+    <section class="contributors-section" id="contributors">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <span class="section-eyebrow">Meet the</span>
+                    <h2 class="section-title">Our Contributors</h2>
+                </div>
+                <a href="public/contributors.html" class="section-link">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="contributors-grid" id="contributorsGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo site-name" id="footerLogo"><i class="fas fa-book-open"></i> Digital Journal</div>
+                    <p class="footer-text site-tagline" id="footerTagline">
+                        A platform for thoughtful writing on society, governance, 
+                        law, policy, culture, and current affairs.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="public/about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="public/contributors.html"><i class="fas fa-chevron-right"></i> Contributors</a></li>
+                        <li><a href="public/contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Categories</h4>
+                    <ul class="footer-links" id="footerCategories">
+                        <!-- Will be populated by JavaScript -->
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:editor@digitaljournal.com" id="footerContactEmail"><i class="fas fa-envelope"></i> editor@digitaljournal.com</a></li>
+                        <li><a href="public/about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Digital Journal. All rights reserved.</p>
+                <p class="footer-credit">Built by Anosha Pervaiz Awan...</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    BACK TO TOP
+    ============================================================ -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ============================================================
+    JAVASCRIPT - FIREBASE VERSION (FIXED)
+    ============================================================ -->
+    <script type="module">
+    // ============================================================
+    // IMPORT FIREBASE FROM YOUR CONFIG FILE (FIXED - Root folder)
+    // ============================================================
+    import { 
+        db, 
+        auth,
+        collection, 
+        getDocs, 
+        doc, 
+        getDoc, 
+        query, 
+        where,
+        onAuthStateChanged
+    } from './firebase-config.js';
+
+    // Admin email
+    const ADMIN_EMAIL = "affanawan189@gmail.com";
+
+    // ============================================================
+    // GLOBAL DATA
+    // ============================================================
+    let allArticles = [];
+    let allContributors = [];
+    let allCategories = [];
+    let siteSettings = {};
+    let currentUser = null;
+
+    // ============================================================
+    // AUTH STATE LISTENER
+    // ============================================================
+    onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        updateHeaderLogin();
+    });
+
+    // ============================================================
+    // UPDATE HEADER LOGIN STATUS
+    // ============================================================
+    async function updateHeaderLogin() {
+        const writeBtn = document.getElementById('writeBtn');
+        
+        if (currentUser) {
+            try {
+                const q = query(collection(db, "users"), where("email", "==", currentUser.email));
+                const querySnapshot = await getDocs(q);
+                
+                if (!querySnapshot.empty) {
+                    let userData = null;
+                    querySnapshot.forEach((doc) => {
+                        userData = { id: doc.id, ...doc.data() };
+                    });
+                    
+                    if (currentUser.email === ADMIN_EMAIL) {
+                        writeBtn.href = 'admin/dashboard.html';
+                        writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Dashboard</span>';
+                        return;
+                    }
+                    
+                    if (userData.role === 'contributor' && userData.status === 'approved') {
+                        writeBtn.href = 'public/contributor-dashboard.html';
+                        writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Dashboard</span>';
+                        return;
+                    }
+                }
+                
+                writeBtn.href = 'public/login.html';
+                writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Write</span>';
+                
+            } catch (error) {
+                console.error('Error checking user role:', error);
+                writeBtn.href = 'public/login.html';
+                writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Write</span>';
+            }
+        } else {
+            writeBtn.href = 'public/login.html';
+            writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Write</span>';
+        }
+    }
+
+    // ============================================================
+    // LOAD SITE SETTINGS
+    // ============================================================
+    async function loadSiteSettings() {
+        try {
+            const docRef = doc(db, "settings", "siteSettings");
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                siteSettings = docSnap.data();
+                console.log('✅ Site settings loaded from Firebase:', siteSettings);
+                
+                const siteNameEl = document.getElementById('siteNameDisplay');
+                if (siteNameEl && siteSettings.siteName) {
+                    siteNameEl.textContent = siteSettings.siteName;
+                }
+                
+                const footerLogo = document.getElementById('footerLogo');
+                if (footerLogo && siteSettings.siteName) {
+                    footerLogo.innerHTML = `<i class="fas fa-book-open"></i> ${siteSettings.siteName}`;
+                }
+                
+                const taglineEl = document.getElementById('heroTaglineDisplay');
+                if (taglineEl && siteSettings.siteTagline) {
+                    taglineEl.textContent = siteSettings.siteTagline;
+                }
+                
+                const footerTagline = document.getElementById('footerTagline');
+                if (footerTagline && siteSettings.siteTagline) {
+                    footerTagline.textContent = siteSettings.siteTagline;
+                }
+                
+                const contactEmailEl = document.getElementById('footerContactEmail');
+                if (contactEmailEl && siteSettings.contactEmail) {
+                    contactEmailEl.textContent = siteSettings.contactEmail;
+                    contactEmailEl.href = `mailto:${siteSettings.contactEmail}`;
+                }
+                
+                if (siteSettings.metaTitle) {
+                    document.title = siteSettings.metaTitle;
+                    const titleEl = document.getElementById('pageTitle');
+                    if (titleEl) titleEl.textContent = siteSettings.metaTitle;
+                }
+                
+            } else {
+                console.log('📭 No site settings found in Firebase, using defaults');
+            }
+        } catch (error) {
+            console.error('❌ Error loading site settings:', error);
+        }
+    }
+
+    // ============================================================
+    // LOAD DATA FROM FIREBASE
+    // ============================================================
+    async function loadDataFromFirebase() {
+        try {
+            console.log('📡 Loading data from Firebase...');
+
+            const articlesSnapshot = await getDocs(collection(db, "articles"));
+            allArticles = [];
+            articlesSnapshot.forEach(doc => {
+                allArticles.push({ id: doc.id, ...doc.data() });
+            });
+            console.log(`✅ ${allArticles.length} articles loaded`);
+
+            const usersSnapshot = await getDocs(collection(db, "users"));
+            allContributors = [];
+            usersSnapshot.forEach(doc => {
+                const data = doc.data();
+                if (data.role === 'contributor' && data.status === 'approved') {
+                    allContributors.push({ id: doc.id, ...data });
+                }
+            });
+            console.log(`✅ ${allContributors.length} contributors loaded`);
+
+            const categoriesSnapshot = await getDocs(collection(db, "categories"));
+            allCategories = [];
+            categoriesSnapshot.forEach(doc => {
+                allCategories.push({ id: doc.id, ...doc.data() });
+            });
+            console.log(`✅ ${allCategories.length} categories loaded`);
+
+            updateHeroStats();
+            loadArticles();
+            loadContributors();
+            loadFooterCategories();
+
+        } catch (error) {
+            console.error('❌ Error loading data:', error);
+            showNotification('❌ Error loading content. Please refresh.', 'error');
+        }
+    }
+
+    // ============================================================
+    // HELPER FUNCTIONS
+    // ============================================================
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function getPublishedArticles() {
+        return allArticles.filter(a => a.status === 'published');
+    }
+
+    function getContributors() {
+        return allContributors;
+    }
+
+    function getCategories() {
+        return allCategories;
+    }
+
+    // ============================================================
+    // NOTIFICATION SYSTEM
+    // ============================================================
+    function showNotification(message, type = 'info') {
+        const existing = document.querySelector('.notification-toast');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = `notification-toast ${type}`;
+        
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            warning: 'fa-exclamation-triangle',
+            info: 'fa-info-circle'
+        };
+        const icon = icons[type] || icons.info;
+        
+        notification.innerHTML = `
+            <i class="fas ${icon}"></i>
+            <span>${message}</span>
+            <button class="notification-close">&times;</button>
+        `;
+
+        notification.querySelector('.notification-close').addEventListener('click', () => notification.remove());
+        document.body.appendChild(notification);
+
+        requestAnimationFrame(() => {
+            notification.style.transform = 'translateY(0)';
+            notification.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                notification.style.transform = 'translateY(120px)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 400);
+            }
+        }, 4000);
+    }
+
+    // ============================================================
+    // LOAD ARTICLES
+    // ============================================================
+    function loadArticles() {
+        const grid = document.getElementById('articleGrid');
+        const noResults = document.getElementById('noResults');
+        
+        let articles = getPublishedArticles();
+        
+        articles.sort((a, b) => {
+            const dateA = new Date(a.createdAt || a.date);
+            const dateB = new Date(b.createdAt || b.date);
+            return dateB - dateA;
+        });
+        
+        const displayArticles = articles.slice(0, 3);
+        
+        if (displayArticles.length === 0) {
+            grid.innerHTML = '';
+            noResults.style.display = 'block';
+            return;
+        }
+        
+        noResults.style.display = 'none';
+        
+        let html = '';
+        displayArticles.forEach(article => {
+            const contentPreview = article.content 
+                ? article.content.replace(/<[^>]*>/g, '').substring(0, 120) + '...' 
+                : 'No preview available.';
+            
+            const wordCount = (article.content || '').split(' ').length;
+            const readTime = Math.ceil(wordCount / 200);
+            
+            html += `
+                <article class="article-card" data-aos>
+                    <div class="card-image">
+                        <i class="fas fa-newspaper"></i>
+                        <span class="card-category">${escapeHtml(article.category)}</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <a href="public/article.html?id=${article.id}">${escapeHtml(article.title)}</a>
+                        </h3>
+                        <p class="card-excerpt">${escapeHtml(contentPreview)}</p>
+                        <div class="card-meta">
+                            <span class="card-author">${escapeHtml(article.author)}</span>
+                            <span>${article.date || 'Recent'}</span>
+                            <span class="card-read-time"><i class="far fa-clock"></i> ${readTime} min</span>
+                        </div>
+                    </div>
+                </article>
+            `;
+        });
+        
+        grid.innerHTML = html;
+        
+        document.querySelectorAll('[data-aos]').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    }
+
+    // ============================================================
+    // LOAD CONTRIBUTORS
+    // ============================================================
+    function loadContributors() {
+        const grid = document.getElementById('contributorsGrid');
+        const contributors = getContributors();
+        
+        if (contributors.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--color-gray);">
+                    <p>No contributors yet.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        const display = contributors.slice(0, 4);
+        
+        let html = '';
+        display.forEach(contributor => {
+            const articles = getPublishedArticles().filter(a => a.author === contributor.name);
+            const articleCount = articles.length;
+            
+            html += `
+                <div class="contributor-card-home" data-aos>
+                    <div class="contributor-avatar"><i class="fas fa-user-circle"></i></div>
+                    <h4 class="contributor-name">${escapeHtml(contributor.name)}</h4>
+                    <p class="contributor-role">${escapeHtml(contributor.role || 'Contributor')}</p>
+                    <p class="contributor-bio">${escapeHtml(contributor.bio || 'No bio provided yet.')}</p>
+                    <div style="margin-top:10px;font-size:0.8rem;color:var(--color-gray);">
+                        <i class="fas fa-file-alt"></i> ${articleCount} article${articleCount !== 1 ? 's' : ''}
+                    </div>
+                </div>
+            `;
+        });
+        
+        grid.innerHTML = html;
+    }
+
+    // ============================================================
+    // LOAD FOOTER CATEGORIES
+    // ============================================================
+    function loadFooterCategories() {
+        const container = document.getElementById('footerCategories');
+        const categories = getCategories();
+        
+        if (categories.length === 0) {
+            container.innerHTML = '<li><a href="#">No categories</a></li>';
+            return;
+        }
+        
+        let html = '';
+        categories.slice(0, 6).forEach(cat => {
+            html += `<li><a href="public/category.html?cat=${encodeURIComponent(cat.name)}"><i class="fas fa-chevron-right"></i> ${escapeHtml(cat.name)}</a></li>`;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    // ============================================================
+    // UPDATE HERO STATS
+    // ============================================================
+    function updateHeroStats() {
+        const articles = getPublishedArticles();
+        const contributors = getContributors();
+        
+        document.getElementById('heroTotalArticles').textContent = articles.length;
+        document.getElementById('heroTotalContributors').textContent = contributors.length;
+    }
+
+    // ============================================================
+    // DRAWER NEWSLETTER
+    // ============================================================
+    document.getElementById('drawerSubscribe')?.addEventListener('click', function() {
+        const input = document.getElementById('drawerEmail');
+        const email = input.value.trim();
+        if (!email) {
+            showNotification('Please enter your email address.', 'error');
+            return;
+        }
+        if (!isValidEmail(email)) {
+            showNotification('Please enter a valid email address.', 'error');
+            return;
+        }
+        showNotification('🎉 Thank you for subscribing!', 'success');
+        input.value = '';
+    });
+
+    // ============================================================
+    // EMAIL VALIDATION
+    // ============================================================
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // ============================================================
+    // SEARCH OVERLAY
+    // ============================================================
+    const searchToggle = document.getElementById('searchToggle');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchClose = document.getElementById('searchClose');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const categoryIndicator = document.getElementById('categoryIndicator');
+    const currentCategoryName = document.getElementById('currentCategoryName');
+    const clearCategory = document.getElementById('clearCategory');
+    let currentSearchMode = 'text';
+    let currentCategoryQuery = '';
+
+    function performSearch(query, mode = 'text') {
+        if (!query || query.length < 2) {
+            searchResults.innerHTML = '';
+            return;
+        }
+
+        const articles = getPublishedArticles();
+        let results = [];
+
+        if (mode === 'category') {
+            results = articles.filter(a => 
+                a.category && a.category.toLowerCase().includes(query.toLowerCase())
+            );
+        } else {
+            results = articles.filter(a => 
+                a.title.toLowerCase().includes(query) ||
+                a.author.toLowerCase().includes(query) ||
+                (a.category && a.category.toLowerCase().includes(query))
+            );
+        }
+
+        results.sort((a, b) => {
+            const dateA = new Date(a.createdAt || a.date);
+            const dateB = new Date(b.createdAt || b.date);
+            return dateB - dateA;
+        });
+
+        results = results.slice(0, 8);
+
+        if (results.length === 0) {
+            searchResults.innerHTML = `
+                <div class="search-no-results">
+                    <i class="fas fa-search"></i>
+                    <p>No articles found for <strong>"${escapeHtml(query)}"</strong> ${mode === 'category' ? 'in this category' : ''}</p>
+                    <p style="font-size:0.9rem;margin-top:8px;color:rgba(255,255,255,0.3);">
+                        Try a different ${mode === 'category' ? 'category' : 'search term'}
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '<div class="search-results-list">';
+        if (mode === 'category') {
+            html += `<div class="search-category-header">
+                <i class="fas fa-tag"></i> Category: <strong>${escapeHtml(query)}</strong> (${results.length} result${results.length !== 1 ? 's' : ''})
+            </div>`;
+        }
+        results.forEach(a => {
+            html += `
+                <a href="public/article.html?id=${a.id}" class="search-result-item">
+                    <div class="result-title">${escapeHtml(a.title)}</div>
+                    <div class="result-meta">
+                        <span><i class="fas fa-user"></i> ${escapeHtml(a.author)}</span>
+                        <span><i class="fas fa-tag"></i> ${escapeHtml(a.category)}</span>
+                        <span><i class="fas fa-calendar"></i> ${a.date || 'Recent'}</span>
+                    </div>
+                </a>
+            `;
+        });
+        html += '</div>';
+        searchResults.innerHTML = html;
+    }
+
+    function updateCategoryIndicator(category, show) {
+        if (show && category) {
+            currentCategoryName.textContent = category;
+            categoryIndicator.classList.add('active');
+            currentCategoryQuery = category;
+        } else {
+            categoryIndicator.classList.remove('active');
+            currentCategoryQuery = '';
+        }
+    }
+
+    clearCategory?.addEventListener('click', function() {
+        searchInput.value = '';
+        searchResults.innerHTML = '';
+        currentSearchMode = 'text';
+        updateCategoryIndicator('', false);
+        document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+        searchInput.focus();
+    });
+
+    searchInput?.addEventListener('input', function() {
+        const query = this.value.trim();
+        
+        if (currentSearchMode === 'category' && query !== currentCategoryQuery) {
+            currentSearchMode = 'text';
+            updateCategoryIndicator('', false);
+            document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+        }
+        
+        performSearch(query, 'text');
+    });
+
+    document.querySelectorAll('.search-tag').forEach(tag => {
+        tag.addEventListener('click', function() {
+            const category = this.dataset.query;
+            if (category) {
+                searchInput.value = category;
+                currentSearchMode = 'category';
+                updateCategoryIndicator(category, true);
+                document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+                this.classList.add('active-tag');
+                performSearch(category, 'category');
+            }
+        });
+    });
+
+    searchInput?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const query = this.value.trim();
+            if (query) {
+                const matchingCategory = allCategories.find(c => 
+                    c.name.toLowerCase() === query.toLowerCase()
+                );
+                
+                if (matchingCategory) {
+                    currentSearchMode = 'category';
+                    updateCategoryIndicator(query, true);
+                    document.querySelectorAll('.search-tag').forEach(t => {
+                        if (t.dataset.query.toLowerCase() === query.toLowerCase()) {
+                            t.classList.add('active-tag');
+                        } else {
+                            t.classList.remove('active-tag');
+                        }
+                    });
+                    performSearch(query, 'category');
+                } else {
+                    currentSearchMode = 'text';
+                    updateCategoryIndicator('', false);
+                    document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+                    performSearch(query, 'text');
+                }
+            }
+        }
+    });
+
+    searchToggle?.addEventListener('click', function() {
+        searchOverlay.classList.add('active');
+        setTimeout(() => searchInput.focus(), 300);
+        document.body.style.overflow = 'hidden';
+        updateCategoryIndicator('', false);
+        document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+        currentSearchMode = 'text';
+    });
+
+    searchClose?.addEventListener('click', function() {
+        searchOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        searchResults.innerHTML = '';
+        searchInput.value = '';
+        updateCategoryIndicator('', false);
+        document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+    });
+
+    searchOverlay?.addEventListener('click', function(e) {
+        if (e.target === this) {
+            searchOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            searchResults.innerHTML = '';
+            searchInput.value = '';
+            updateCategoryIndicator('', false);
+            document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+            searchOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            searchResults.innerHTML = '';
+            searchInput.value = '';
+            updateCategoryIndicator('', false);
+            document.querySelectorAll('.search-tag').forEach(t => t.classList.remove('active-tag'));
+        }
+        if (e.ctrlKey && e.key === 'k') {
+            e.preventDefault();
+            searchToggle?.click();
+        }
+    });
+
+    // ============================================================
+    // MOBILE DRAWER
+    // ============================================================
+    const menuToggle = document.getElementById('menuToggle');
+    const drawer = document.getElementById('mobileDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const drawerClose = document.getElementById('drawerClose');
+
+    function openDrawer() {
+        drawer.classList.add('active');
+        drawerBackdrop.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        menuToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDrawer() {
+        drawer.classList.remove('active');
+        drawerBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+        menuToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    menuToggle?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (drawer.classList.contains('active')) {
+            closeDrawer();
+        } else {
+            openDrawer();
+        }
+    });
+
+    drawerClose?.addEventListener('click', closeDrawer);
+    drawerBackdrop?.addEventListener('click', closeDrawer);
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && drawer.classList.contains('active')) {
+            closeDrawer();
+        }
+    });
+
+    // ============================================================
+    // BACK TO TOP
+    // ============================================================
+    const backToTop = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 400) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+
+    backToTop?.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // ============================================================
+    // GREY LENS SLIDE DECK JAVASCRIPT
+    // ============================================================
+    function initGreyLensSlides() {
+        const deck = document.getElementById('slideDeck');
+        const slides = document.querySelectorAll('.slide-deck .slide');
+        const dots = document.querySelectorAll('.hero-slide-controls .dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const statusBadge = document.getElementById('statusBadge');
+        const pauseOverlay = document.getElementById('pauseOverlay');
+
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+        let intervalId = null;
+        let isPlaying = true;
+        let isPausedByUser = false;
+        const AUTO_INTERVAL = 3000;
+
+        function updateSlide(index) {
+            slides.forEach(s => s.classList.remove('active', 'prev', 'next'));
+
+            const activeSlide = slides[index];
+            activeSlide.classList.add('active');
+
+            const prevIndex = (index - 1 + totalSlides) % totalSlides;
+            slides[prevIndex].classList.add('prev');
+
+            const nextIndex = (index + 1) % totalSlides;
+            slides[nextIndex].classList.add('next');
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active-dot', i === index);
+            });
+
+            currentIndex = index;
+        }
+
+        function goTo(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+            if (index === currentIndex) return;
+            updateSlide(index);
+            if (isPlaying && !isPausedByUser) {
+                resetAutoPlay();
+            }
+        }
+
+        function nextSlide() { goTo((currentIndex + 1) % totalSlides); }
+        function prevSlide() { goTo((currentIndex - 1 + totalSlides) % totalSlides); }
+
+        function startAutoPlay() {
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(nextSlide, AUTO_INTERVAL);
+            isPlaying = true;
+            updateUI();
+        }
+
+        function stopAutoPlay() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+            isPlaying = false;
+            updateUI();
+        }
+
+        function resetAutoPlay() {
+            if (isPlaying && !isPausedByUser) {
+                if (intervalId) clearInterval(intervalId);
+                intervalId = setInterval(nextSlide, AUTO_INTERVAL);
+            }
+        }
+
+        function togglePause() {
+            if (isPausedByUser) {
+                isPausedByUser = false;
+                if (!isPlaying) {
+                    startAutoPlay();
+                } else {
+                    resetAutoPlay();
+                }
+                pauseOverlay.classList.remove('show');
+            } else {
+                isPausedByUser = true;
+                stopAutoPlay();
+                pauseOverlay.classList.add('show');
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            if (isPlaying && !isPausedByUser) {
+                statusBadge.innerHTML = '<i class="fas fa-play"></i> Auto 3s';
+            } else {
+                statusBadge.innerHTML = '<i class="fas fa-pause"></i> Paused';
+            }
+        }
+
+        // ---- events ----
+        deck.addEventListener('click', function(e) {
+            if (e.target.closest('.ctrl-btn')) return;
+            if (e.target.closest('.dot')) return;
+            togglePause();
+        });
+
+        dots.forEach((dot, i) => {
+            dot.addEventListener('click', function(e) {
+                e.stopPropagation();
+                goTo(i);
+            });
+        });
+
+        prevBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            prevSlide();
+        });
+
+        nextBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            nextSlide();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            if (e.key === ' ') { 
+                if (document.activeElement?.tagName !== 'INPUT') {
+                    e.preventDefault(); 
+                    togglePause(); 
+                }
+            }
+        });
+
+        updateSlide(0);
+        setTimeout(() => startAutoPlay(), 300);
+        pauseOverlay.classList.remove('show');
+    }
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        loadSiteSettings();
+        loadDataFromFirebase();
+        initGreyLensSlides();
+        
+        console.log('%c🏠 Homepage Ready (Firebase + Grey Lens)', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+        console.log('%c🔥 Content loaded from Firebase', 'font-size:13px;color:#4A6A7A;');
+        console.log('%c👁️ Grey Lens slideshow integrated', 'font-size:13px;color:#4A6A7A;');
+    });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages - GREY LENS Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    
+    <style>
+        /* ============================================================
+           MESSAGES PAGE SPECIFIC STYLES
+           ============================================================ */
+        
+        .messages-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .messages-toolbar .toolbar-left {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .messages-toolbar .toolbar-right {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0;
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 8px 14px;
+            border: 1.5px solid #E8E0D5;
+            border-right: none;
+            border-radius: 6px 0 0 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: #FFFFFF;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4A6A7A;
+            box-shadow: 0 0 0 3px rgba(74, 106, 122, 0.08);
+        }
+
+        .search-box .btn-search {
+            padding: 8px 16px;
+            background: #2C3E50;
+            color: #FFFFFF;
+            border: 1.5px solid #2C3E50;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-box .btn-search:hover {
+            background: #3D5A5C;
+            border-color: #3D5A5C;
+        }
+
+        /* Filter buttons for status */
+        .filter-buttons {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid #E8E0D5;
+            border-radius: 20px;
+            background: #FFFFFF;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #4A6A7A;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: #F8F6F3;
+            border-color: #4A6A7A;
+        }
+
+        .filter-btn.active {
+            background: #2C3E50;
+            color: #FFFFFF;
+            border-color: #2C3E50;
+        }
+
+        /* Messages List */
+        .messages-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .message-card {
+            background: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #E8E0D5;
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .message-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(44, 62, 80, 0.06);
+            border-color: #4A6A7A;
+        }
+
+        .message-card.unread {
+            border-left: 4px solid #DC2626;
+            background: #FEFCF8;
+        }
+
+        .message-card .msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .message-card .msg-sender {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .message-card .msg-sender .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #F8F6F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #B8945C;
+            font-size: 1.2rem;
+            border: 2px solid #E8E0D5;
+            flex-shrink: 0;
+        }
+
+        .message-card .msg-sender .sender-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-card .msg-sender .sender-info .name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #2C3E50;
+        }
+
+        .message-card .msg-sender .sender-info .email {
+            font-size: 0.85rem;
+            color: #7F8C8D;
+        }
+
+        .message-card .msg-sender .sender-info .email a {
+            color: #4A6A7A;
+            text-decoration: none;
+        }
+
+        .message-card .msg-sender .sender-info .email a:hover {
+            text-decoration: underline;
+        }
+
+        .message-card .msg-status {
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .message-card .msg-status.unread {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .message-card .msg-status.read {
+            background: #D1D5DB;
+            color: #6B7280;
+        }
+
+        .message-card .msg-date {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .message-card .msg-subject {
+            font-weight: 500;
+            color: #2C3E50;
+            margin: 6px 0 8px;
+            font-size: 1rem;
+        }
+
+        .message-card .msg-subject strong {
+            color: #4A6A7A;
+        }
+
+        .message-card .msg-body {
+            color: #4A6A7A;
+            line-height: 1.6;
+            margin: 6px 0 14px;
+            padding: 12px 16px;
+            background: #F8F6F3;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-size: 0.95rem;
+            border-left: 3px solid #E8E0D5;
+        }
+
+        .message-card .msg-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding-top: 12px;
+            border-top: 1px solid #F8F6F3;
+        }
+
+        .message-card .msg-actions .btn {
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-read {
+            background: #4A6A7A;
+            color: #FFFFFF;
+        }
+
+        .btn-read:hover {
+            background: #2C3E50;
+        }
+
+        .btn-read.read {
+            background: #D1D5DB;
+            color: #6B7280;
+            cursor: default;
+        }
+
+        .btn-reply {
+            background: #B8945C;
+            color: #FFFFFF;
+        }
+
+        .btn-reply:hover {
+            background: #A07D4A;
+        }
+
+        .btn-delete {
+            background: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .btn-delete:hover {
+            background: #FECACA;
+        }
+
+        /* Stats Bar */
+        .messages-stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #F8F6F3;
+            border-radius: 6px;
+            border: 1px solid #E8E0D5;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .messages-stats-bar .stats-info {
+            font-size: 0.9rem;
+            color: #4A6A7A;
+        }
+
+        .messages-stats-bar .stats-info strong {
+            color: #2C3E50;
+        }
+
+        .messages-stats-bar .stats-info .unread-badge {
+            background: #DC2626;
+            color: #FFFFFF;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Empty State */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7F8C8D;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #E8E0D5;
+            margin-bottom: 16px;
+        }
+
+        .no-results h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #2C3E50;
+            margin-bottom: 6px;
+        }
+
+        .no-results p {
+            font-size: 0.95rem;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .role-badge.admin {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .role-badge.contributor {
+            background: #B8945C;
+            color: #FFFFFF;
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 420px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid #4CAF50;
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .notification-toast.error {
+            border-left-color: #DC2626;
+        }
+
+        .notification-toast.warning {
+            border-left-color: #FF9800;
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: #FFFFFF;
+        }
+
+        /* Admin Logo with Magnifying Glass */
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f2f4f6;
+        }
+
+        .admin-logo .logo-icon {
+            font-size: 1.4rem;
+            color: #a4a3a2;
+        }
+
+        .admin-logo span {
+            background: #B8945C;
+            color: #FFFFFF;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .messages-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .messages-toolbar .toolbar-left {
+                flex-direction: column;
+            }
+
+            .search-box {
+                max-width: 100%;
+                min-width: auto;
+            }
+
+            .message-card {
+                padding: 16px;
+            }
+
+            .message-card .msg-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .message-card .msg-date {
+                white-space: normal;
+            }
+
+            .message-card .msg-sender {
+                width: 100%;
+            }
+
+            .messages-stats-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .message-card {
+                padding: 14px;
+            }
+
+            .message-card .msg-body {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .message-card .msg-actions .btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-logo">
+                <i class="fas fa-search logo-icon"></i>
+                GREY LENS
+                <span>Admin</span>
+            </div>
+            <div class="admin-user">
+                <div class="user-info">
+                    <div class="name" id="adminName">Affan Pervaiz Awan</div>
+                    <div class="role" id="userRoleDisplay">Administrator</div>
+                </div>
+                <div class="avatar" id="userAvatar">A</div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    BODY
+    ============================================================ -->
+    <div class="admin-body">
+
+        <!-- ============================================================
+        SIDEBAR
+        ============================================================ -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html" id="dashboardNavLink">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="articles.html" id="articlesNavLink">
+                    <i class="fas fa-newspaper"></i> All Articles
+                </a>
+                <a href="write.html" id="writeNavLink">
+                    <i class="fas fa-pen-fancy"></i> Write New
+                </a>
+
+                <div class="sidebar-divider" id="adminDivider"></div>
+
+                <div class="nav-label" id="adminLabel">Management</div>
+                <a href="contributors.html" id="contributorsNavLink">
+                    <i class="fas fa-users"></i> Contributors
+                </a>
+                <a href="categories.html" id="categoriesNavLink">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+                <a href="messages.html" class="active" id="messagesNavLink">
+                    <i class="fas fa-envelope"></i> Messages
+                    <span id="sidebarUnreadBadge" style="background:#DC2626;color:white;font-size:0.6rem;padding:1px 8px;border-radius:10px;margin-left:auto;display:none;">0</span>
+                </a>
+
+                <div class="sidebar-divider" id="settingsDivider"></div>
+
+                <div class="nav-label" id="settingsLabel">Settings</div>
+                <a href="settings.html" id="settingsNavLink">
+                    <i class="fas fa-cog"></i> Site Settings
+                </a>
+                <a href="profile.html" id="profileNavLink">
+                    <i class="fas fa-user"></i> My Profile
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ============================================================
+        MAIN CONTENT
+        ============================================================ -->
+        <main class="admin-main">
+
+            <div class="page-header">
+                <h1>
+                    <i class="fas fa-envelope"></i> Messages
+                    <span class="role-badge" id="roleBadge">Admin</span>
+                </h1>
+                <p id="pageSubtitle">View and manage all contact messages from users</p>
+            </div>
+
+            <!-- ============================================================
+            TOOLBAR
+            ============================================================ -->
+            <div class="messages-toolbar">
+                <div class="toolbar-left">
+                    <div class="search-box">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Search messages..." 
+                            autocomplete="off"
+                        />
+                        <button class="btn-search" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="filter-buttons" id="filterButtons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="unread">Unread</button>
+                        <button class="filter-btn" data-filter="read">Read</button>
+                    </div>
+                </div>
+
+                <div class="toolbar-right">
+                    <button class="btn btn-outline btn-sm" id="markAllReadBtn" style="display:none;">
+                        <i class="fas fa-check-double"></i> Mark All as Read
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="refreshBtn">
+                        <i class="fas fa-sync"></i> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            STATS BAR
+            ============================================================ -->
+            <div class="messages-stats-bar">
+                <div class="stats-info">
+                    Showing <strong id="showingCount">0</strong> of 
+                    <strong id="totalCount">0</strong> messages
+                    <span id="unreadBadge" class="unread-badge" style="display:none;"></span>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            MESSAGES LIST
+            ============================================================ -->
+            <div id="messagesContainer">
+                <div class="loading-spinner" style="text-align:center;padding:40px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#B8945C;"></i>
+                    <p style="color:#7F8C8D;margin-top:8px;">Loading messages...</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            EMPTY STATE
+            ============================================================ -->
+            <div id="emptyState" class="no-results" style="display:none;">
+                <i class="fas fa-inbox"></i>
+                <h3>No Messages Found</h3>
+                <p id="emptyMessage">No messages match your filters.</p>
+            </div>
+
+        </main>
+
+    </div>
+
+   <!-- ============================================================
+JAVASCRIPT - FIREBASE VERSION (FIXED)
+============================================================ -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    collection, 
+    getDocs, 
+    doc, 
+    updateDoc, 
+    deleteDoc, 
+    query, 
+    orderBy,
+    onAuthStateChanged,
+    signOut
+} from '../firebase-config.js';
+
+// ✅ IMPORT ADMIN SETTINGS LOADER
+import { loadAdminSettings } from './admin-settings.js';
+
+// Admin email
+const ADMIN_EMAIL = "affanawan189@gmail.com";
+
+// ============================================================
+// GLOBALS
+// ============================================================
+let allMessages = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let currentUser = null;
+let isAdmin = false;
+
+// ============================================================
+// AUTH STATE LISTENER
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    currentUser = user;
+    isAdmin = (user.email === ADMIN_EMAIL);
+
+    // If not admin, redirect to dashboard
+    if (!isAdmin) {
+        window.location.href = 'dashboard.html';
+        return;
+    }
+
+    // Set user info
+    const userName = 'Affan Pervaiz Awan';
+    document.getElementById('adminName').textContent = userName;
+    document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+    document.getElementById('userRoleDisplay').textContent = 'Administrator';
+    document.getElementById('roleBadge').textContent = 'Admin';
+
+    // Load messages
+    loadMessages();
+});
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    notification.querySelector('.notification-close').addEventListener('click', () => notification.remove());
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function formatDate(date) {
+    if (!date) return 'Recent';
+    const now = new Date();
+    const diff = now - date;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ============================================================
+// LOAD MESSAGES FROM FIREBASE
+// ============================================================
+async function loadMessages() {
+    try {
+        const messagesRef = collection(db, "messages");
+        const q = query(messagesRef, orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+        
+        allMessages = [];
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            allMessages.push({
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt ? data.createdAt.toDate() : new Date()
+            });
+        });
+        console.log(`✅ ${allMessages.length} messages loaded from Firebase`);
+        renderMessages();
+    } catch (error) {
+        console.error('Error loading messages:', error);
+        showNotification('Error loading messages', 'error');
+    }
+}
+
+// ============================================================
+// RENDER MESSAGES
+// ============================================================
+function renderMessages() {
+    let messages = [...allMessages];
+    
+    // Apply status filter
+    if (currentFilter !== 'all') {
+        messages = messages.filter(m => m.status === currentFilter);
+    }
+    
+    // Apply search filter
+    if (currentSearch) {
+        const search = currentSearch.toLowerCase().trim();
+        messages = messages.filter(m => {
+            return m.name.toLowerCase().includes(search) ||
+                   m.email.toLowerCase().includes(search) ||
+                   m.subject.toLowerCase().includes(search) ||
+                   m.message.toLowerCase().includes(search);
+        });
+    }
+    
+    // Update counts
+    const total = allMessages.length;
+    const unread = allMessages.filter(m => m.status === 'unread').length;
+    
+    document.getElementById('totalCount').textContent = total;
+    document.getElementById('showingCount').textContent = messages.length;
+    
+    const unreadBadge = document.getElementById('unreadBadge');
+    const sidebarBadge = document.getElementById('sidebarUnreadBadge');
+    const markAllBtn = document.getElementById('markAllReadBtn');
+    
+    if (unread > 0) {
+        unreadBadge.style.display = 'inline';
+        unreadBadge.textContent = `${unread} unread`;
+        sidebarBadge.style.display = 'inline';
+        sidebarBadge.textContent = unread;
+        markAllBtn.style.display = 'inline-flex';
+    } else {
+        unreadBadge.style.display = 'none';
+        sidebarBadge.style.display = 'none';
+        markAllBtn.style.display = 'none';
+    }
+    
+    // Get container
+    const container = document.getElementById('messagesContainer');
+    const emptyState = document.getElementById('emptyState');
+    
+    // Check if no messages
+    if (messages.length === 0) {
+        emptyState.style.display = 'block';
+        if (total === 0) {
+            emptyState.innerHTML = `
+                <i class="fas fa-inbox"></i>
+                <h3>No Messages Yet</h3>
+                <p>No contact messages have been received yet.</p>
+            `;
+        } else {
+            emptyState.innerHTML = `
+                <i class="fas fa-search"></i>
+                <h3>No Results Found</h3>
+                <p>No messages match your filters.</p>
+            `;
+        }
+        container.innerHTML = '';
+        return;
+    }
+    
+    emptyState.style.display = 'none';
+    
+    // Render message cards
+    let html = '<div class="messages-list">';
+    messages.forEach(msg => {
+        const isUnread = msg.status === 'unread';
+        const dateStr = formatDate(msg.createdAt);
+        const initial = msg.name.charAt(0).toUpperCase();
+
+        html += `
+            <div class="message-card ${isUnread ? 'unread' : ''}">
+                <div class="msg-header">
+                    <div class="msg-sender">
+                        <div class="avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="sender-info">
+                            <span class="name">${escapeHtml(msg.name)}</span>
+                            <span class="email">
+                                <a href="mailto:${escapeHtml(msg.email)}">${escapeHtml(msg.email)}</a>
+                            </span>
+                        </div>
+                        <span class="msg-status ${isUnread ? 'unread' : 'read'}">
+                            ${isUnread ? '● Unread' : '✓ Read'}
+                        </span>
+                    </div>
+                    <span class="msg-date"><i class="far fa-clock"></i> ${dateStr}</span>
+                </div>
+                <div class="msg-subject"><strong>Subject:</strong> ${escapeHtml(msg.subject)}</div>
+                <div class="msg-body">${escapeHtml(msg.message)}</div>
+                <div class="msg-actions">
+                    ${isUnread ? `
+                        <button class="btn btn-read" onclick="window.markAsRead('${msg.id}')">
+                            <i class="fas fa-check"></i> Mark as Read
+                        </button>
+                    ` : `
+                        <button class="btn btn-read read" disabled>
+                            <i class="fas fa-check-circle"></i> Read
+                        </button>
+                    `}
+                    <button class="btn btn-reply" onclick="window.replyTo('${escapeHtml(msg.email)}', '${escapeHtml(msg.subject)}')">
+                        <i class="fas fa-reply"></i> Reply
+                    </button>
+                    <button class="btn btn-delete" onclick="window.deleteMessage('${msg.id}')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+}
+
+// ============================================================
+// MESSAGE ACTIONS
+// ============================================================
+window.markAsRead = async function(id) {
+    try {
+        await updateDoc(doc(db, "messages", id), {
+            status: 'read'
+        });
+        showNotification('✅ Message marked as read', 'success');
+        await loadMessages();
+    } catch (error) {
+        console.error('Error marking as read:', error);
+        showNotification('❌ Error marking as read', 'error');
+    }
+};
+
+window.deleteMessage = async function(id) {
+    if (!confirm('Delete this message?')) return;
+    
+    try {
+        await deleteDoc(doc(db, "messages", id));
+        showNotification('🗑️ Message deleted', 'success');
+        await loadMessages();
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        showNotification('❌ Error deleting message', 'error');
+    }
+};
+
+window.replyTo = function(email, subject) {
+    const replySubject = subject.startsWith('Re:') ? subject : `Re: ${subject}`;
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(replySubject)}`;
+};
+
+// ============================================================
+// MARK ALL AS READ
+// ============================================================
+document.getElementById('markAllReadBtn').addEventListener('click', async function() {
+    const unreadMessages = allMessages.filter(m => m.status === 'unread');
+    if (unreadMessages.length === 0) return;
+
+    if (!confirm(`Mark all ${unreadMessages.length} messages as read?`)) return;
+
+    try {
+        for (const msg of unreadMessages) {
+            await updateDoc(doc(db, "messages", msg.id), {
+                status: 'read'
+            });
+        }
+        showNotification(`✅ All ${unreadMessages.length} messages marked as read`, 'success');
+        await loadMessages();
+    } catch (error) {
+        console.error('Error marking all as read:', error);
+        showNotification('❌ Error marking all as read', 'error');
+    }
+});
+
+// ============================================================
+// SEARCH AND FILTER FUNCTIONS
+// ============================================================
+function performSearch() {
+    const input = document.getElementById('searchInput');
+    currentSearch = input.value.trim();
+    renderMessages();
+}
+
+function setFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+    renderMessages();
+}
+
+// ============================================================
+// LOGOUT - Firebase Sign Out
+// ============================================================
+document.getElementById('logoutBtn').addEventListener('click', async function() {
+    if (confirm('Are you sure you want to logout?')) {
+        try {
+            await signOut(auth);
+            window.location.href = '../Public/login.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            showNotification('❌ Logout failed: ' + error.message, 'error');
+        }
+    }
+});
+
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    // ✅ Load admin settings first
+    loadAdminSettings();
+    
+    // Search
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
+    document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch();
+        }
+    });
+    
+    // Filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setFilter(this.dataset.filter);
+        });
+    });
+    
+    // Refresh
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        loadMessages();
+        showNotification('🔄 Refreshed from Firebase.', 'info');
+    });
+    
+    console.log('%c📧 GREY LENS Messages Manager Ready', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+    console.log('%c🔥 Using Firebase Authentication', 'font-size:13px;color:#4A6A7A;');
+    console.log('%c🔑 Admin: Affan Pervaiz Awan', 'font-size:12px;color:#B8945C;');
+    console.log('%c⚙️ Admin settings loaded from Firebase', 'font-size:13px;color:#4CAF50;');
+});
+</script>
+</body>
+</html>

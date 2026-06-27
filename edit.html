@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="pageTitle">Edit Article - GREY LENS Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    
+    <style>
+        /* ============================================================
+           EDIT PAGE SPECIFIC STYLES
+           ============================================================ */
+        .edit-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .edit-form {
+            background: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #E8E0D5;
+            padding: 32px;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required {
+            color: #DC2626;
+            margin-left: 2px;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            color: #B8945C;
+            width: 16px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #E8E0D5;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            background: #F8F6F3;
+            transition: all 0.3s ease;
+            color: #2C2C2C;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4A6A7A;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(74, 106, 122, 0.1);
+        }
+
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: #7F8C8D;
+            margin-top: 4px;
+        }
+
+        .form-group .hint i {
+            margin-right: 4px;
+            color: #B8945C;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Image Upload */
+        .image-upload-area {
+            border: 2px dashed #E8E0D5;
+            border-radius: 6px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #F8F6F3;
+        }
+
+        .image-upload-area:hover {
+            border-color: #4A6A7A;
+            background: #F0EEEA;
+        }
+
+        .image-upload-area i {
+            font-size: 2.5rem;
+            color: #B8945C;
+            margin-bottom: 8px;
+        }
+
+        .image-upload-area p {
+            color: #7F8C8D;
+            font-size: 0.9rem;
+        }
+
+        .image-upload-area .file-name {
+            color: #7F8C8D;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .image-upload-area .file-name.has-file {
+            color: #4CAF50;
+        }
+
+        .image-preview {
+            margin-top: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #E8E0D5;
+            max-width: 300px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        #featuredImageInput {
+            display: none;
+        }
+
+        /* Tags */
+        .tag-input-wrap {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag-input-wrap input {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            min-height: 32px;
+        }
+
+        .tag-item {
+            background: #F8F6F3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid #E8E0D5;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: tagFadeIn 0.3s ease;
+        }
+
+        .tag-item .remove-tag {
+            cursor: pointer;
+            color: #7F8C8D;
+            font-size: 0.7rem;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0 2px;
+        }
+
+        .tag-item .remove-tag:hover {
+            color: #DC2626;
+        }
+
+        .add-tag-btn {
+            padding: 8px 16px;
+            background: #F8F6F3;
+            border: 1px solid #E8E0D5;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #4A6A7A;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .add-tag-btn:hover {
+            background: #E8E0D5;
+        }
+
+        .no-tags-text {
+            color: #7F8C8D;
+            font-size: 0.85rem;
+        }
+
+        /* Content Editor */
+        .content-editor textarea {
+            min-height: 300px;
+            resize: vertical;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Status Badge in Header */
+        .article-status-badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 12px;
+        }
+
+        .article-status-badge.published {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .article-status-badge.draft {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .article-status-badge.pending {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #E8E0D5;
+            flex-wrap: wrap;
+        }
+
+        .form-actions .btn {
+            flex: 0 1 auto;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .btn-update {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .btn-update:hover {
+            background: #3D5A5C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+        }
+
+        .btn-publish {
+            background: #4CAF50;
+            color: #FFFFFF;
+        }
+
+        .btn-publish:hover {
+            background: #43A047;
+            transform: translateY(-2px);
+        }
+
+        .btn-draft {
+            background: #FF9800;
+            color: #FFFFFF;
+        }
+
+        .btn-draft:hover {
+            background: #F57C00;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: #DC2626;
+            color: #FFFFFF;
+        }
+
+        .btn-cancel:hover {
+            background: #B91C1C;
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            margin-right: 6px;
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 420px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid #4CAF50;
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .notification-toast.error {
+            border-left-color: #DC2626;
+        }
+
+        .notification-toast.warning {
+            border-left-color: #FF9800;
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: #FFFFFF;
+        }
+
+        /* Admin Logo with Magnifying Glass */
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f2f4f6;
+        }
+
+        .admin-logo .logo-icon {
+            font-size: 1.4rem;
+            color: #a4a3a2;
+        }
+
+        .admin-logo span {
+            background: #B8945C;
+            color: #FFFFFF;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Animations */
+        @keyframes tagFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .edit-form {
+            animation: slideUp 0.4s ease;
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7F8C8D;
+        }
+
+        .loading-state i {
+            font-size: 3rem;
+            color: #B8945C;
+            margin-bottom: 16px;
+        }
+
+        /* Not Found */
+        .not-found {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .not-found i {
+            font-size: 4rem;
+            color: #E8E0D5;
+            margin-bottom: 16px;
+        }
+
+        .not-found h2 {
+            font-family: 'Playfair Display', serif;
+            color: #2C3E50;
+            margin-bottom: 8px;
+        }
+
+        .not-found p {
+            color: #7F8C8D;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .edit-form {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                flex: 1;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .content-editor textarea {
+                min-height: 200px;
+            }
+
+            .tag-input-wrap {
+                flex-direction: column;
+            }
+
+            .tag-input-wrap input {
+                width: 100%;
+            }
+
+            .add-tag-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .article-status-badge {
+                display: block;
+                margin-left: 0;
+                margin-top: 8px;
+                text-align: center;
+            }
+
+            .image-preview {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .edit-form {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-logo">
+                <i class="fas fa-search logo-icon"></i>
+                GREY LENS
+                <span>Admin</span>
+            </div>
+            <div class="admin-user">
+                <div class="user-info">
+                    <div class="name" id="adminName">Affan Pervaiz Awan</div>
+                    <div class="role">Administrator</div>
+                </div>
+                <div class="avatar" id="userAvatar">A</div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    BODY
+    ============================================================ -->
+    <div class="admin-body">
+
+        <!-- ============================================================
+        SIDEBAR
+        ============================================================ -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="articles.html" class="active">
+                    <i class="fas fa-newspaper"></i> All Articles
+                </a>
+                <a href="write.html">
+                    <i class="fas fa-pen-fancy"></i> Write New
+                </a>
+
+                <div class="sidebar-divider"></div>
+
+                <div class="nav-label">Management</div>
+                <a href="contributors.html">
+                    <i class="fas fa-users"></i> Contributors
+                </a>
+                <a href="categories.html">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+
+                <div class="sidebar-divider"></div>
+
+                <div class="nav-label">Settings</div>
+                <a href="settings.html">
+                    <i class="fas fa-cog"></i> Site Settings
+                </a>
+                <a href="profile.html">
+                    <i class="fas fa-user"></i> My Profile
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ============================================================
+        MAIN CONTENT
+        ============================================================ -->
+        <main class="admin-main">
+
+            <!-- ============================================================
+            LOADING STATE
+            ============================================================ -->
+            <div id="loadingState" class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <h3 style="font-family:'Playfair Display',serif;color:#2C3E50;">Loading Article...</h3>
+                <p>Please wait while we fetch the article data.</p>
+            </div>
+
+            <!-- ============================================================
+            NOT FOUND
+            ============================================================ -->
+            <div id="notFound" class="not-found" style="display:none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h2>Article Not Found</h2>
+                <p>The article you're looking for doesn't exist or has been deleted.</p>
+                <a href="articles.html" class="btn btn-primary" style="margin-top:12px;">
+                    <i class="fas fa-arrow-left"></i> Back to Articles
+                </a>
+            </div>
+
+            <!-- ============================================================
+            EDIT FORM
+            ============================================================ -->
+            <div id="editFormContainer" style="display:none;">
+                <div class="page-header">
+                    <h1>
+                        ✏️ Edit Article
+                        <span id="statusBadge" class="article-status-badge"></span>
+                    </h1>
+                    <p>Update your article content and settings</p>
+                </div>
+
+                <div class="edit-container">
+                    <form class="edit-form" id="editForm" novalidate>
+
+                        <!-- ============================================================
+                        ARTICLE TITLE
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label for="articleTitle">
+                                <i class="fas fa-heading"></i> Article Title <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="articleTitle" 
+                                placeholder="Enter a compelling title..." 
+                                required 
+                                maxlength="150"
+                            />
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                Write a clear, attention-grabbing title (max 150 characters)
+                                <span id="titleCount" style="float:right;font-weight:500;">0/150</span>
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        SUBTITLE
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label for="articleSubtitle">
+                                <i class="fas fa-quote-right"></i> Subtitle
+                            </label>
+                            <input 
+                                type="text" 
+                                id="articleSubtitle" 
+                                placeholder="A brief description or subheading..." 
+                                maxlength="200"
+                            />
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                A short description that appears under the title
+                                <span id="subtitleCount" style="float:right;font-weight:500;">0/200</span>
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        AUTHOR & CATEGORY
+                        ============================================================ -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="articleAuthor">
+                                    <i class="fas fa-user"></i> Author <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="articleAuthor" 
+                                    placeholder="Author name..." 
+                                    required 
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="articleCategory">
+                                    <i class="fas fa-tag"></i> Category <span class="required">*</span>
+                                </label>
+                                <select id="articleCategory" required>
+                                    <option value="">Select a category...</option>
+                                    <option value="Governance">Governance</option>
+                                    <option value="Law">Law</option>
+                                    <option value="Economics">Economics</option>
+                                    <option value="Society">Society</option>
+                                    <option value="Culture">Culture</option>
+                                    <option value="History">History</option>
+                                    <option value="Opinion">Opinion</option>
+                                    <option value="Public Policy">Public Policy</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Health">Health</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Politics">Politics</option>
+                                    <option value="Environment">Environment</option>
+                                    <option value="International">International</option>
+                                    <option value="Science">Science</option>
+                                    <option value="Arts">Arts</option>
+                                    <option value="Sports">Sports</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        FEATURED IMAGE
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-image"></i> Featured Image
+                            </label>
+                            <div class="image-upload-area" id="imageUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload a new image</p>
+                                <div class="file-name" id="fileName">No file selected</div>
+                                <input type="file" id="featuredImageInput" accept="image/*" />
+                            </div>
+                            <div id="currentImagePreview" class="image-preview" style="display:none;">
+                                <img id="currentImageDisplay" src="" alt="Current featured image" />
+                                <div style="padding:8px 12px;background:#F8F6F3;font-size:0.8rem;color:#7F8C8D;border-top:1px solid #E8E0D5;">
+                                    <i class="fas fa-image"></i> Current image
+                                </div>
+                            </div>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                Recommended size: 1200x600px (JPEG, PNG, or WebP). 
+                                Upload a new image to replace the current one.
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        CONTENT
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label for="articleContent">
+                                <i class="fas fa-align-left"></i> Article Content <span class="required">*</span>
+                            </label>
+                            <div class="content-editor">
+                                <textarea 
+                                    id="articleContent" 
+                                    placeholder="Write your article content here... Use HTML tags for formatting" 
+                                    required
+                                ></textarea>
+                            </div>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                You can use HTML tags: <strong>&lt;p&gt;</strong>, <strong>&lt;h2&gt;</strong>, <strong>&lt;h3&gt;</strong>, 
+                                <strong>&lt;blockquote&gt;</strong>, <strong>&lt;strong&gt;</strong>, <strong>&lt;em&gt;</strong>
+                                <span id="contentCount" style="float:right;font-weight:500;">0 characters</span>
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        EXCERPT
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label for="articleExcerpt">
+                                <i class="fas fa-align-justify"></i> Excerpt / Summary
+                            </label>
+                            <textarea 
+                                id="articleExcerpt" 
+                                rows="3" 
+                                placeholder="Write a short summary of the article..."
+                                maxlength="200"
+                            ></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                A brief summary that appears on the homepage and search results
+                                <span id="excerptCount" style="float:right;font-weight:500;">0/200</span>
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        TAGS
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-tags"></i> Tags
+                            </label>
+                            <div class="tag-input-wrap">
+                                <input 
+                                    type="text" 
+                                    id="tagInput" 
+                                    placeholder="Add a tag (e.g., Constitution, Reform)" 
+                                    maxlength="30"
+                                />
+                                <button type="button" class="add-tag-btn" id="addTagBtn">
+                                    <i class="fas fa-plus"></i> Add Tag
+                                </button>
+                            </div>
+                            <div class="tag-list" id="tagList">
+                                <span class="no-tags-text">No tags added yet</span>
+                            </div>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                Tags help readers find related articles. Press Enter or click Add Tag.
+                                <span id="tagCount" style="float:right;font-weight:500;">0/10 tags</span>
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        STATUS
+                        ============================================================ -->
+                        <div class="form-group">
+                            <label for="articleStatus">
+                                <i class="fas fa-circle"></i> Status
+                            </label>
+                            <select id="articleStatus">
+                                <option value="draft">Draft</option>
+                                <option value="published">Published</option>
+                            </select>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> 
+                                <strong>Draft</strong> saves your work privately. 
+                                <strong>Published</strong> makes it visible to readers.
+                            </div>
+                        </div>
+
+                        <!-- ============================================================
+                        FORM ACTIONS
+                        ============================================================ -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-update" id="updateBtn">
+                                <i class="fas fa-save"></i> Update Article
+                            </button>
+                            <button type="button" class="btn btn-publish" id="publishBtn">
+                                <i class="fas fa-globe"></i> Publish Now
+                            </button>
+                            <button type="button" class="btn btn-draft" id="draftBtn">
+                                <i class="fas fa-file-alt"></i> Save as Draft
+                            </button>
+                            <button type="button" class="btn btn-cancel" id="cancelBtn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+   <!-- ============================================================
+JAVASCRIPT - FIREBASE VERSION (FIXED)
+============================================================ -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    collection, 
+    getDocs, 
+    doc, 
+    getDoc, 
+    updateDoc, 
+    query, 
+    where,
+    onAuthStateChanged,
+    signOut
+} from '../firebase-config.js';
+
+// ✅ IMPORT ADMIN SETTINGS LOADER
+import { loadAdminSettings } from './admin-settings.js';
+
+// Admin email
+const ADMIN_EMAIL = "affanawan189@gmail.com";
+
+// ============================================================
+// GLOBALS
+// ============================================================
+let currentUser = null;
+let isAdmin = false;
+let currentArticle = null;
+let tags = [];
+
+// ============================================================
+// AUTH STATE LISTENER
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    currentUser = user;
+    isAdmin = (user.email === ADMIN_EMAIL);
+
+    // Set user info
+    const userName = isAdmin ? 'Affan Pervaiz Awan' : (user.displayName || user.email.split('@')[0]);
+    document.getElementById('adminName').textContent = userName;
+    document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+
+    // Load article
+    loadArticle();
+});
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    notification.querySelector('.notification-close').addEventListener('click', () => notification.remove());
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// GET ARTICLE ID FROM URL
+// ============================================================
+function getArticleIdFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('id');
+}
+
+// ============================================================
+// LOAD ARTICLE DATA FROM FIREBASE
+// ============================================================
+async function loadArticle() {
+    const id = getArticleIdFromUrl();
+    
+    if (!id) {
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('notFound').style.display = 'block';
+        return;
+    }
+
+    try {
+        const docRef = doc(db, "articles", id);
+        const docSnap = await getDoc(docRef);
+        
+        if (!docSnap.exists()) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('notFound').style.display = 'block';
+            return;
+        }
+
+        const article = { id: docSnap.id, ...docSnap.data() };
+        currentArticle = article;
+
+        // Check if user has permission to edit
+        if (!isAdmin && article.authorEmail !== currentUser.email) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('notFound').style.display = 'block';
+            document.querySelector('#notFound h2').textContent = 'Access Denied';
+            document.querySelector('#notFound p').textContent = 'You can only edit your own articles.';
+            showNotification('❌ You can only edit your own articles.', 'error');
+            return;
+        }
+
+        tags = article.tags || [];
+
+        // Populate form
+        document.getElementById('articleTitle').value = article.title || '';
+        document.getElementById('articleSubtitle').value = article.subtitle || '';
+        document.getElementById('articleAuthor').value = article.author || '';
+        document.getElementById('articleCategory').value = article.category || '';
+        document.getElementById('articleContent').value = article.content || '';
+        document.getElementById('articleExcerpt').value = article.excerpt || '';
+        document.getElementById('articleStatus').value = article.status || 'draft';
+
+        // Update status badge
+        const badge = document.getElementById('statusBadge');
+        const status = article.status || 'draft';
+        badge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        badge.className = `article-status-badge ${status}`;
+
+        // Show current image if exists
+        if (article.image) {
+            const preview = document.getElementById('currentImagePreview');
+            const img = document.getElementById('currentImageDisplay');
+            img.src = article.image;
+            preview.style.display = 'block';
+            document.getElementById('fileName').textContent = article.image;
+            document.getElementById('fileName').classList.add('has-file');
+        }
+
+        // Update counters
+        updateCounters();
+
+        // Render tags
+        renderTags();
+
+        // Hide loading, show form
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('editFormContainer').style.display = 'block';
+
+        console.log('%c✏️ Editing: ' + article.title, 'font-size:14px;font-weight:bold;color:#2C3E50;');
+        console.log('%c🔥 Loaded from Firebase', 'font-size:12px;color:#4A6A7A;');
+        console.log('%c👤 User: ' + (isAdmin ? 'Admin' : currentUser.email), 'font-size:12px;color:#4A6A7A;');
+
+    } catch (error) {
+        console.error('Error loading article:', error);
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('notFound').style.display = 'block';
+        showNotification('❌ Error loading article: ' + error.message, 'error');
+    }
+}
+
+// ============================================================
+// COUNTERS
+// ============================================================
+function updateCounters() {
+    const title = document.getElementById('articleTitle');
+    const subtitle = document.getElementById('articleSubtitle');
+    const content = document.getElementById('articleContent');
+    const excerpt = document.getElementById('articleExcerpt');
+
+    document.getElementById('titleCount').textContent = `${title.value.length}/150`;
+    document.getElementById('subtitleCount').textContent = `${subtitle.value.length}/200`;
+    document.getElementById('contentCount').textContent = `${content.value.length} characters`;
+    document.getElementById('excerptCount').textContent = `${excerpt.value.length}/200`;
+    document.getElementById('tagCount').textContent = `${tags.length}/10 tags`;
+}
+
+function setupCounters() {
+    const titleInput = document.getElementById('articleTitle');
+    const subtitleInput = document.getElementById('articleSubtitle');
+    const contentInput = document.getElementById('articleContent');
+    const excerptInput = document.getElementById('articleExcerpt');
+
+    titleInput.addEventListener('input', function() {
+        document.getElementById('titleCount').textContent = `${this.value.length}/150`;
+        if (this.value.length > 150) {
+            this.value = this.value.substring(0, 150);
+            document.getElementById('titleCount').textContent = '150/150';
+        }
+    });
+
+    subtitleInput.addEventListener('input', function() {
+        document.getElementById('subtitleCount').textContent = `${this.value.length}/200`;
+        if (this.value.length > 200) {
+            this.value = this.value.substring(0, 200);
+            document.getElementById('subtitleCount').textContent = '200/200';
+        }
+    });
+
+    contentInput.addEventListener('input', function() {
+        document.getElementById('contentCount').textContent = `${this.value.length} characters`;
+    });
+
+    excerptInput.addEventListener('input', function() {
+        document.getElementById('excerptCount').textContent = `${this.value.length}/200`;
+        if (this.value.length > 200) {
+            this.value = this.value.substring(0, 200);
+            document.getElementById('excerptCount').textContent = '200/200';
+        }
+    });
+}
+
+// ============================================================
+// TAGS MANAGEMENT
+// ============================================================
+function renderTags() {
+    const container = document.getElementById('tagList');
+    const countDisplay = document.getElementById('tagCount');
+    
+    if (tags.length === 0) {
+        container.innerHTML = '<span class="no-tags-text">No tags added yet</span>';
+        countDisplay.textContent = '0/10 tags';
+        return;
+    }
+    
+    container.innerHTML = tags.map(tag => `
+        <span class="tag-item">
+            ${tag}
+            <button type="button" class="remove-tag" data-tag="${tag}">
+                <i class="fas fa-times"></i>
+            </button>
+        </span>
+    `).join('');
+    
+    countDisplay.textContent = `${tags.length}/10 tags`;
+    
+    document.querySelectorAll('.remove-tag').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tag = this.dataset.tag;
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+        });
+    });
+}
+
+function addTag() {
+    const input = document.getElementById('tagInput');
+    const tag = input.value.trim();
+    
+    if (!tag) {
+        showNotification('Please enter a tag.', 'error');
+        return;
+    }
+    
+    if (tags.includes(tag)) {
+        showNotification(`"${tag}" already exists.`, 'warning');
+        input.value = '';
+        return;
+    }
+    
+    if (tags.length >= 10) {
+        showNotification('Maximum 10 tags allowed.', 'error');
+        return;
+    }
+    
+    tags.push(tag);
+    renderTags();
+    input.value = '';
+    input.focus();
+}
+
+document.getElementById('addTagBtn').addEventListener('click', addTag);
+document.getElementById('tagInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addTag();
+    }
+});
+
+// ============================================================
+// IMAGE UPLOAD
+// ============================================================
+const imageUploadArea = document.getElementById('imageUploadArea');
+const imageInput = document.getElementById('featuredImageInput');
+const fileNameDisplay = document.getElementById('fileName');
+
+imageUploadArea.addEventListener('click', function() {
+    imageInput.click();
+});
+
+imageInput.addEventListener('change', function(e) {
+    if (this.files && this.files[0]) {
+        const file = this.files[0];
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        
+        if (!validTypes.includes(file.type)) {
+            showNotification('Please upload a valid image (JPEG, PNG, WebP, GIF).', 'error');
+            this.value = '';
+            return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            showNotification('Image size must be less than 5MB.', 'error');
+            this.value = '';
+            return;
+        }
+        
+        fileNameDisplay.textContent = file.name;
+        fileNameDisplay.classList.add('has-file');
+        showNotification(`Image "${file.name}" uploaded!`, 'success');
+    }
+});
+
+// ============================================================
+// UPDATE ARTICLE IN FIREBASE
+// ============================================================
+async function updateArticle(status) {
+    if (!currentArticle || !currentUser) return;
+
+    const title = document.getElementById('articleTitle').value.trim();
+    const subtitle = document.getElementById('articleSubtitle').value.trim();
+    const author = document.getElementById('articleAuthor').value.trim();
+    const category = document.getElementById('articleCategory').value;
+    const content = document.getElementById('articleContent').value.trim();
+    const excerpt = document.getElementById('articleExcerpt').value.trim();
+    const imageFile = document.getElementById('featuredImageInput').files[0];
+    const articleStatus = status || document.getElementById('articleStatus').value;
+
+    // Validation
+    if (!title) {
+        showNotification('Please enter an article title.', 'error');
+        document.getElementById('articleTitle').focus();
+        return;
+    }
+
+    if (!author) {
+        showNotification('Please enter the author name.', 'error');
+        document.getElementById('articleAuthor').focus();
+        return;
+    }
+
+    if (!category) {
+        showNotification('Please select a category.', 'error');
+        document.getElementById('articleCategory').focus();
+        return;
+    }
+
+    if (!content) {
+        showNotification('Please write the article content.', 'error');
+        document.getElementById('articleContent').focus();
+        return;
+    }
+
+    try {
+        showNotification('⏳ Updating article...', 'info');
+
+        // Prepare update data
+        const updates = {
+            title: title,
+            subtitle: subtitle || '',
+            author: author,
+            category: category,
+            content: content,
+            excerpt: excerpt || content.substring(0, 150) + '...',
+            tags: [...tags],
+            status: articleStatus,
+            updatedAt: new Date().toISOString()
+        };
+
+        // Update image if new one uploaded
+        if (imageFile) {
+            updates.image = imageFile.name;
+        }
+
+        // Update in Firebase
+        const docRef = doc(db, "articles", currentArticle.id);
+        await updateDoc(docRef, updates);
+
+        const statusText = articleStatus === 'published' ? 'Published' : 'Saved as Draft';
+        showNotification(`✅ "${title}" ${statusText} successfully!`, 'success');
+        
+        // Update current article
+        currentArticle = { ...currentArticle, ...updates };
+        
+        // Update status badge
+        const badge = document.getElementById('statusBadge');
+        badge.textContent = articleStatus.charAt(0).toUpperCase() + articleStatus.slice(1);
+        badge.className = `article-status-badge ${articleStatus}`;
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'articles.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('Error updating article:', error);
+        showNotification('❌ Error updating article: ' + error.message, 'error');
+    }
+}
+
+// ============================================================
+// FORM SUBMISSION HANDLERS
+// ============================================================
+document.getElementById('editForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    updateArticle('draft');
+});
+
+document.getElementById('publishBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (confirm('Publish this article? It will be visible to all readers.')) {
+        updateArticle('published');
+    }
+});
+
+document.getElementById('draftBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    updateArticle('draft');
+});
+
+document.getElementById('cancelBtn').addEventListener('click', function() {
+    if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+        window.location.href = 'articles.html';
+    }
+});
+
+// ============================================================
+// LOGOUT - Firebase Sign Out
+// ============================================================
+document.getElementById('logoutBtn').addEventListener('click', async function() {
+    if (confirm('Are you sure you want to logout?')) {
+        try {
+            await signOut(auth);
+            window.location.href = '../Public/login.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            showNotification('❌ Logout failed: ' + error.message, 'error');
+        }
+    }
+});
+
+// ============================================================
+// KEYBOARD SHORTCUT: Ctrl+S to Save
+// ============================================================
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        updateArticle('draft');
+    }
+});
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    // ✅ Load admin settings first
+    loadAdminSettings();
+    
+    setupCounters();
+    
+    console.log('%c✏️ GREY LENS Edit Article Ready', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+    console.log('%c🔥 Using Firebase Authentication', 'font-size:13px;color:#4A6A7A;');
+    console.log('%c🔑 Admin: Affan Pervaiz Awan', 'font-size:12px;color:#B8945C;');
+    console.log('%c⚙️ Admin settings loaded from Firebase', 'font-size:13px;color:#4CAF50;');
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="pageTitle">Write New Article - Digital Journal Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    
+    <style>
+        .write-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .write-form {
+            background: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #E8E0D5;
+            padding: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required {
+            color: #DC2626;
+            margin-left: 2px;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            color: #B8945C;
+            width: 16px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #E8E0D5;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            background: #F8F6F3;
+            transition: all 0.3s ease;
+            color: #2C2C2C;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4A6A7A;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(74, 106, 122, 0.1);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #B0B8C0;
+        }
+
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: #7F8C8D;
+            margin-top: 4px;
+        }
+
+        .form-group .hint i {
+            margin-right: 4px;
+            color: #B8945C;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ============================================================
+           IMAGE UPLOAD - ENHANCED
+           ============================================================ */
+        .image-upload-area {
+            border: 2px dashed #E8E0D5;
+            border-radius: 6px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #F8F6F3;
+            position: relative;
+        }
+
+        .image-upload-area:hover {
+            border-color: #4A6A7A;
+            background: #F0EEEA;
+        }
+
+        .image-upload-area i {
+            font-size: 2.5rem;
+            color: #B8945C;
+            margin-bottom: 8px;
+        }
+
+        .image-upload-area p {
+            color: #7F8C8D;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .image-upload-area .file-name {
+            color: #4A6A7A;
+            font-weight: 500;
+            margin-top: 4px;
+            font-size: 0.85rem;
+        }
+
+        .image-upload-area .file-name.has-file {
+            color: #4CAF50;
+        }
+
+        /* Image Preview */
+        .image-preview-container {
+            display: none;
+            margin-top: 12px;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #E8E0D5;
+        }
+
+        .image-preview-container.show {
+            display: block;
+        }
+
+        .image-preview-container img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-preview-container .remove-image {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-preview-container .remove-image:hover {
+            background: #DC2626;
+            transform: scale(1.1);
+        }
+
+        .image-upload-area .upload-progress {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .image-upload-area .upload-progress .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #E8E0D5;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .image-upload-area .upload-progress .progress-bar .progress-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .image-upload-area .upload-progress .progress-text {
+            font-size: 0.8rem;
+            color: #4A6A7A;
+            margin-top: 4px;
+        }
+
+        #featuredImageInput {
+            display: none;
+        }
+
+        /* ============================================================
+           CONTENT EDITOR
+           ============================================================ */
+        .content-editor {
+            position: relative;
+        }
+
+        .content-editor .editor-toolbar {
+            display: flex;
+            gap: 4px;
+            padding: 8px 12px;
+            background: #F8F6F3;
+            border: 1.5px solid #E8E0D5;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            flex-wrap: wrap;
+        }
+
+        .content-editor .editor-toolbar button {
+            background: none;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #4A6A7A;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .content-editor .editor-toolbar button:hover {
+            background: #E8E0D5;
+            color: #2C3E50;
+        }
+
+        .content-editor textarea {
+            border-radius: 0 0 6px 6px;
+            min-height: 400px;
+            resize: vertical;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* ============================================================
+           TAGS
+           ============================================================ */
+        .tag-input-wrap {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tag-input-wrap input {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            min-height: 32px;
+        }
+
+        .tag-item {
+            background: #F8F6F3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid #E8E0D5;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: tagFadeIn 0.3s ease;
+        }
+
+        .tag-item .remove-tag {
+            cursor: pointer;
+            color: #7F8C8D;
+            font-size: 0.7rem;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0 2px;
+        }
+
+        .tag-item .remove-tag:hover {
+            color: #DC2626;
+        }
+
+        .add-tag-btn {
+            padding: 8px 16px;
+            background: #F8F6F3;
+            border: 1px solid #E8E0D5;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #4A6A7A;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .add-tag-btn:hover {
+            background: #E8E0D5;
+        }
+
+        .no-tags-text {
+            color: #7F8C8D;
+            font-size: 0.85rem;
+        }
+
+        /* ============================================================
+           FORM ACTIONS
+           ============================================================ */
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #E8E0D5;
+            flex-wrap: wrap;
+        }
+
+        .form-actions .btn {
+            flex: 0 1 auto;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .btn-save {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .btn-save:hover {
+            background: #3D5A5C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+        }
+
+        .btn-publish {
+            background: #4CAF50;
+            color: #FFFFFF;
+        }
+
+        .btn-publish:hover {
+            background: #43A047;
+            transform: translateY(-2px);
+        }
+
+        .btn-draft {
+            background: #FF9800;
+            color: #FFFFFF;
+        }
+
+        .btn-draft:hover {
+            background: #F57C00;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel {
+            background: #DC2626;
+            color: #FFFFFF;
+        }
+
+        .btn-cancel:hover {
+            background: #B91C1C;
+            transform: translateY(-2px);
+        }
+
+        .btn i {
+            margin-right: 6px;
+        }
+
+        /* ============================================================
+           CONTRIBUTOR NOTICE
+           ============================================================ */
+        .contributor-notice {
+            background: #E0F2FE;
+            border: 1px solid #7DD3FC;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contributor-notice i {
+            color: #0284C7;
+        }
+
+        .contributor-notice span {
+            color: #0369A1;
+            font-size: 0.9rem;
+        }
+
+        /* ============================================================
+           ANIMATIONS
+           ============================================================ */
+        @keyframes tagFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .write-form {
+            animation: slideUp 0.4s ease;
+        }
+
+        /* ============================================================
+           ROLE BADGE
+           ============================================================ */
+        .role-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .role-badge.admin {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .role-badge.contributor {
+            background: #B8945C;
+            color: #FFFFFF;
+        }
+
+        /* ============================================================
+           NOTIFICATION
+           ============================================================ */
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 420px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid #4CAF50;
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .notification-toast.error {
+            border-left-color: #DC2626;
+        }
+
+        .notification-toast.warning {
+            border-left-color: #FF9800;
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: #FFFFFF;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 768px) {
+            .write-form {
+                padding: 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                flex: 1;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .content-editor textarea {
+                min-height: 250px;
+            }
+
+            .image-upload-area {
+                padding: 24px 16px;
+            }
+
+            .tag-input-wrap {
+                flex-direction: column;
+            }
+
+            .tag-input-wrap input {
+                width: 100%;
+            }
+
+            .add-tag-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .write-form {
+                padding: 16px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-logo">
+                <i class="fas fa-book-open"></i> GREY LENS
+                <span>Admin</span>
+            </div>
+            <div class="admin-user">
+                <div class="user-info">
+                    <div class="name" id="adminName">Admin</div>
+                    <div class="role" id="userRoleDisplay">Administrator</div>
+                </div>
+                <div class="avatar" id="userAvatar">A</div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    BODY
+    ============================================================ -->
+    <div class="admin-body">
+
+        <!-- ============================================================
+        SIDEBAR
+        ============================================================ -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="articles.html">
+                    <i class="fas fa-newspaper"></i> All Articles
+                </a>
+                <a href="write.html" class="active">
+                    <i class="fas fa-pen-fancy"></i> Write New
+                </a>
+
+                <div class="sidebar-divider" id="adminDivider"></div>
+
+                <div class="nav-label" id="adminLabel">Management</div>
+                <a href="contributors.html" id="contributorsNavLink">
+                    <i class="fas fa-users"></i> Contributors
+                </a>
+                <a href="categories.html" id="categoriesNavLink">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+
+                <div class="sidebar-divider" id="settingsDivider"></div>
+
+                <div class="nav-label" id="settingsLabel">Settings</div>
+                <a href="settings.html" id="settingsNavLink">
+                    <i class="fas fa-cog"></i> Site Settings
+                </a>
+                <a href="profile.html" id="profileNavLink">
+                    <i class="fas fa-user"></i> My Profile
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ============================================================
+        MAIN CONTENT
+        ============================================================ -->
+        <main class="admin-main">
+
+            <div class="page-header">
+                <h1>
+                    ✏️ Write New Article
+                    <span class="role-badge" id="roleBadge">Admin</span>
+                </h1>
+                <p id="pageSubtitle">Create a new article for your publication</p>
+            </div>
+
+            <!-- Contributor Notice -->
+            <div id="contributorNotice" class="contributor-notice">
+                <i class="fas fa-info-circle"></i>
+                <span>You are writing as a <strong>Contributor</strong>. Your articles will be saved as draft and reviewed by the admin.</span>
+            </div>
+
+            <div class="write-container">
+                <form class="write-form" id="articleForm" novalidate>
+
+                    <!-- ============================================================
+                    ARTICLE TITLE
+                    ============================================================ -->
+                    <div class="form-group">
+                        <label for="articleTitle">
+                            <i class="fas fa-heading"></i> Article Title <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="articleTitle" 
+                            placeholder="Enter a compelling title..." 
+                            required 
+                            maxlength="150"
+                            autofocus
+                        />
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            Write a clear, attention-grabbing title (max 150 characters)
+                            <span id="titleCount" style="float:right;font-weight:500;">0/150</span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    SUBTITLE
+                    ============================================================ -->
+                    <div class="form-group">
+                        <label for="articleSubtitle">
+                            <i class="fas fa-quote-right"></i> Subtitle
+                        </label>
+                        <input 
+                            type="text" 
+                            id="articleSubtitle" 
+                            placeholder="A brief description or subheading..." 
+                            maxlength="200"
+                        />
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            A short description that appears under the title
+                            <span id="subtitleCount" style="float:right;font-weight:500;">0/200</span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    AUTHOR & CATEGORY
+                    ============================================================ -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="articleAuthor">
+                                <i class="fas fa-user"></i> Author <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="articleAuthor" 
+                                placeholder="Author name..." 
+                                required 
+                            />
+                            <div class="hint" id="authorHint">This name will appear as the article author.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="articleCategory">
+                                <i class="fas fa-tag"></i> Category <span class="required">*</span>
+                            </label>
+                            <select id="articleCategory" required>
+                                <option value="">Select a category...</option>
+                                <option value="Governance">Governance</option>
+                                <option value="Law">Law</option>
+                                <option value="Economics">Economics</option>
+                                <option value="Society">Society</option>
+                                <option value="Culture">Culture</option>
+                                <option value="History">History</option>
+                                <option value="Opinion">Opinion</option>
+                                <option value="Public Policy">Public Policy</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Education">Education</option>
+                                <option value="Health">Health</option>
+                                <option value="Business">Business</option>
+                                <option value="Politics">Politics</option>
+                                <option value="Environment">Environment</option>
+                                <option value="International">International</option>
+                                <option value="Science">Science</option>
+                                <option value="Arts">Arts</option>
+                                <option value="Sports">Sports</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    FEATURED IMAGE - FIXED
+                    ============================================================ -->
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-image"></i> Featured Image
+                        </label>
+                        <div class="image-upload-area" id="imageUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload a featured image</p>
+                            <div class="file-name" id="fileName">No file selected</div>
+                            <div class="upload-progress" id="uploadProgress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <div class="progress-text" id="progressText">0%</div>
+                            </div>
+                            <input type="file" id="featuredImageInput" accept="image/*" />
+                        </div>
+                        <div class="image-preview-container" id="imagePreviewContainer">
+                            <img id="imagePreview" src="" alt="Featured Image Preview" />
+                            <button type="button" class="remove-image" id="removeImageBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            Recommended size: 1200x600px (JPEG, PNG, or WebP) | Max: 5MB
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    CONTENT
+                    ============================================================ -->
+                    <div class="form-group">
+                        <label for="articleContent">
+                            <i class="fas fa-align-left"></i> Article Content <span class="required">*</span>
+                        </label>
+                        <div class="content-editor">
+                            <div class="editor-toolbar">
+                                <button type="button" data-tag="p" title="Paragraph"><i class="fas fa-paragraph"></i></button>
+                                <button type="button" data-tag="h2" title="Heading 2"><i class="fas fa-heading"></i> H2</button>
+                                <button type="button" data-tag="h3" title="Heading 3"><i class="fas fa-heading"></i> H3</button>
+                                <button type="button" data-tag="strong" title="Bold"><i class="fas fa-bold"></i></button>
+                                <button type="button" data-tag="em" title="Italic"><i class="fas fa-italic"></i></button>
+                                <button type="button" data-tag="blockquote" title="Blockquote"><i class="fas fa-quote-left"></i></button>
+                                <button type="button" data-tag="ul" title="Unordered List"><i class="fas fa-list-ul"></i></button>
+                                <button type="button" data-tag="ol" title="Ordered List"><i class="fas fa-list-ol"></i></button>
+                            </div>
+                            <textarea 
+                                id="articleContent" 
+                                placeholder="Write your article content here..." 
+                                required
+                            ></textarea>
+                        </div>
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            Use HTML tags: &lt;p&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;blockquote&gt;, &lt;strong&gt;, &lt;em&gt;
+                            <span id="contentCount" style="float:right;font-weight:500;">0 characters</span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    EXCERPT
+                    ============================================================ -->
+                    <div class="form-group">
+                        <label for="articleExcerpt">
+                            <i class="fas fa-align-justify"></i> Excerpt / Summary
+                        </label>
+                        <textarea 
+                            id="articleExcerpt" 
+                            rows="3" 
+                            placeholder="Write a short summary of the article..."
+                            maxlength="200"
+                        ></textarea>
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            A brief summary that appears on the homepage and search results
+                            <span id="excerptCount" style="float:right;font-weight:500;">0/200</span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    TAGS
+                    ============================================================ -->
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-tags"></i> Tags
+                        </label>
+                        <div class="tag-input-wrap">
+                            <input 
+                                type="text" 
+                                id="tagInput" 
+                                placeholder="Add a tag (e.g., Constitution, Reform)" 
+                                maxlength="30"
+                            />
+                            <button type="button" class="add-tag-btn" id="addTagBtn">
+                                <i class="fas fa-plus"></i> Add Tag
+                            </button>
+                        </div>
+                        <div class="tag-list" id="tagList">
+                            <span class="no-tags-text">No tags added yet</span>
+                        </div>
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            Tags help readers find related articles.
+                            <span id="tagCount" style="float:right;font-weight:500;">0/10 tags</span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    STATUS (Admin only)
+                    ============================================================ -->
+                    <div class="form-group" id="statusGroup">
+                        <label for="articleStatus">
+                            <i class="fas fa-circle"></i> Status
+                        </label>
+                        <select id="articleStatus">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                        <div class="hint">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Draft</strong> saves your work privately. 
+                            <strong>Published</strong> makes it visible to readers.
+                        </div>
+                    </div>
+
+                    <!-- ============================================================
+                    FORM ACTIONS
+                    ============================================================ -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-save" id="saveBtn">
+                            <i class="fas fa-save"></i> Save Article
+                        </button>
+                        <button type="button" class="btn btn-publish" id="publishBtn">
+                            <i class="fas fa-globe"></i> Publish Now
+                        </button>
+                        <button type="button" class="btn btn-draft" id="draftBtn">
+                            <i class="fas fa-file-alt"></i> Save as Draft
+                        </button>
+                        <button type="button" class="btn btn-cancel" id="cancelBtn">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </main>
+
+    </div>
+
+   <!-- ============================================================
+JAVASCRIPT - FIXED VERSION WITH STORAGE
+============================================================ -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    collection, 
+    addDoc,
+    onAuthStateChanged,
+    signOut
+} from '../firebase-config.js';
+
+// Import Storage separately (not in firebase-config.js)
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+// ✅ IMPORT ADMIN SETTINGS LOADER
+import { loadAdminSettings } from './admin-settings.js';
+
+// Firebase Config (only for storage initialization)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyA1QIDUpgNUxrNnZqSR6vb6YZnmjiOJN0k",
+    authDomain: "digital-journel.firebaseapp.com",
+    projectId: "digital-journel",
+    storageBucket: "digital-journel.firebasestorage.app",
+    messagingSenderId: "660722836798",
+    appId: "1:660722836798:web:ad26d9124f99166103786f",
+    measurementId: "G-RT0JLGP1GP"
+};
+
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
+
+const ADMIN_EMAIL = "affanawan189@gmail.com";
+
+// ============================================================
+// GLOBALS
+// ============================================================
+let currentUser = null;
+let isAdmin = false;
+let tags = [];
+let uploadedImageUrl = '';
+let imageUploaded = false;
+
+// ============================================================
+// AUTH STATE LISTENER
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    currentUser = user;
+    isAdmin = (user.email === ADMIN_EMAIL);
+
+    const userName = isAdmin ? 'Admin' : (user.displayName || user.email.split('@')[0]);
+    document.getElementById('adminName').textContent = userName;
+    document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+
+    const roleDisplay = document.getElementById('userRoleDisplay');
+    const roleBadge = document.getElementById('roleBadge');
+    const pageSubtitle = document.getElementById('pageSubtitle');
+
+    document.getElementById('articleAuthor').value = userName;
+
+    if (isAdmin) {
+        roleDisplay.textContent = 'Administrator';
+        roleBadge.textContent = 'Admin';
+        roleBadge.className = 'role-badge admin';
+        pageSubtitle.textContent = 'Create a new article for your publication';
+        document.getElementById('contributorNotice').style.display = 'none';
+        document.getElementById('statusGroup').style.display = 'block';
+        document.getElementById('publishBtn').style.display = 'inline-block';
+        
+        document.getElementById('adminDivider').style.display = 'block';
+        document.getElementById('adminLabel').style.display = 'block';
+        document.getElementById('contributorsNavLink').style.display = 'block';
+        document.getElementById('categoriesNavLink').style.display = 'block';
+        document.getElementById('settingsDivider').style.display = 'block';
+        document.getElementById('settingsLabel').style.display = 'block';
+        document.getElementById('settingsNavLink').style.display = 'block';
+        document.getElementById('profileNavLink').style.display = 'block';
+
+    } else {
+        roleDisplay.textContent = 'Contributor';
+        roleBadge.textContent = 'Contributor';
+        roleBadge.className = 'role-badge contributor';
+        pageSubtitle.textContent = 'Write and submit articles for review';
+        document.getElementById('contributorNotice').style.display = 'flex';
+        
+        document.getElementById('statusGroup').style.display = 'none';
+        document.getElementById('adminDivider').style.display = 'none';
+        document.getElementById('adminLabel').style.display = 'none';
+        document.getElementById('contributorsNavLink').style.display = 'none';
+        document.getElementById('categoriesNavLink').style.display = 'none';
+        document.getElementById('settingsDivider').style.display = 'none';
+        document.getElementById('settingsLabel').style.display = 'none';
+        document.getElementById('settingsNavLink').style.display = 'none';
+        document.getElementById('profileNavLink').style.display = 'none';
+        document.getElementById('publishBtn').style.display = 'none';
+    }
+
+    console.log('%c✏️ Article Editor Ready (Firebase)', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+});
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    notification.querySelector('.notification-close').addEventListener('click', () => notification.remove());
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// CHARACTER COUNTERS
+// ============================================================
+function setupCounters() {
+    const titleInput = document.getElementById('articleTitle');
+    const subtitleInput = document.getElementById('articleSubtitle');
+    const contentInput = document.getElementById('articleContent');
+    const excerptInput = document.getElementById('articleExcerpt');
+
+    titleInput.addEventListener('input', function() {
+        document.getElementById('titleCount').textContent = `${this.value.length}/150`;
+        if (this.value.length > 150) {
+            this.value = this.value.substring(0, 150);
+            document.getElementById('titleCount').textContent = '150/150';
+        }
+    });
+
+    subtitleInput.addEventListener('input', function() {
+        document.getElementById('subtitleCount').textContent = `${this.value.length}/200`;
+        if (this.value.length > 200) {
+            this.value = this.value.substring(0, 200);
+            document.getElementById('subtitleCount').textContent = '200/200';
+        }
+    });
+
+    contentInput.addEventListener('input', function() {
+        document.getElementById('contentCount').textContent = `${this.value.length} characters`;
+    });
+
+    excerptInput.addEventListener('input', function() {
+        document.getElementById('excerptCount').textContent = `${this.value.length}/200`;
+        if (this.value.length > 200) {
+            this.value = this.value.substring(0, 200);
+            document.getElementById('excerptCount').textContent = '200/200';
+        }
+    });
+}
+
+// ============================================================
+// EDITOR TOOLBAR
+// ============================================================
+function setupEditorToolbar() {
+    const toolbarButtons = document.querySelectorAll('.editor-toolbar button');
+    const contentArea = document.getElementById('articleContent');
+
+    toolbarButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tag = this.dataset.tag;
+            const textarea = contentArea;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            
+            let wrappedText = '';
+            const tags = {
+                'p': ['<p>', '</p>'],
+                'h2': ['<h2>', '</h2>'],
+                'h3': ['<h3>', '</h3>'],
+                'strong': ['<strong>', '</strong>'],
+                'em': ['<em>', '</em>'],
+                'blockquote': ['<blockquote>', '</blockquote>'],
+                'ul': ['<ul>\n<li>', '</li>\n</ul>'],
+                'ol': ['<ol>\n<li>', '</li>\n</ol>']
+            };
+            
+            if (tags[tag]) {
+                const [openTag, closeTag] = tags[tag];
+                
+                if (tag === 'ul' || tag === 'ol') {
+                    const lines = selectedText.split('\n').filter(line => line.trim());
+                    const items = lines.map(line => `  <li>${line.trim()}</li>`).join('\n');
+                    wrappedText = `${openTag}\n${items}\n${closeTag}`;
+                } else {
+                    wrappedText = `${openTag}${selectedText}${closeTag}`;
+                }
+                
+                const before = textarea.value.substring(0, start);
+                const after = textarea.value.substring(end);
+                textarea.value = before + wrappedText + after;
+                
+                const newPos = start + wrappedText.length;
+                textarea.setSelectionRange(newPos, newPos);
+                textarea.focus();
+                textarea.dispatchEvent(new Event('input'));
+            }
+        });
+    });
+}
+
+// ============================================================
+// TAGS MANAGEMENT
+// ============================================================
+function renderTags() {
+    const container = document.getElementById('tagList');
+    const countDisplay = document.getElementById('tagCount');
+    
+    if (tags.length === 0) {
+        container.innerHTML = '<span class="no-tags-text">No tags added yet</span>';
+        countDisplay.textContent = '0/10 tags';
+        return;
+    }
+    
+    container.innerHTML = tags.map(tag => `
+        <span class="tag-item">
+            ${tag}
+            <button type="button" class="remove-tag" data-tag="${tag}">
+                <i class="fas fa-times"></i>
+            </button>
+        </span>
+    `).join('');
+    
+    countDisplay.textContent = `${tags.length}/10 tags`;
+    
+    document.querySelectorAll('.remove-tag').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tag = this.dataset.tag;
+            tags = tags.filter(t => t !== tag);
+            renderTags();
+        });
+    });
+}
+
+function addTag() {
+    const input = document.getElementById('tagInput');
+    const tag = input.value.trim();
+    
+    if (!tag) {
+        showNotification('Please enter a tag.', 'error');
+        return;
+    }
+    
+    if (tags.includes(tag)) {
+        showNotification(`"${tag}" already exists.`, 'warning');
+        input.value = '';
+        return;
+    }
+    
+    if (tags.length >= 10) {
+        showNotification('Maximum 10 tags allowed.', 'error');
+        return;
+    }
+    
+    tags.push(tag);
+    renderTags();
+    input.value = '';
+    input.focus();
+}
+
+document.getElementById('addTagBtn').addEventListener('click', addTag);
+document.getElementById('tagInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addTag();
+    }
+});
+
+// ============================================================
+// IMAGE UPLOAD - FIXED VERSION
+// ============================================================
+const imageUploadArea = document.getElementById('imageUploadArea');
+const imageInput = document.getElementById('featuredImageInput');
+const fileNameDisplay = document.getElementById('fileName');
+const previewContainer = document.getElementById('imagePreviewContainer');
+const previewImage = document.getElementById('imagePreview');
+const removeImageBtn = document.getElementById('removeImageBtn');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const uploadProgress = document.getElementById('uploadProgress');
+
+// Click to upload
+imageUploadArea.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-image')) return;
+    imageInput.click();
+});
+
+// File selected - UPLOAD IMMEDIATELY
+imageInput.addEventListener('change', async function(e) {
+    if (this.files && this.files[0]) {
+        const file = this.files[0];
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        
+        if (!validTypes.includes(file.type)) {
+            showNotification('Please upload a valid image (JPEG, PNG, WebP, GIF).', 'error');
+            this.value = '';
+            return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+            showNotification('Image size must be less than 5MB.', 'error');
+            this.value = '';
+            return;
+        }
+        
+        // Show preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewContainer.classList.add('show');
+        };
+        reader.readAsDataURL(file);
+        
+        fileNameDisplay.textContent = file.name;
+        fileNameDisplay.classList.add('has-file');
+        
+        // ✅ UPLOAD TO FIREBASE STORAGE
+        await uploadImage(file);
+    }
+});
+
+// Upload image to Firebase Storage - FIXED
+async function uploadImage(file) {
+    try {
+        console.log('📤 Starting upload...', file.name);
+        
+        uploadProgress.style.display = 'block';
+        progressFill.style.width = '0%';
+        progressText.textContent = '0%';
+        
+        // Create unique filename
+        const timestamp = Date.now();
+        const filename = `${timestamp}_${file.name}`;
+        const storageRef = ref(storage, `articles/${filename}`);
+        
+        console.log('📤 Uploading to:', `articles/${filename}`);
+        
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        
+        return new Promise((resolve, reject) => {
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = Math.round(progress) + '%';
+                    console.log('📤 Progress:', Math.round(progress) + '%');
+                },
+                (error) => {
+                    console.error('❌ Upload error:', error);
+                    showNotification('❌ Upload failed: ' + error.message, 'error');
+                    uploadProgress.style.display = 'none';
+                    reject(error);
+                },
+                async () => {
+                    try {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        uploadedImageUrl = downloadURL;
+                        imageUploaded = true;
+                        console.log('✅ Image uploaded successfully!');
+                        console.log('✅ Download URL:', downloadURL);
+                        
+                        progressFill.style.width = '100%';
+                        progressText.textContent = '✅ Uploaded!';
+                        
+                        setTimeout(() => {
+                            uploadProgress.style.display = 'none';
+                        }, 1000);
+                        
+                        showNotification('✅ Image uploaded successfully!', 'success');
+                        resolve(downloadURL);
+                    } catch (error) {
+                        console.error('❌ Error getting download URL:', error);
+                        reject(error);
+                    }
+                }
+            );
+        });
+        
+    } catch (error) {
+        console.error('❌ Upload error:', error);
+        showNotification('❌ Upload failed: ' + error.message, 'error');
+        uploadProgress.style.display = 'none';
+    }
+}
+
+// Remove image
+removeImageBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    previewContainer.classList.remove('show');
+    fileNameDisplay.textContent = 'No file selected';
+    fileNameDisplay.classList.remove('has-file');
+    uploadedImageUrl = '';
+    imageUploaded = false;
+    imageInput.value = '';
+    uploadProgress.style.display = 'none';
+    showNotification('Image removed', 'info');
+});
+
+// ============================================================
+// SAVE ARTICLE TO FIREBASE
+// ============================================================
+async function saveArticle(status) {
+    if (!currentUser) {
+        showNotification('You must be logged in to save articles.', 'error');
+        return;
+    }
+
+    const title = document.getElementById('articleTitle').value.trim();
+    const subtitle = document.getElementById('articleSubtitle').value.trim();
+    const author = document.getElementById('articleAuthor').value.trim();
+    const category = document.getElementById('articleCategory').value;
+    const content = document.getElementById('articleContent').value.trim();
+    const excerpt = document.getElementById('articleExcerpt').value.trim();
+    const articleStatus = isAdmin ? (status || document.getElementById('articleStatus').value) : 'draft';
+
+    // Validation
+    if (!title) {
+        showNotification('Please enter an article title.', 'error');
+        document.getElementById('articleTitle').focus();
+        return;
+    }
+
+    if (!author) {
+        showNotification('Please enter the author name.', 'error');
+        document.getElementById('articleAuthor').focus();
+        return;
+    }
+
+    if (!category) {
+        showNotification('Please select a category.', 'error');
+        document.getElementById('articleCategory').focus();
+        return;
+    }
+
+    if (!content) {
+        showNotification('Please write the article content.', 'error');
+        document.getElementById('articleContent').focus();
+        return;
+    }
+
+    if (content.length < 100) {
+        showNotification('Article content should be at least 100 characters.', 'warning');
+        return;
+    }
+
+    // Show loading
+    const saveBtn = document.getElementById('saveBtn');
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    saveBtn.disabled = true;
+
+    try {
+        // If image was uploaded but URL not saved, try to get it
+        let featuredImageUrl = uploadedImageUrl || '';
+        
+        // If no image uploaded, check if there's a preview (user selected but upload failed)
+        if (!featuredImageUrl && previewContainer.classList.contains('show')) {
+            showNotification('⚠️ Image was selected but not uploaded. Please try again.', 'warning');
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+            return;
+        }
+
+        const articleData = {
+            title: title,
+            subtitle: subtitle || '',
+            author: author,
+            authorEmail: currentUser.email,
+            category: category,
+            content: content,
+            excerpt: excerpt || content.substring(0, 150) + '...',
+            tags: [...tags],
+            status: articleStatus,
+            featuredImage: featuredImageUrl || '',
+            date: new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }),
+            views: 0,
+            comments: 0,
+            createdAt: new Date().toISOString()
+        };
+
+        const docRef = await addDoc(collection(db, "articles"), articleData);
+
+        const statusText = articleStatus === 'published' ? 'Published' : 'Saved as Draft';
+        showNotification(`✅ "${title}" ${statusText} successfully!`, 'success');
+
+        setTimeout(() => {
+            window.location.href = 'articles.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('Error saving:', error);
+        showNotification('❌ Error saving article: ' + error.message, 'error');
+        saveBtn.innerHTML = originalText;
+        saveBtn.disabled = false;
+    }
+}
+
+// ============================================================
+// FORM SUBMISSION HANDLERS
+// ============================================================
+document.getElementById('articleForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    saveArticle('draft');
+});
+
+document.getElementById('publishBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (!isAdmin) {
+        showNotification('Only Admin can publish directly.', 'warning');
+        saveArticle('draft');
+        return;
+    }
+    if (confirm('Publish this article immediately?')) {
+        saveArticle('published');
+    }
+});
+
+document.getElementById('draftBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    saveArticle('draft');
+});
+
+document.getElementById('cancelBtn').addEventListener('click', function() {
+    if (confirm('Cancel? Unsaved changes will be lost.')) {
+        window.location.href = 'dashboard.html';
+    }
+});
+
+// ============================================================
+// LOGOUT
+// ============================================================
+document.getElementById('logoutBtn').addEventListener('click', async function() {
+    if (confirm('Logout?')) {
+        try {
+            await signOut(auth);
+            window.location.href = '../Public/login.html';
+        } catch (error) {
+            showNotification('❌ Logout failed', 'error');
+        }
+    }
+});
+
+// ============================================================
+// KEYBOARD SHORTCUT: Ctrl+S to Save
+// ============================================================
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        saveArticle('draft');
+    }
+});
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    loadAdminSettings();
+    setupCounters();
+    setupEditorToolbar();
+    renderTags();
+    
+    console.log('%c✏️ Write Page Ready (Firebase)', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+    console.log('%c🖼️ Image upload enabled', 'font-size:13px;color:#4CAF50;');
+});
+</script>
+
+</body>
+</html>

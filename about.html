@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="pageTitle">About Us - GREY LENS</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="public-style.css" />
+    
+    <style>
+        /* ============================================================
+           ABOUT PAGE SPECIFIC STYLES
+           ============================================================ */
+        
+        .about-page {
+            padding: 40px 0 60px;
+            background: #f8f7f5;
+        }
+
+        .about-container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           ABOUT GREY LENS - BEAUTIFUL HERO CARD WITH SNOW FALL EFFECT
+           ============================================================ */
+        .about-hero {
+            text-align: center;
+            padding: 5px 30px 55px;
+            background: linear-gradient(135deg, #e7faff 0%, #f3fcff 100%);
+            border-radius: 50px;
+            border: 1px solid #00131c;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(3, 50, 61, 0.08), 
+                        inset 0 1px 0 rgba(0, 23, 32, 0.8);
+            min-height: 350px;
+        }
+
+        /* Inner shadow effect */
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            box-shadow: inset 0 2px 40px rgba(139, 122, 94, 0.06);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ============================================================
+           SNOW FALL / PARTICLE EFFECT
+           ============================================================ */
+        .snow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .snow-particle {
+            position: absolute;
+            top: -10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            animation: snowFall linear infinite;
+            opacity: 0;
+        }
+
+        /* Different sizes and animation speeds */
+        .snow-particle:nth-child(1) { width: 6px; height: 6px; left: 10%; animation-duration: 12s; animation-delay: 0s; }
+        .snow-particle:nth-child(2) { width: 10px; height: 10px; left: 20%; animation-duration: 15s; animation-delay: 2s; }
+        .snow-particle:nth-child(3) { width: 4px; height: 4px; left: 30%; animation-duration: 10s; animation-delay: 1s; }
+        .snow-particle:nth-child(4) { width: 8px; height: 8px; left: 40%; animation-duration: 14s; animation-delay: 3s; }
+        .snow-particle:nth-child(5) { width: 5px; height: 5px; left: 50%; animation-duration: 11s; animation-delay: 0.5s; }
+        .snow-particle:nth-child(6) { width: 12px; height: 12px; left: 60%; animation-duration: 16s; animation-delay: 2.5s; }
+        .snow-particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-duration: 9s; animation-delay: 1.5s; }
+        .snow-particle:nth-child(8) { width: 7px; height: 7px; left: 80%; animation-duration: 13s; animation-delay: 0.8s; }
+        .snow-particle:nth-child(9) { width: 9px; height: 9px; left: 90%; animation-duration: 15s; animation-delay: 3.5s; }
+        .snow-particle:nth-child(10) { width: 4px; height: 4px; left: 15%; animation-duration: 11s; animation-delay: 4s; }
+        .snow-particle:nth-child(11) { width: 11px; height: 11px; left: 45%; animation-duration: 14s; animation-delay: 1.2s; }
+        .snow-particle:nth-child(12) { width: 5px; height: 5px; left: 75%; animation-duration: 12s; animation-delay: 2.8s; }
+
+        @keyframes snowFall {
+            0% {
+                transform: translateY(-20px) translateX(0px) rotate(0deg) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh)) translateX(30px) rotate(720deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Alternative shimmer effect (kept as subtle background) */
+        .about-hero .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.03) 30%,
+                rgba(255, 255, 255, 0.06) 50%,
+                rgba(255, 255, 255, 0.03) 70%,
+                transparent 100%
+            );
+            transform: skewX(-20deg);
+            animation: shimmerMove 5s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes shimmerMove {
+            0% { transform: translateX(-100%) skewX(-20deg); }
+            100% { transform: translateX(100%) skewX(-20deg); }
+        }
+
+        /* Decorative background circles */
+        .about-hero .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .about-hero .bg-circle.circle-1 {
+            top: -40%;
+            right: -15%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+        }
+
+        .about-hero .bg-circle.circle-2 {
+            bottom: -30%;
+            left: -10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+        }
+
+        .about-hero .bg-circle.circle-3 {
+            top: 20%;
+            right: 5%;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+        }
+
+        /* Hover effect - enhanced shadow */
+        .about-hero:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(3, 50, 61, 0.25), 
+                        0 4px 16px rgba(3, 50, 61, 0.12),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            border-color: #013655;
+        }
+
+        /* Icon styles */
+        .about-hero .about-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-hero .about-icon i {
+            font-size: 3.5rem;
+            color: #0c3e58;
+            transition: all 0.4s ease;
+            filter: drop-shadow(0 2px 8px rgba(139, 122, 94, 0.1));
+        }
+
+        .about-hero:hover .about-icon i {
+            color: #002538;
+            transform: scale(1.1) rotate(-5deg);
+            filter: drop-shadow(0 4px 20px rgba(139, 122, 94, 0.25));
+        }
+
+        /* Title styles */
+        .about-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            color: #004f67;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-hero h1 span {
+            color: #004f67;
+            position: relative;
+        }
+
+        .about-hero h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #002b3a, #002b3a);
+            border-radius: 2px;
+            opacity: 0.3;
+            transition: opacity 0.4s ease;
+        }
+
+        .about-hero:hover h1 span::after {
+            opacity: 0.6;
+        }
+
+        /* Description text */
+        .about-hero p {
+            font-size: 1.1rem;
+            color: #1f2e4d;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Bottom decorative line */
+        .about-hero .hero-line {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #000e1f, #000e1f);
+            margin: 16px auto 0;
+            border-radius: 2px;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(139, 122, 94, 0.15);
+        }
+
+        .about-hero:hover .hero-line {
+            width: 100px;
+            box-shadow: 0 2px 16px rgba(139, 122, 94, 0.25);
+        }
+
+        /* ============================================================
+           BEAUTIFUL ABOUT CARDS
+           ============================================================ */
+        .about-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .about-card {
+            background: #ffffff;
+            padding: 32px 24px 28px;
+            border-radius: 16px;
+            border: 1px solid #e8e6e2;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8B7A5E, #B8945C, #D4A574, #B8945C, #8B7A5E);
+            background-size: 300% 100%;
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .about-card:hover::before {
+            opacity: 1;
+            animation: shimmer 3s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -300% 0; }
+            100% { background-position: 300% 0; }
+        }
+
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(139, 122, 94, 0.15), 
+                        0 8px 24px rgba(139, 122, 94, 0.08);
+            border-color: #B8945C;
+        }
+
+        .about-card .card-icon-wrap {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8f7f5, #e8e6e2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            transition: all 0.4s ease;
+            border: 2px solid #e8e6e2;
+            position: relative;
+        }
+
+        .about-card:hover .card-icon-wrap {
+            background: linear-gradient(135deg, #8B7A5E, #B8945C);
+            border-color: #8B7A5E;
+            transform: scale(1.08) rotate(-5deg);
+            box-shadow: 0 8px 30px rgba(139, 122, 94, 0.3);
+        }
+
+        .about-card .card-icon-wrap .card-icon {
+            font-size: 1.8rem;
+            color: #8B7A5E;
+            transition: all 0.4s ease;
+        }
+
+        .about-card:hover .card-icon-wrap .card-icon {
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .about-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .about-card:hover h3 {
+            color: #8B7A5E;
+        }
+
+        .about-card p {
+            font-size: 0.95rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .about-card .card-number {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #d1cec8;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .about-card:hover .card-number {
+            color: #B8945C;
+        }
+
+        /* Mission Statement - COMPACT SIZE */
+        .mission-statement {
+            text-align: center;
+            padding: 20px 20px;
+            background: #46586b;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .mission-statement .quote-icon {
+            font-size: 1.3rem;
+            color: #8B7A5E;
+            opacity: 0.4;
+            margin-bottom: 2px;
+        }
+
+        .mission-statement blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+            font-style: italic;
+            color: #ffffff;
+            line-height: 1.5;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .mission-statement .mission-author {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+
+        /* About Content Sections */
+        .about-section {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e8e6e2;
+            padding: 32px 36px;
+            margin-bottom: 24px;
+        }
+
+        .about-section .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #8B7A5E;
+            margin-bottom: 4px;
+        }
+
+        .about-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .about-section p {
+            font-size: 1.05rem;
+            color: #2d2d2d;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .about-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-section ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .about-section ul li {
+            font-size: 1.05rem;
+            color: #2d2d2d;
+            line-height: 1.8;
+            margin-bottom: 8px;
+            list-style: disc;
+        }
+
+        .about-section .highlight-box {
+            background: #f8f7f5;
+            padding: 20px 24px;
+            border-radius: 8px;
+            border-left: 4px solid #8B7A5E;
+            margin: 16px 0;
+        }
+
+        .about-section .highlight-box p {
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        /* Team Section */
+        .team-section {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e8e6e2;
+            padding: 32px 36px;
+            margin-bottom: 24px;
+        }
+
+        .team-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 20px 16px;
+            background: #f8f7f5;
+            border-radius: 10px;
+            border: 1px solid #e8e6e2;
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-2px);
+            border-color: #8B7A5E;
+        }
+
+        .team-member .member-avatar {
+            font-size: 3rem;
+            color: #8B7A5E;
+            margin-bottom: 8px;
+        }
+
+        .team-member .member-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #1a1a1a;
+            margin-bottom: 2px;
+        }
+
+        .team-member .member-role {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        .btn-write {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: #8B7A5E;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-write:hover {
+            background: #6b5d47;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 122, 94, 0.25);
+            color: #ffffff;
+        }
+
+        .btn-write i {
+            font-size: 0.8rem;
+        }
+
+        /* Header Logo with Magnifying Glass */
+        .logo-icon-grey {
+            font-size: 1.3rem;
+            color: #a4a3a2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 35px 20px 40px;
+            }
+
+            .about-hero .about-icon {
+                font-size: 2.8rem;
+            }
+
+            .about-hero .about-icon i {
+                font-size: 2.8rem;
+            }
+
+            .about-hero h1 {
+                font-size: clamp(1.6rem, 4vw, 2rem);
+            }
+
+            .about-hero p {
+                font-size: 1rem;
+            }
+
+            .about-cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .about-card {
+                padding: 24px 20px;
+            }
+
+            .about-card .card-icon-wrap {
+                width: 60px;
+                height: 60px;
+            }
+
+            .about-card .card-icon-wrap .card-icon {
+                font-size: 1.5rem;
+            }
+
+            .about-section {
+                padding: 24px 20px;
+            }
+
+            .team-section {
+                padding: 24px 20px;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .mission-statement blockquote {
+                font-size: 1.1rem;
+            }
+
+            .btn-write {
+                padding: 6px 12px;
+                font-size: 0.75rem;
+            }
+
+            .btn-write span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-hero {
+                padding: 28px 16px 32px;
+                min-height: 280px;
+            }
+
+            .about-hero .about-icon {
+                font-size: 2.2rem;
+            }
+
+            .about-hero .about-icon i {
+                font-size: 2.2rem;
+            }
+
+            .about-hero .hero-line {
+                width: 40px;
+            }
+
+            .about-hero:hover .hero-line {
+                width: 60px;
+            }
+
+            .about-cards {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .about-card {
+                padding: 20px 16px;
+            }
+
+            .about-card .card-icon-wrap {
+                width: 54px;
+                height: 54px;
+            }
+
+            .about-card .card-icon-wrap .card-icon {
+                font-size: 1.3rem;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-section {
+                padding: 20px 16px;
+            }
+
+            .team-section {
+                padding: 20px 16px;
+            }
+
+            .about-section h2 {
+                font-size: 1.3rem;
+            }
+
+            .team-section h2 {
+                font-size: 1.3rem;
+            }
+
+            .mission-statement {
+                padding: 24px 16px;
+            }
+
+            .mission-statement blockquote {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    SEARCH OVERLAY
+    ============================================================ -->
+    <div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Search" aria-modal="true">
+        <div class="search-overlay-inner">
+            <button class="search-close" id="searchClose" aria-label="Close search">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="search-box">
+                <i class="fas fa-search search-icon-inner"></i>
+                <input type="text" id="searchInput" placeholder="Search articles, topics, authors…" autocomplete="off" />
+            </div>
+            <div class="search-suggestions">
+                <p class="search-suggestions-label">Popular topics</p>
+                <div class="search-tags">
+                    <button class="search-tag" data-query="Governance">Governance</button>
+                    <button class="search-tag" data-query="Law">Law</button>
+                    <button class="search-tag" data-query="Economics">Economics</button>
+                    <button class="search-tag" data-query="Society">Society</button>
+                    <button class="search-tag" data-query="Public Policy">Public Policy</button>
+                    <button class="search-tag" data-query="Culture">Culture</button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MOBILE DRAWER
+    ============================================================ -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <span class="drawer-logo"><i class="fas fa-search" style="color:#8B7A5E;"></i> GREY LENS</span>
+            <button class="drawer-close" id="drawerClose" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="articles.html"><i class="fas fa-newspaper"></i> Articles</a>
+            <a href="contributors.html"><i class="fas fa-users"></i> Contributors</a>
+            <a href="about.html" class="active"><i class="fas fa-info-circle"></i> About</a>
+            <a href="contact.html"><i class="fas fa-envelope"></i> Contact</a>
+        </nav>
+        <div class="drawer-divider"></div>
+        <div class="drawer-newsletter">
+            <p>Get articles in your inbox</p>
+            <div class="drawer-email-row">
+                <input type="email" id="drawerEmail" placeholder="Your email" />
+                <button class="btn btn-primary btn-sm" id="drawerSubscribe">Join</button>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="site-header" id="siteHeader">
+        <div class="container header-container">
+            <div class="logo">
+                <a href="index.html">
+                    <span class="logo-icon"><i class="fas fa-search" style="color:#a4a3a2;"></i></span>
+                    <span class="logo-text site-name" id="siteNameDisplay">GREY LENS</span>
+                </a>
+            </div>
+            <nav class="main-nav" aria-label="Main navigation">
+                <ul class="nav-list">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="articles.html">Articles</a></li>
+                    <li><a href="contributors.html">Contributors</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button class="btn-icon" id="searchToggle" aria-label="Open search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <a href="login.html" class="btn-write" title="Write Article" id="writeBtn">
+                    <i class="fas fa-pen-fancy"></i>
+                    <span>Write</span>
+                </a>
+                <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    ABOUT PAGE
+    ============================================================ -->
+    <main class="about-page">
+        <div class="container">
+            <div class="about-container">
+
+                <!-- ============================================================
+                ABOUT GREY LENS - BEAUTIFUL HERO CARD WITH SNOW FALL EFFECT
+                ============================================================ -->
+                <div class="about-hero">
+                    <!-- Snow / Particle Container -->
+                    
+                    <!-- Background decorative circles -->
+                    <div class="bg-circle circle-1"></div>
+                    <div class="bg-circle circle-2"></div>
+                    <div class="bg-circle circle-3"></div>
+                    
+                    <div class="about-icon"><i class="fas fa-search"></i></div>
+                    <h1>About <span id="siteNameAbout">GREY LENS</span></h1>
+                    <p id="aboutTagline">
+                        Exploring the space between accepted narratives and overlooked realities.
+                    </p>
+                    <div class="hero-line"></div>
+                </div>
+
+                
+
+                <!-- Mission Statement -->
+                <div class="mission-statement">
+                    <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                    <blockquote>
+                        "Grey Lens was founded on a simple belief: the most important questions are often found in the grey areas. In an age of instant opinions and simplified narratives, this platform seeks to examine history, law, politics, public affairs, and the ideas that shape our world with curiosity rather than certainty. The aim is not merely to present conclusions, but to explore context, challenge assumptions, and encourage a deeper understanding of the issues that influence society and governance."
+                    </blockquote>
+                    <div class="mission-author">— GREY LENS</div>
+                </div>
+
+                <!-- What We Do -->
+                <div class="about-section">
+                    <span class="section-label">Our Mission</span>
+                    <h2>What We Explore</h2>
+                    <p>
+                        Grey Lens is a platform for exploring the space between accepted narratives and overlooked realities. Through essays, analysis, commentary, and reviews, it engages with history, law, politics, governance, public affairs, and intellectual thought, combining evidence-based inquiry with reflection and informed opinion to examine questions often left outside conventional discourse.
+                    </p>
+                    <p>
+                        Areas of Focus
+                    </p>
+                    <ul>
+                        <li><strong>History</strong> — Historical events, political movements, and their continuing relevance.</li>
+                        <li><strong>Law</strong> — Legal developments, constitutional questions, and the role of institutions.</li>
+                        <li><strong>Politics & Governance</strong> — Political systems, public administration, democratic processes, and governance</li>
+                        <li><strong>Public Affairs</strong> — Contemporary issues, policy debates, and matters of public importance.</li>
+                        <li><strong>Books & Ideas</strong> — Reviews, reflections, and discussions of books and intellectual ideas.</li>
+                    </ul>
+                </div>
+
+                <!-- Editorial Philosophy -->
+                <div class="about-section">
+                    <span class="section-label">Our Approach</span>
+                    <h2>Editorial Philosophy</h2>
+                    <p>
+                        Grey Lens is guided by the belief that understanding begins where certainty ends. While grounded in evidence and reasoned argument, the platform values intellectual curiosity, critical inquiry, and a willingness to examine assumptions that often go unquestioned.
+                    </p>
+                    <ul>
+                        <li><strong>Intellectual Curiosity:</strong> We explore questions that do not always have simple answers and ideas that often fall outside conventional debate.</li>
+                        <li><strong>Context over headlines:</strong> Issues are best understood through their historical, legal, political, and social context rather than through isolated events.</li>
+                        <li><strong>Reasoned Opinion:</strong> Facts are essential, but interpretation matters. Grey Lens values informed analysis, reflection, and opinion supported by evidence and sound reasoning.</li>
+                        <li><strong>Diverse Perspectives:</strong> Resolution of complex issues needs understanding and analyzing the diverse perspectives. We engage with differing viewpoints and alternative ways of understanding public affairs.</li>
+                        <li><strong>Independent Thought:</strong> Grey Lens is not motivated from political ideologies. Our commitment is to inquire, discuss and try to understand the issues.</li>
+                    </ul>
+                </div>
+
+                <!-- What We Value -->
+                <div class="about-section">
+                    <span class="section-label">Our Values</span>
+                    <h2>What We Value</h2>
+                    <p>
+                        Grey Lens is guided by a commitment to intellectual honesty, thoughtful inquiry, and respectful debate. While perspectives may differ, meaningful discussion begins with a shared commitment to evidence, reason, and openness to new ideas.
+                    </p>
+                    <ul>
+                        <li><strong>Intellectual Honesty:</strong> Arguments should be judged on their merits. We value accuracy, fairness, and a willingness to question our own perspectives, ideas and assumptions.</li>
+                        <li><strong>Respectful Discourse:</strong> Disagreement is a natural part of intellectual inquiry. Grey Lens encourages civil discussion and engagement with differing viewpoints.</li>
+                        <li><strong>Independent Thinking:</strong> We value ideas over ideology and inquiry over partisanship, encouraging readers to think critically rather than accept existing narratives mechanically.</li>
+                    </ul>
+                    <div class="highlight-box">
+                        <p>
+                            <i class="fas fa-heart" style="color:#8B7A5E;"></i>
+                            <strong>Join Us:</strong> If you share our values and have insights to contribute, 
+                            we welcome you to <a href="contact.html" style="font-weight:600;color:#8B7A5E;">get in touch</a> 
+                            with us about contributing to GREY LENS.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Team Section -->
+                <div class="team-section" id="teamSection">
+                    <h2>Our Contributors</h2>
+                    <div class="team-grid" id="teamGrid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Join Us -->
+                <div class="about-section" style="border-color:#8B7A5E;background:#FDF8F2;">
+                    <span class="section-label">Get Involved</span>
+                    <h2>Support Thoughtful Discourse</h2>
+                    <p>
+                        GREY LENS is a reader-supported publication. We believe that quality content 
+                        deserves to be valued and supported. Here's how you can help:
+                    </p>
+                    <ul>
+                        <li><strong>Subscribe to our newsletter</strong> — Stay informed about new articles and updates</li>
+                        <li><strong>Share our content</strong> — Help spread thoughtful writing and analysis</li>
+                        <li><strong>Engage with our articles</strong> — Leave comments and join the discussion</li>
+                        <li><strong>Consider contributing</strong> — If you have expertise to share, we'd love to hear from you</li>
+                    </ul>
+                    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+                        <a href="contact.html" class="btn btn-primary">
+                            <i class="fas fa-envelope"></i> Get in Touch
+                        </a>
+                        <a href="index.html#newsletter" class="btn btn-outline">
+                            <i class="fas fa-envelope-open"></i> Subscribe
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo site-name" id="footerLogo"><i class="fas fa-search" style="color:#8B7A5E;"></i> GREY LENS</div>
+                    <p class="footer-text site-tagline" id="footerTagline">
+                        Exploring history, law, politics, and public affairs—with attention to questions often 
+                        overlooked and perspectives often left unexplored.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="contributors.html"><i class="fas fa-chevron-right"></i> Contributors</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Categories</h4>
+                    <ul class="footer-links" id="footerCategories">
+                        <!-- Will be populated by JavaScript -->
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="affanawan189@gmail.com" id="footerContactEmail"><i class="fas fa-envelope"></i> affanawan189@gmail.com</a></li>
+                        <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 GREY LENS. All rights reserved.</p>
+                <p class="footer-credit">Built By "Anosha Pervaiz Awan" for thoughtful discourse.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    BACK TO TOP
+    ============================================================ -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- ============================================================
+JAVASCRIPT - FIREBASE VERSION (FIXED)
+============================================================ -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    collection, 
+    getDocs, 
+    doc, 
+    getDoc,
+    onAuthStateChanged
+} from '../firebase-config.js';
+
+// ============================================================
+// GLOBAL DATA
+// ============================================================
+let allContributors = [];
+let allCategories = [];
+let currentUser = null;
+
+// ============================================================
+// AUTH STATE LISTENER - Update header login status
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    updateHeaderLogin();
+});
+
+// ============================================================
+// LOAD SITE SETTINGS FROM FIREBASE
+// ============================================================
+async function loadSiteSettings() {
+    try {
+        const docRef = doc(db, "settings", "siteSettings");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const settings = docSnap.data();
+            console.log('✅ Site settings loaded from Firebase:', settings);
+            
+            const siteNameEl = document.getElementById('siteNameDisplay');
+            if (siteNameEl && settings.siteName) {
+                siteNameEl.textContent = settings.siteName;
+            }
+            
+            const siteNameAbout = document.getElementById('siteNameAbout');
+            if (siteNameAbout && settings.siteName) {
+                siteNameAbout.textContent = settings.siteName;
+            }
+            
+            const aboutTagline = document.getElementById('aboutTagline');
+            if (aboutTagline && settings.siteTagline) {
+                aboutTagline.textContent = settings.siteTagline;
+            }
+            
+            const footerLogo = document.getElementById('footerLogo');
+            if (footerLogo && settings.siteName) {
+                footerLogo.innerHTML = `<i class="fas fa-search" style="color:#8B7A5E;"></i> ${settings.siteName}`;
+            }
+            
+            const footerTagline = document.getElementById('footerTagline');
+            if (footerTagline && settings.siteTagline) {
+                footerTagline.textContent = settings.siteTagline;
+            }
+            
+            const footerContactEmail = document.getElementById('footerContactEmail');
+            if (footerContactEmail && settings.contactEmail) {
+                footerContactEmail.textContent = settings.contactEmail;
+                footerContactEmail.href = `mailto:${settings.contactEmail}`;
+            }
+            
+            if (settings.metaTitle) {
+                document.title = settings.metaTitle;
+                const titleEl = document.getElementById('pageTitle');
+                if (titleEl) titleEl.textContent = settings.metaTitle;
+            }
+            
+        } else {
+            console.log('📭 No site settings found in Firebase, using defaults');
+        }
+    } catch (error) {
+        console.error('❌ Error loading site settings:', error);
+    }
+}
+
+// ============================================================
+// UPDATE HEADER LOGIN STATUS - FIXED
+// ============================================================
+async function updateHeaderLogin() {
+    const writeBtn = document.getElementById('writeBtn');
+    if (!writeBtn) return;
+    
+    if (currentUser) {
+        try {
+            const q = query(collection(db, "users"), where("email", "==", currentUser.email));
+            const querySnapshot = await getDocs(q);
+            
+            if (!querySnapshot.empty) {
+                let userData = null;
+                querySnapshot.forEach((doc) => {
+                    userData = { id: doc.id, ...doc.data() };
+                });
+                
+                // Check if admin
+                if (currentUser.email === "affanawan189@gmail.com") {
+                    writeBtn.href = '../Admin/dashboard.html';
+                    writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Dashboard</span>';
+                    return;
+                }
+                
+                // Check if contributor and approved
+                if (userData.role === 'contributor' && userData.status === 'approved') {
+                    writeBtn.href = 'contributor-dashboard.html';
+                    writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Dashboard</span>';
+                    return;
+                }
+            }
+            
+            // Default: logged in but not admin or approved contributor
+            writeBtn.href = 'login.html';
+            writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Write</span>';
+            
+        } catch (error) {
+            console.error('Error checking user role:', error);
+            writeBtn.href = 'login.html';
+            writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Write</span>';
+        }
+    } else {
+        writeBtn.href = 'login.html';
+        writeBtn.innerHTML = '<i class="fas fa-pen-fancy"></i><span>Write</span>';
+    }
+}
+
+// ============================================================
+// LOAD DATA FROM FIREBASE
+// ============================================================
+async function loadDataFromFirebase() {
+    try {
+        console.log('📡 Loading data from Firebase...');
+
+        const usersSnapshot = await getDocs(collection(db, "users"));
+        allContributors = [];
+        usersSnapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.role === 'contributor' && data.status === 'approved') {
+                allContributors.push({ id: doc.id, ...data });
+            }
+        });
+        console.log(`✅ ${allContributors.length} contributors loaded`);
+
+        const categoriesSnapshot = await getDocs(collection(db, "categories"));
+        allCategories = [];
+        categoriesSnapshot.forEach(doc => {
+            allCategories.push({ id: doc.id, ...doc.data() });
+        });
+        console.log(`✅ ${allCategories.length} categories loaded`);
+
+        loadTeam();
+        loadFooterCategories();
+
+    } catch (error) {
+        console.error('❌ Error loading data:', error);
+        showNotification('❌ Error loading content. Please refresh.', 'error');
+    }
+}
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function getContributors() {
+    return allContributors;
+}
+
+function getCategories() {
+    return allCategories;
+}
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    notification.style.cssText = `
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        max-width: 420px;
+        padding: 16px 20px;
+        background: #2C3E50;
+        color: #FFFFFF;
+        border-radius: 8px;
+        box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        transform: translateY(120px);
+        opacity: 0;
+        transition: all 0.4s ease;
+        border-left: 4px solid ${type === 'success' ? '#4CAF50' : type === 'error' ? '#DC2626' : '#FF9800'};
+    `;
+
+    notification.querySelector('.notification-close').addEventListener('click', () => notification.remove());
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// LOAD TEAM (Contributors as Team)
+// ============================================================
+function loadTeam() {
+    const grid = document.getElementById('teamGrid');
+    const contributors = getContributors();
+
+    if (contributors.length === 0) {
+        grid.innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:20px;color:#6b7280;">
+                <p>Team information coming soon.</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+    contributors.forEach(contributor => {
+        html += `
+            <div class="team-member" data-aos>
+                <div class="member-avatar"><i class="fas fa-user-circle"></i></div>
+                <div class="member-name">${escapeHtml(contributor.name)}</div>
+                <div class="member-role">${escapeHtml(contributor.role || 'Contributor')}</div>
+            </div>
+        `;
+    });
+
+    grid.innerHTML = html;
+}
+
+// ============================================================
+// LOAD FOOTER CATEGORIES
+// ============================================================
+function loadFooterCategories() {
+    const container = document.getElementById('footerCategories');
+    const categories = getCategories();
+
+    if (categories.length === 0) {
+        container.innerHTML = '<li><a href="#">No categories</a></li>';
+        return;
+    }
+
+    let html = '';
+    categories.slice(0, 6).forEach(cat => {
+        html += `<li><a href="category.html?cat=${encodeURIComponent(cat.name)}"><i class="fas fa-chevron-right"></i> ${escapeHtml(cat.name)}</a></li>`;
+    });
+
+    container.innerHTML = html;
+}
+
+// ============================================================
+// DRAWER NEWSLETTER
+// ============================================================
+document.getElementById('drawerSubscribe')?.addEventListener('click', function() {
+    const input = document.getElementById('drawerEmail');
+    const email = input.value.trim();
+    if (!email) {
+        showNotification('Please enter your email address.', 'error');
+        return;
+    }
+    if (!isValidEmail(email)) {
+        showNotification('Please enter a valid email address.', 'error');
+        return;
+    }
+    showNotification('🎉 Thank you for subscribing!', 'success');
+    input.value = '';
+});
+
+// ============================================================
+// EMAIL VALIDATION
+// ============================================================
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// ============================================================
+// SEARCH OVERLAY TOGGLE
+// ============================================================
+document.getElementById('searchToggle')?.addEventListener('click', () => {
+    document.getElementById('searchOverlay').classList.add('active');
+    document.getElementById('searchInput').focus();
+});
+
+document.getElementById('searchClose')?.addEventListener('click', () => {
+    document.getElementById('searchOverlay').classList.remove('active');
+});
+
+document.getElementById('searchOverlay')?.addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        document.getElementById('searchOverlay').classList.remove('active');
+    }
+});
+
+// ============================================================
+// MOBILE DRAWER
+// ============================================================
+document.getElementById('menuToggle')?.addEventListener('click', () => {
+    document.getElementById('mobileDrawer').classList.add('active');
+    document.getElementById('drawerBackdrop').classList.add('active');
+    document.body.style.overflow = 'hidden';
+});
+
+document.getElementById('drawerClose')?.addEventListener('click', closeDrawer);
+document.getElementById('drawerBackdrop')?.addEventListener('click', closeDrawer);
+
+function closeDrawer() {
+    document.getElementById('mobileDrawer').classList.remove('active');
+    document.getElementById('drawerBackdrop').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ============================================================
+// BACK TO TOP
+// ============================================================
+const backToTop = document.getElementById('backToTop');
+
+window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 400) {
+        backToTop.classList.add('visible');
+    } else {
+        backToTop.classList.remove('visible');
+    }
+});
+
+backToTop?.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    loadSiteSettings();
+    loadDataFromFirebase();
+
+    console.log('%c📖 GREY LENS About Page Loaded', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+    console.log('%c👥 ' + allContributors.length + ' team members loaded from Firebase', 'font-size:13px;color:#4A6A7A;');
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site Settings - GREY LENS Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    
+    <style>
+        .settings-container {
+            max-width: 800px;
+        }
+
+        .settings-section {
+            background: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #E8E0D5;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+        }
+
+        .settings-section .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #F8F6F3;
+        }
+
+        .settings-section .section-header .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #F8F6F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #B8945C;
+            font-size: 1.1rem;
+        }
+
+        .settings-section .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: #2C3E50;
+        }
+
+        .settings-section .section-header .section-badge {
+            margin-left: auto;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #7F8C8D;
+            background: #F8F6F3;
+            padding: 2px 12px;
+            border-radius: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 4px;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            color: #B8945C;
+            width: 16px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #E8E0D5;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            background: #F8F6F3;
+            transition: all 0.3s ease;
+            color: #2C2C2C;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4A6A7A;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(74, 106, 122, 0.1);
+        }
+
+        .form-group .hint {
+            font-size: 0.8rem;
+            color: #7F8C8D;
+            margin-top: 4px;
+        }
+
+        .form-group .hint i {
+            margin-right: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #E8E0D5;
+        }
+
+        .form-actions .btn {
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .btn-save {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .btn-save:hover {
+            background: #3D5A5C;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+        }
+
+        .btn-reset {
+            background: #F8F6F3;
+            color: #4A6A7A;
+            border: 1px solid #E8E0D5;
+        }
+
+        .btn-reset:hover {
+            background: #E8E0D5;
+            transform: translateY(-2px);
+        }
+
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .toggle {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #E8E0D5;
+            border-radius: 26px;
+            transition: 0.3s ease;
+        }
+
+        .toggle .slider::before {
+            content: '';
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            transition: 0.3s ease;
+        }
+
+        .toggle input:checked + .slider {
+            background: #4CAF50;
+        }
+
+        .toggle input:checked + .slider::before {
+            transform: translateX(22px);
+        }
+
+        .toggle-label {
+            font-size: 0.9rem;
+            color: #2C3E50;
+        }
+
+        .toggle-label small {
+            display: block;
+            font-size: 0.8rem;
+            color: #7F8C8D;
+            font-weight: 400;
+        }
+
+        .danger-zone {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-top: 8px;
+        }
+
+        .danger-zone .danger-title {
+            color: #991B1B;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .danger-zone .danger-title i {
+            margin-right: 6px;
+        }
+
+        .danger-zone .danger-text {
+            color: #7F8C8D;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .btn-danger {
+            background: #DC2626;
+            color: #FFFFFF;
+        }
+
+        .btn-danger:hover {
+            background: #B91C1C;
+            transform: translateY(-2px);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .role-badge.admin {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .role-badge.contributor {
+            background: #B8945C;
+            color: #FFFFFF;
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 420px;
+            padding: 16px 20px;
+            background: #2C3E50;
+            color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .notification-toast.error {
+            border-left-color: #DC2626;
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: #FFFFFF;
+        }
+
+        /* Admin Logo with Magnifying Glass */
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f2f4f6;
+        }
+
+        .admin-logo .logo-icon {
+            font-size: 1.4rem;
+            color: #a4a3a2;
+        }
+
+        .admin-logo span {
+            background: #B8945C;
+            color: #FFFFFF;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .settings-section { padding: 20px; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            .form-actions { flex-direction: column; }
+            .form-actions .btn { width: 100%; justify-content: center; }
+            .settings-section .section-header { flex-wrap: wrap; }
+            .settings-section .section-header .section-badge { margin-left: 0; width: 100%; text-align: center; }
+            .toggle-wrap { flex-wrap: wrap; }
+        }
+
+        @media (max-width: 480px) {
+            .settings-section { padding: 16px; }
+            .danger-zone { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    🔒 FIREBASE AUTH CHECK
+    ============================================================ -->
+    <script type="module" src="auth-check.js"></script>
+
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-logo">
+                <i class="fas fa-search logo-icon"></i>
+                GREY LENS
+                <span>Admin</span>
+            </div>
+            <div class="admin-user">
+                <div class="user-info">
+                    <div class="name" id="adminName">Affan Pervaiz Awan</div>
+                    <div class="role" id="userRoleDisplay">Administrator</div>
+                </div>
+                <div class="avatar" id="userAvatar">A</div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-body">
+
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html" id="dashboardNavLink"><i class="fas fa-th-large"></i> Dashboard</a>
+                <a href="articles.html" id="articlesNavLink"><i class="fas fa-newspaper"></i> All Articles</a>
+                <a href="write.html" id="writeNavLink"><i class="fas fa-pen-fancy"></i> Write New</a>
+                <div class="sidebar-divider" id="adminDivider"></div>
+                <div class="nav-label" id="adminLabel">Management</div>
+                <a href="contributors.html" id="contributorsNavLink"><i class="fas fa-users"></i> Contributors</a>
+                <a href="categories.html" id="categoriesNavLink"><i class="fas fa-tags"></i> Categories</a>
+                <div class="sidebar-divider" id="settingsDivider"></div>
+                <div class="nav-label" id="settingsLabel">Settings</div>
+                <a href="settings.html" class="active" id="settingsNavLink"><i class="fas fa-cog"></i> Site Settings</a>
+                <a href="profile.html" id="profileNavLink"><i class="fas fa-user"></i> My Profile</a>
+            </nav>
+        </aside>
+
+        <main class="admin-main">
+
+            <div class="page-header">
+                <h1>
+                    ⚙️ Site Settings
+                    <span class="role-badge" id="roleBadge">Admin</span>
+                </h1>
+                <p id="pageSubtitle">Configure your publication's global settings</p>
+            </div>
+
+            <div class="settings-container">
+
+                <!-- GENERAL SETTINGS -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-globe"></i></div>
+                        <h2>General Settings</h2>
+                        <span class="section-badge">Basic</span>
+                    </div>
+                    <form id="generalSettingsForm">
+                        <div class="form-group">
+                            <label><i class="fas fa-book"></i> Site Name</label>
+                            <input type="text" id="siteName" placeholder="GREY LENS" />
+                            <div class="hint">The name of your publication as it appears on the website.</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-tag"></i> Tagline</label>
+                            <input type="text" id="siteTagline" placeholder="Perspective beyond black & white" />
+                            <div class="hint">A short description that appears below the site name.</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Contact Email</label>
+                            <input type="email" id="contactEmail" placeholder="editor@greylens.com" />
+                            <div class="hint">The email address where readers can contact you.</div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                            <button type="button" class="btn btn-reset" id="resetGeneralBtn"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- SEO SETTINGS -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-search"></i></div>
+                        <h2>SEO Settings</h2>
+                        <span class="section-badge">Search Engine</span>
+                    </div>
+                    <form id="seoSettingsForm">
+                        <div class="form-group">
+                            <label><i class="fas fa-file-alt"></i> Meta Title</label>
+                            <input type="text" id="metaTitle" placeholder="GREY LENS - Perspective beyond black & white" />
+                            <div class="hint">The title that appears in search engine results. (50-60 characters recommended)</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> Meta Description</label>
+                            <textarea id="metaDescription" rows="2" placeholder="Exploring history, law, politics, and public affairs—with attention to questions often overlooked."></textarea>
+                            <div class="hint">A brief description that appears in search engine results. (150-160 characters recommended)</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-image"></i> Default Social Image URL</label>
+                            <input type="url" id="socialImage" placeholder="https://yourdomain.com/images/social.jpg" />
+                            <div class="hint">The default image used when sharing articles on social media.</div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                            <button type="button" class="btn btn-reset" id="resetSeoBtn"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- SOCIAL MEDIA SETTINGS -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-share-alt"></i></div>
+                        <h2>Social Media</h2>
+                        <span class="section-badge">Connect</span>
+                    </div>
+                    <form id="socialSettingsForm">
+                        <div class="form-group">
+                            <label><i class="fab fa-twitter"></i> Twitter URL</label>
+                            <input type="url" id="twitterUrl" placeholder="https://twitter.com/greylens" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-linkedin"></i> LinkedIn URL</label>
+                            <input type="url" id="linkedinUrl" placeholder="https://linkedin.com/company/greylens" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-facebook"></i> Facebook URL</label>
+                            <input type="url" id="facebookUrl" placeholder="https://facebook.com/greylens" />
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-whatsapp"></i> WhatsApp URL</label>
+                            <input type="url" id="whatsappUrl" placeholder="https://wa.me/1234567890" />
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                            <button type="button" class="btn btn-reset" id="resetSocialBtn"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- FEATURES SETTINGS -->
+                <section class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon"><i class="fas fa-toggle-on"></i></div>
+                        <h2>Features</h2>
+                        <span class="section-badge">Toggle</span>
+                    </div>
+                    <form id="featuresSettingsForm">
+                        <div class="toggle-wrap">
+                            <label class="toggle">
+                                <input type="checkbox" id="enableComments" checked />
+                                <span class="slider"></span>
+                            </label>
+                            <div class="toggle-label">
+                                Enable Comments
+                                <small>Allow readers to comment on articles.</small>
+                            </div>
+                        </div>
+                        <div class="toggle-wrap">
+                            <label class="toggle">
+                                <input type="checkbox" id="enableNewsletter" checked />
+                                <span class="slider"></span>
+                            </label>
+                            <div class="toggle-label">
+                                Enable Newsletter
+                                <small>Allow readers to subscribe to your newsletter.</small>
+                            </div>
+                        </div>
+                        <div class="toggle-wrap">
+                            <label class="toggle">
+                                <input type="checkbox" id="enableSocialShare" checked />
+                                <span class="slider"></span>
+                            </label>
+                            <div class="toggle-label">
+                                Enable Social Sharing
+                                <small>Show social sharing buttons on articles.</small>
+                            </div>
+                        </div>
+                        <div class="toggle-wrap">
+                            <label class="toggle">
+                                <input type="checkbox" id="enableRelatedArticles" checked />
+                                <span class="slider"></span>
+                            </label>
+                            <div class="toggle-label">
+                                Enable Related Articles
+                                <small>Show related articles at the bottom of each post.</small>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                            <button type="button" class="btn btn-reset" id="resetFeaturesBtn"><i class="fas fa-undo"></i> Reset</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- DANGER ZONE -->
+                <section class="settings-section" style="border-color:#FECACA;">
+                    <div class="section-header">
+                        <div class="section-icon" style="background:#FEF2F2;color:#DC2626;"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h2 style="color:#991B1B;">Danger Zone</h2>
+                        <span class="section-badge">Destructive</span>
+                    </div>
+                    <div class="danger-zone">
+                        <div class="danger-title"><i class="fas fa-trash"></i> Delete All Data</div>
+                        <div class="danger-text">This will permanently delete all articles, contributors, categories, and users. This action cannot be undone. Please make sure you have a backup.</div>
+                        <button class="btn btn-danger" id="deleteAllDataBtn"><i class="fas fa-trash"></i> Delete Everything</button>
+                    </div>
+                    <div class="danger-zone" style="margin-top:12px;">
+                        <div class="danger-title"><i class="fas fa-file-export"></i> Export Data</div>
+                        <div class="danger-text">Download all your data as a JSON file for backup or migration.</div>
+                        <button class="btn btn-primary" id="exportDataBtn"><i class="fas fa-download"></i> Export All Data</button>
+                        <button class="btn btn-outline" id="importDataBtn" style="margin-left:8px;"><i class="fas fa-upload"></i> Import Data</button>
+                        <input type="file" id="importFileInput" accept=".json" style="display:none;" />
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+   <!-- ============================================================
+JAVASCRIPT - FIREBASE VERSION (FIXED)
+============================================================ -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    collection, 
+    getDocs, 
+    doc, 
+    deleteDoc, 
+    addDoc, 
+    setDoc, 
+    getDoc,
+    onAuthStateChanged,
+    signOut
+} from '../firebase-config.js';
+
+// ✅ IMPORT ADMIN SETTINGS LOADER
+import { loadAdminSettings } from './admin-settings.js';
+
+// Admin email
+const ADMIN_EMAIL = "affanawan189@gmail.com";
+
+// ============================================================
+// GLOBALS
+// ============================================================
+let currentUser = null;
+let isAdmin = false;
+
+// ============================================================
+// AUTH STATE LISTENER
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    currentUser = user;
+    isAdmin = (user.email === ADMIN_EMAIL);
+
+    // If not admin, redirect to dashboard
+    if (!isAdmin) {
+        window.location.href = 'dashboard.html';
+        return;
+    }
+
+    // Set user info
+    const userName = 'Affan Pervaiz Awan';
+    document.getElementById('adminName').textContent = userName;
+    document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+    document.getElementById('userRoleDisplay').textContent = 'Administrator';
+    document.getElementById('roleBadge').textContent = 'Admin';
+
+    // Set sidebar visibility
+    document.getElementById('adminDivider').style.display = 'block';
+    document.getElementById('adminLabel').style.display = 'block';
+    document.getElementById('contributorsNavLink').style.display = 'block';
+    document.getElementById('categoriesNavLink').style.display = 'block';
+    document.getElementById('settingsDivider').style.display = 'block';
+    document.getElementById('settingsLabel').style.display = 'block';
+    document.getElementById('settingsNavLink').style.display = 'block';
+    document.getElementById('profileNavLink').style.display = 'block';
+
+    // Load settings
+    loadSettings();
+});
+
+// ============================================================
+// SETTINGS MANAGEMENT
+// ============================================================
+const SETTINGS_DOC_ID = 'siteSettings';
+
+async function getSettings() {
+    try {
+        const docRef = doc(db, "settings", SETTINGS_DOC_ID);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        }
+    } catch (error) {
+        console.log('Settings not found, using defaults');
+    }
+    return {
+        siteName: 'GREY LENS',
+        siteTagline: 'Perspective beyond black & white',
+        contactEmail: 'editor@greylens.com',
+        metaTitle: 'GREY LENS - Perspective beyond black & white',
+        metaDescription: 'Exploring history, law, politics, and public affairs—with attention to questions often overlooked.',
+        socialImage: '',
+        twitterUrl: '',
+        linkedinUrl: '',
+        facebookUrl: '',
+        whatsappUrl: '',
+        enableComments: true,
+        enableNewsletter: true,
+        enableSocialShare: true,
+        enableRelatedArticles: true
+    };
+}
+
+async function saveSettings(settings) {
+    try {
+        const docRef = doc(db, "settings", SETTINGS_DOC_ID);
+        await setDoc(docRef, settings);
+        return true;
+    } catch (error) {
+        console.error('Error saving settings:', error);
+        return false;
+    }
+}
+
+async function loadSettings() {
+    const settings = await getSettings();
+    document.getElementById('siteName').value = settings.siteName || '';
+    document.getElementById('siteTagline').value = settings.siteTagline || '';
+    document.getElementById('contactEmail').value = settings.contactEmail || '';
+    document.getElementById('metaTitle').value = settings.metaTitle || '';
+    document.getElementById('metaDescription').value = settings.metaDescription || '';
+    document.getElementById('socialImage').value = settings.socialImage || '';
+    document.getElementById('twitterUrl').value = settings.twitterUrl || '';
+    document.getElementById('linkedinUrl').value = settings.linkedinUrl || '';
+    document.getElementById('facebookUrl').value = settings.facebookUrl || '';
+    document.getElementById('whatsappUrl').value = settings.whatsappUrl || '';
+    document.getElementById('enableComments').checked = settings.enableComments !== false;
+    document.getElementById('enableNewsletter').checked = settings.enableNewsletter !== false;
+    document.getElementById('enableSocialShare').checked = settings.enableSocialShare !== false;
+    document.getElementById('enableRelatedArticles').checked = settings.enableRelatedArticles !== false;
+}
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+    notification.querySelector('.notification-close').addEventListener('click', () => notification.remove());
+    document.body.appendChild(notification);
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// SAVE SETTINGS FROM FORM
+// ============================================================
+async function saveGeneralSettings(e) {
+    e.preventDefault();
+    const settings = await getSettings();
+    settings.siteName = document.getElementById('siteName').value.trim();
+    settings.siteTagline = document.getElementById('siteTagline').value.trim();
+    settings.contactEmail = document.getElementById('contactEmail').value.trim();
+    const saved = await saveSettings(settings);
+    if (saved) {
+        await loadAdminSettings();
+        showNotification('✅ General settings saved to Firebase!', 'success');
+    } else {
+        showNotification('❌ Error saving settings', 'error');
+    }
+}
+
+async function saveSeoSettings(e) {
+    e.preventDefault();
+    const settings = await getSettings();
+    settings.metaTitle = document.getElementById('metaTitle').value.trim();
+    settings.metaDescription = document.getElementById('metaDescription').value.trim();
+    settings.socialImage = document.getElementById('socialImage').value.trim();
+    const saved = await saveSettings(settings);
+    if (saved) {
+        await loadAdminSettings();
+        showNotification('✅ SEO settings saved to Firebase!', 'success');
+    } else {
+        showNotification('❌ Error saving settings', 'error');
+    }
+}
+
+async function saveSocialSettings(e) {
+    e.preventDefault();
+    const settings = await getSettings();
+    settings.twitterUrl = document.getElementById('twitterUrl').value.trim();
+    settings.linkedinUrl = document.getElementById('linkedinUrl').value.trim();
+    settings.facebookUrl = document.getElementById('facebookUrl').value.trim();
+    settings.whatsappUrl = document.getElementById('whatsappUrl').value.trim();
+    const saved = await saveSettings(settings);
+    if (saved) {
+        await loadAdminSettings();
+        showNotification('✅ Social media settings saved to Firebase!', 'success');
+    } else {
+        showNotification('❌ Error saving settings', 'error');
+    }
+}
+
+async function saveFeaturesSettings(e) {
+    e.preventDefault();
+    const settings = await getSettings();
+    settings.enableComments = document.getElementById('enableComments').checked;
+    settings.enableNewsletter = document.getElementById('enableNewsletter').checked;
+    settings.enableSocialShare = document.getElementById('enableSocialShare').checked;
+    settings.enableRelatedArticles = document.getElementById('enableRelatedArticles').checked;
+    const saved = await saveSettings(settings);
+    if (saved) {
+        await loadAdminSettings();
+        showNotification('✅ Feature settings saved to Firebase!', 'success');
+    } else {
+        showNotification('❌ Error saving settings', 'error');
+    }
+}
+
+// ============================================================
+// RESET FUNCTIONS
+// ============================================================
+async function resetGeneral() {
+    if (confirm('Reset general settings to default?')) {
+        const settings = await getSettings();
+        settings.siteName = 'GREY LENS';
+        settings.siteTagline = 'Perspective beyond black & white';
+        settings.contactEmail = 'editor@greylens.com';
+        await saveSettings(settings);
+        await loadSettings();
+        await loadAdminSettings();
+        showNotification('🔄 General settings reset.', 'info');
+    }
+}
+
+async function resetSeo() {
+    if (confirm('Reset SEO settings to default?')) {
+        const settings = await getSettings();
+        settings.metaTitle = 'GREY LENS - Perspective beyond black & white';
+        settings.metaDescription = 'Exploring history, law, politics, and public affairs—with attention to questions often overlooked.';
+        settings.socialImage = '';
+        await saveSettings(settings);
+        await loadSettings();
+        await loadAdminSettings();
+        showNotification('🔄 SEO settings reset.', 'info');
+    }
+}
+
+async function resetSocial() {
+    if (confirm('Reset social media settings to default?')) {
+        const settings = await getSettings();
+        settings.twitterUrl = '';
+        settings.linkedinUrl = '';
+        settings.facebookUrl = '';
+        settings.whatsappUrl = '';
+        await saveSettings(settings);
+        await loadSettings();
+        await loadAdminSettings();
+        showNotification('🔄 Social media settings reset.', 'info');
+    }
+}
+
+async function resetFeatures() {
+    if (confirm('Reset feature settings to default?')) {
+        const settings = await getSettings();
+        settings.enableComments = true;
+        settings.enableNewsletter = true;
+        settings.enableSocialShare = true;
+        settings.enableRelatedArticles = true;
+        await saveSettings(settings);
+        await loadSettings();
+        await loadAdminSettings();
+        showNotification('🔄 Feature settings reset.', 'info');
+    }
+}
+
+// ============================================================
+// DELETE ALL DATA
+// ============================================================
+async function deleteAllData() {
+    if (!confirm('⚠️ WARNING: This will delete ALL data (articles, contributors, categories, users, settings). Are you sure?')) return;
+    if (!confirm('⚠️ FINAL WARNING: This cannot be undone! Are you absolutely sure?')) return;
+    try {
+        const articlesSnap = await getDocs(collection(db, "articles"));
+        for (const doc of articlesSnap.docs) { await deleteDoc(doc.ref); }
+        const usersSnap = await getDocs(collection(db, "users"));
+        for (const doc of usersSnap.docs) { await deleteDoc(doc.ref); }
+        const categoriesSnap = await getDocs(collection(db, "categories"));
+        for (const doc of categoriesSnap.docs) { await deleteDoc(doc.ref); }
+        await deleteDoc(doc(db, "settings", SETTINGS_DOC_ID));
+        showNotification('🗑️ All data has been deleted from Firebase.', 'success');
+        await loadSettings();
+        await loadAdminSettings();
+    } catch (error) {
+        console.error('Error deleting data:', error);
+        showNotification('❌ Error deleting data: ' + error.message, 'error');
+    }
+}
+
+// ============================================================
+// EXPORT / IMPORT DATA
+// ============================================================
+async function exportData() {
+    try {
+        const articlesSnap = await getDocs(collection(db, "articles"));
+        const articles = []; articlesSnap.forEach(doc => articles.push({ id: doc.id, ...doc.data() }));
+        const usersSnap = await getDocs(collection(db, "users"));
+        const users = []; usersSnap.forEach(doc => users.push({ id: doc.id, ...doc.data() }));
+        const categoriesSnap = await getDocs(collection(db, "categories"));
+        const categories = []; categoriesSnap.forEach(doc => categories.push({ id: doc.id, ...doc.data() }));
+        const settings = await getSettings();
+        const data = { articles, contributors: users, categories, settings, exportedAt: new Date().toISOString(), version: '1.0' };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `greylens-backup-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showNotification('📥 Data exported successfully!', 'success');
+    } catch (error) {
+        console.error('Error exporting data:', error);
+        showNotification('❌ Error exporting data: ' + error.message, 'error');
+    }
+}
+
+function importData() {
+    document.getElementById('importFileInput').click();
+}
+
+document.getElementById('importFileInput').addEventListener('change', function(e) {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async function(event) {
+        try {
+            const data = JSON.parse(event.target.result);
+            if (!data.articles || !data.contributors || !data.categories) {
+                showNotification('Invalid backup file format.', 'error');
+                return;
+            }
+            if (!confirm(`Import ${data.articles.length} articles, ${data.contributors.length} contributors, and ${data.categories.length} categories? This will overwrite existing data.`)) return;
+            for (const article of data.articles) { 
+                const { id, ...articleData } = article;
+                await addDoc(collection(db, "articles"), articleData); 
+            }
+            for (const user of data.contributors) { 
+                const { id, ...userData } = user;
+                await addDoc(collection(db, "users"), userData); 
+            }
+            for (const cat of data.categories) { 
+                const { id, ...catData } = cat;
+                await addDoc(collection(db, "categories"), catData); 
+            }
+            if (data.settings) { await saveSettings(data.settings); }
+            showNotification(`✅ Imported ${data.articles.length} articles, ${data.contributors.length} contributors!`, 'success');
+            await loadSettings();
+            await loadAdminSettings();
+        } catch (err) {
+            console.error('Import error:', err);
+            showNotification('Error reading backup file. Please check the file format.', 'error');
+        }
+    };
+    reader.readAsText(file);
+    this.value = '';
+});
+
+// ============================================================
+// LOGOUT - Firebase Sign Out
+// ============================================================
+document.getElementById('logoutBtn').addEventListener('click', async function() {
+    if (confirm('Are you sure you want to logout?')) {
+        try {
+            await signOut(auth);
+            window.location.href = '../Public/login.html';
+        } catch (error) {
+            console.error('Logout error:', error);
+            showNotification('❌ Logout failed: ' + error.message, 'error');
+        }
+    }
+});
+
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+    // ✅ Load admin settings first
+    loadAdminSettings();
+    
+    document.getElementById('generalSettingsForm').addEventListener('submit', saveGeneralSettings);
+    document.getElementById('seoSettingsForm').addEventListener('submit', saveSeoSettings);
+    document.getElementById('socialSettingsForm').addEventListener('submit', saveSocialSettings);
+    document.getElementById('featuresSettingsForm').addEventListener('submit', saveFeaturesSettings);
+    document.getElementById('resetGeneralBtn').addEventListener('click', resetGeneral);
+    document.getElementById('resetSeoBtn').addEventListener('click', resetSeo);
+    document.getElementById('resetSocialBtn').addEventListener('click', resetSocial);
+    document.getElementById('resetFeaturesBtn').addEventListener('click', resetFeatures);
+    document.getElementById('deleteAllDataBtn').addEventListener('click', deleteAllData);
+    document.getElementById('exportDataBtn').addEventListener('click', exportData);
+    document.getElementById('importDataBtn').addEventListener('click', importData);
+    
+    console.log('%c⚙️ GREY LENS Settings Manager Ready', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+    console.log('%c🔥 Using Firebase Authentication', 'font-size:13px;color:#4A6A7A;');
+    console.log('%c🔑 Admin: Affan Pervaiz Awan', 'font-size:12px;color:#B8945C;');
+    console.log('%c⚙️ Admin settings loaded from Firebase', 'font-size:13px;color:#4CAF50;');
+});
+</script>
+
+</body>
+</html>

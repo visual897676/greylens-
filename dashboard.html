@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - GREY LENS Admin</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="admin-style.css" />
+    
+    <style>
+        /* Dashboard specific styles */
+        .welcome-section {
+            background: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #E8E0D5;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .welcome-section .welcome-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #2C3E50;
+            margin-bottom: 2px;
+        }
+
+        .welcome-section .welcome-text p {
+            color: #7F8C8D;
+            font-size: 0.95rem;
+        }
+
+        .welcome-section .welcome-date {
+            color: #4A6A7A;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            background: #F8F6F3;
+            border-radius: 6px;
+            border: 1px solid #E8E0D5;
+        }
+
+        .welcome-section .welcome-date i {
+            margin-right: 6px;
+            color: #B8945C;
+        }
+
+        /* Quick Stats with Icons */
+        .stat-card .stat-icon-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card .stat-icon-wrap .stat-icon {
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+
+        .stat-card .stat-trend {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .stat-trend.up {
+            background: #DCFCE7;
+            color: #166534;
+        }
+
+        .stat-trend.down {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Pending Users Alert */
+        .pending-alert {
+            background: #FEF3C7;
+            border: 1px solid #F59E0B;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .pending-alert .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pending-alert .alert-content i {
+            color: #F59E0B;
+            font-size: 1.3rem;
+        }
+
+        .pending-alert .alert-content span {
+            color: #92400E;
+            font-size: 0.95rem;
+        }
+
+        .pending-alert .alert-content strong {
+            color: #78350F;
+        }
+
+        .pending-alert .btn-view {
+            background: #F59E0B;
+            color: #FFFFFF;
+            padding: 6px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pending-alert .btn-view:hover {
+            background: #D97706;
+            transform: translateY(-2px);
+        }
+
+        /* Messages Alert */
+        .messages-alert {
+            background: #E0F2FE;
+            border: 1px solid #7DD3FC;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .messages-alert .alert-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .messages-alert .alert-content i {
+            color: #0284C7;
+            font-size: 1.3rem;
+        }
+
+        .messages-alert .alert-content span {
+            color: #0369A1;
+            font-size: 0.95rem;
+        }
+
+        .messages-alert .alert-content strong {
+            color: #075985;
+        }
+
+        .messages-alert .btn-view {
+            background: #0284C7;
+            color: #FFFFFF;
+            padding: 6px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .messages-alert .btn-view:hover {
+            background: #0369A1;
+            transform: translateY(-2px);
+        }
+
+        /* Activity list items */
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #F8F6F3;
+            border-radius: 6px;
+            border-left: 3px solid #4A6A7A;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #F0EEEA;
+        }
+
+        .activity-item .activity-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .activity-item .activity-info .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #E8E0D5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A6A7A;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .activity-item .activity-info .activity-text {
+            font-size: 0.9rem;
+            color: #2C3E50;
+        }
+
+        .activity-item .activity-info .activity-text strong {
+            font-weight: 600;
+        }
+
+        .activity-item .activity-info .activity-text .activity-meta {
+            display: block;
+            font-size: 0.75rem;
+            color: #7F8C8D;
+            margin-top: 2px;
+        }
+
+        .activity-item .activity-status {
+            font-size: 0.7rem;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        /* Quick Tips */
+        .quick-tips {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .tip-card {
+            background: #F8F6F3;
+            padding: 16px 20px;
+            border-radius: 8px;
+            border: 1px solid #E8E0D5;
+        }
+
+        .tip-card .tip-icon {
+            font-size: 1.2rem;
+            color: #B8945C;
+            margin-bottom: 4px;
+        }
+
+        .tip-card h4 {
+            font-size: 0.9rem;
+            color: #2C3E50;
+            margin-bottom: 2px;
+        }
+
+        .tip-card p {
+            font-size: 0.85rem;
+            color: #7F8C8D;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .role-badge.admin {
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .role-badge.contributor {
+            background: #B8945C;
+            color: #FFFFFF;
+        }
+
+        /* Contributor limited message */
+        .contributor-notice {
+            background: #E0F2FE;
+            border: 1px solid #7DD3FC;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contributor-notice i {
+            color: #0284C7;
+            font-size: 1.1rem;
+        }
+
+        .contributor-notice span {
+            color: #0369A1;
+            font-size: 0.9rem;
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 420px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(44,62,80,0.25);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid #4CAF50;
+            background: #2C3E50;
+            color: #FFFFFF;
+        }
+
+        .notification-toast.error {
+            border-left-color: #DC2626;
+        }
+
+        .notification-toast.warning {
+            border-left-color: #FF9800;
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: #FFFFFF;
+        }
+
+        /* Admin Logo with Magnifying Glass */
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f2f4f6;
+        }
+
+        .admin-logo .logo-icon {
+            width: 28px;
+            height: 28px;
+            display: inline-block;
+        }
+
+        .admin-logo .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .admin-logo span {
+            background: #B8945C;
+            color: #FFFFFF;
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .welcome-section {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 24px;
+            }
+
+            .welcome-section .welcome-date {
+                width: 100%;
+                text-align: center;
+            }
+
+            .quick-tips {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-section {
+                padding: 16px;
+            }
+
+            .welcome-section .welcome-text h2 {
+                font-size: 1.2rem;
+            }
+
+            .activity-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .activity-item .activity-info {
+                width: 100%;
+            }
+
+            .activity-item .activity-status {
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    🔒 FIREBASE AUTH CHECK - ADDED AT VERY TOP
+    ============================================================ -->
+    <script type="module" src="auth-check.js"></script>
+
+    <!-- ============================================================
+    HEADER
+    ============================================================ -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-logo">
+                <i class="fas fa-search" style="font-size:1.4rem; color:#a4a3a2;"></i>
+                GREY LENS
+                <span>Admin</span>
+            </div>
+            <div class="admin-user">
+                <div class="user-info">
+                    <div class="name" id="adminName">Affan Pervaiz Awan</div>
+                    <div class="role" id="userRoleDisplay">Administrator</div>
+                </div>
+                <div class="avatar" id="userAvatar">A</div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    BODY
+    ============================================================ -->
+    <div class="admin-body">
+
+        <!-- ============================================================
+        SIDEBAR
+        ============================================================ -->
+        <aside class="admin-sidebar">
+            <nav class="sidebar-nav">
+                <div class="nav-label">Main</div>
+                <a href="dashboard.html" class="active">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="articles.html">
+                    <i class="fas fa-newspaper"></i> All Articles
+                </a>
+                <a href="write.html" id="writeNavLink">
+                    <i class="fas fa-pen-fancy"></i> Write New
+                </a>
+
+                <div class="sidebar-divider" id="adminDivider"></div>
+
+                <div class="nav-label" id="adminLabel">Management</div>
+                <a href="contributors.html" id="contributorsNavLink">
+                    <i class="fas fa-users"></i> Contributors
+                </a>
+                <a href="categories.html" id="categoriesNavLink">
+                    <i class="fas fa-tags"></i> Categories
+                </a>
+                <a href="messages.html" id="messagesNavLink">
+                    <i class="fas fa-envelope"></i> Messages
+                    <span id="sidebarMsgBadge" style="background:#DC2626;color:white;font-size:0.6rem;padding:1px 8px;border-radius:10px;margin-left:auto;display:none;">0</span>
+                </a>
+
+                <div class="sidebar-divider" id="settingsDivider"></div>
+
+                <div class="nav-label" id="settingsLabel">Settings</div>
+                <a href="settings.html" id="settingsNavLink">
+                    <i class="fas fa-cog"></i> Site Settings
+                </a>
+                <a href="profile.html" id="profileNavLink">
+                    <i class="fas fa-user"></i> My Profile
+                </a>
+            </nav>
+        </aside>
+
+        <!-- ============================================================
+        MAIN CONTENT
+        ============================================================ -->
+        <main class="admin-main">
+
+            <!-- Welcome Section -->
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h2>
+                        👋 Welcome back, <span id="greetingName">Affan Pervaiz Awan</span>!
+                        <span class="role-badge" id="roleBadge">Admin</span>
+                    </h2>
+                    <p id="welcomeMessage">Here's what's happening with your publication today.</p>
+                </div>
+                <div class="welcome-date">
+                    <i class="fas fa-calendar-day"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+
+            <!-- Contributor Notice (only for contributors) -->
+            <div id="contributorNotice" class="contributor-notice" style="display:none;">
+                <i class="fas fa-info-circle"></i>
+                <span>You are logged in as a <strong>Contributor</strong>. You can write and manage your own articles.</span>
+            </div>
+
+            <!-- ============================================================
+            PENDING REGISTRATIONS ALERT (Admin Only)
+            ============================================================ -->
+            <div id="pendingAlert" class="pending-alert" style="display:none;">
+                <div class="alert-content">
+                    <i class="fas fa-clock"></i>
+                    <span><strong id="pendingCount">0</strong> registration(s) pending approval.</span>
+                </div>
+                <a href="contributors.html" class="btn-view">
+                    <i class="fas fa-users"></i> Review
+                </a>
+            </div>
+
+            <!-- ============================================================
+            MESSAGES ALERT (Admin Only) - NEW
+            ============================================================ -->
+            <div id="messagesAlert" class="messages-alert">
+                <div class="alert-content">
+                    <i class="fas fa-envelope"></i>
+                    <span><strong id="unreadMessagesCount">0</strong> new message(s) received.</span>
+                </div>
+                <a href="messages.html" class="btn-view">
+                    <i class="fas fa-envelope"></i> View Messages
+                </a>
+            </div>
+
+            <!-- ============================================================
+            STATS GRID
+            ============================================================ -->
+            <div class="stats-grid">
+
+                <!-- Total Articles -->
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <div>
+                            <div class="stat-icon"><i class="fas fa-newspaper"></i></div>
+                            <div class="stat-number" id="totalArticles">0</div>
+                            <div class="stat-label">Total Articles</div>
+                        </div>
+                        <span class="stat-trend up" id="totalTrend">
+                            <i class="fas fa-arrow-up"></i> 0%
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Published -->
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <div>
+                            <div class="stat-icon"><i class="fas fa-check-circle" style="color:#4CAF50;"></i></div>
+                            <div class="stat-number" id="publishedArticles">0</div>
+                            <div class="stat-label">Published</div>
+                        </div>
+                        <span class="stat-trend up" id="publishedTrend">
+                            <i class="fas fa-arrow-up"></i> 0%
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Drafts -->
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <div>
+                            <div class="stat-icon"><i class="fas fa-file-alt" style="color:#FF9800;"></i></div>
+                            <div class="stat-number" id="draftArticles">0</div>
+                            <div class="stat-label">Drafts</div>
+                        </div>
+                        <span class="stat-trend down" id="draftTrend">
+                            <i class="fas fa-arrow-down"></i> 0%
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Contributors -->
+                <div class="stat-card">
+                    <div class="stat-icon-wrap">
+                        <div>
+                            <div class="stat-icon"><i class="fas fa-users" style="color:#B8945C;"></i></div>
+                            <div class="stat-number" id="totalContributors">0</div>
+                            <div class="stat-label">Contributors</div>
+                        </div>
+                        <span class="stat-trend up" id="contributorTrend">
+                            <i class="fas fa-arrow-up"></i> 0%
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ============================================================
+            QUICK ACTIONS
+            ============================================================ -->
+            <div class="quick-actions">
+                <a href="write.html" class="action-card" id="quickWrite">
+                    <div class="action-icon"><i class="fas fa-pen-fancy"></i></div>
+                    <div class="action-label">Write New Article</div>
+                </a>
+                <a href="articles.html" class="action-card">
+                    <div class="action-icon"><i class="fas fa-list"></i></div>
+                    <div class="action-label">View All Articles</div>
+                </a>
+                <a href="contributors.html" class="action-card" id="quickContributors">
+                    <div class="action-icon"><i class="fas fa-user-plus"></i></div>
+                    <div class="action-label">Manage Contributors</div>
+                </a>
+                <a href="categories.html" class="action-card" id="quickCategories">
+                    <div class="action-icon"><i class="fas fa-tags"></i></div>
+                    <div class="action-label">Manage Categories</div>
+                </a>
+                <a href="messages.html" class="action-card" id="quickMessages">
+                    <div class="action-icon"><i class="fas fa-envelope" style="color:#0284C7;"></i></div>
+                    <div class="action-label">View Messages</div>
+                </a>
+            </div>
+
+            <!-- ============================================================
+            RECENT ACTIVITY
+            ============================================================ -->
+            <div style="background:#FFFFFF;border-radius:8px;border:1px solid #E8E0D5;padding:24px;margin-bottom:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#2C3E50;">
+                        📋 Recent Activity
+                    </h3>
+                    <a href="articles.html" style="font-size:0.85rem;color:#4A6A7A;font-weight:500;">
+                        View All <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Activity List -->
+                <div id="activityList">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="activityEmpty" class="empty-state" style="display:none;">
+                    <i class="fas fa-inbox"></i>
+                    <h3>No Activity Yet</h3>
+                    <p>Start by writing your first article!</p>
+                    <a href="write.html" class="btn btn-primary" style="margin-top:12px;">
+                        <i class="fas fa-pen-fancy"></i> Write First Article
+                    </a>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            QUICK TIPS
+            ============================================================ -->
+            <div class="quick-tips">
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
+                    <h4>Tip: Write Regularly</h4>
+                    <p>Consistent publishing helps build an audience. Aim for at least 2-3 articles per week.</p>
+                </div>
+                <div class="tip-card">
+                    <div class="tip-icon"><i class="fas fa-chart-line"></i></div>
+                    <h4>Tip: Engage Readers</h4>
+                    <p>Respond to comments and encourage discussion. It builds a loyal community.</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT - FIREBASE VERSION
+    ============================================================ -->
+    <script type="module">
+    // ============================================================
+    // IMPORT FIREBASE
+    // ============================================================
+   import { db, auth, collection, getDocs, query, where, onAuthStateChanged, signOut } from '../firebase-config.js';
+
+    
+
+    // Admin email
+    const ADMIN_EMAIL = "affanawan189@gmail.com";
+
+    // ============================================================
+    // GLOBALS
+    // ============================================================
+    let currentUser = null;
+    let isAdmin = false;
+    let userType = 'admin';
+    let displayName = 'Affan Pervaiz Awan';
+
+    // ============================================================
+    // AUTH STATE LISTENER
+    // ============================================================
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        currentUser = user;
+        isAdmin = (user.email === ADMIN_EMAIL);
+
+        // Set user info
+        displayName = isAdmin ? 'Affan Pervaiz Awan' : (user.displayName || user.email.split('@')[0]);
+        userType = isAdmin ? 'admin' : 'contributor';
+
+        document.getElementById('adminName').textContent = displayName;
+        document.getElementById('greetingName').textContent = displayName;
+        document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
+
+        // Set role
+        const roleDisplay = document.getElementById('userRoleDisplay');
+        const roleBadge = document.getElementById('roleBadge');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        if (isAdmin) {
+            roleDisplay.textContent = 'Administrator';
+            roleBadge.textContent = 'Admin';
+            roleBadge.className = 'role-badge admin';
+            welcomeMessage.textContent = "Here's what's happening with your publication today.";
+            document.getElementById('contributorNotice').style.display = 'none';
+            
+            // Show all sidebar items (Admin)
+            document.getElementById('adminDivider').style.display = 'block';
+            document.getElementById('adminLabel').style.display = 'block';
+            document.getElementById('contributorsNavLink').style.display = 'block';
+            document.getElementById('categoriesNavLink').style.display = 'block';
+            document.getElementById('settingsDivider').style.display = 'block';
+            document.getElementById('settingsLabel').style.display = 'block';
+            document.getElementById('settingsNavLink').style.display = 'block';
+            document.getElementById('profileNavLink').style.display = 'block';
+            document.getElementById('quickContributors').style.display = 'block';
+            document.getElementById('quickCategories').style.display = 'block';
+            document.getElementById('messagesNavLink').style.display = 'block';
+            document.getElementById('quickMessages').style.display = 'block';
+
+        } else {
+            roleDisplay.textContent = 'Contributor';
+            roleBadge.textContent = 'Contributor';
+            roleBadge.className = 'role-badge contributor';
+            welcomeMessage.textContent = "Welcome! You can write and manage your articles.";
+            document.getElementById('contributorNotice').style.display = 'flex';
+            
+            // Hide admin-only sidebar items
+            document.getElementById('adminDivider').style.display = 'none';
+            document.getElementById('adminLabel').style.display = 'none';
+            document.getElementById('contributorsNavLink').style.display = 'none';
+            document.getElementById('categoriesNavLink').style.display = 'none';
+            document.getElementById('settingsDivider').style.display = 'none';
+            document.getElementById('settingsLabel').style.display = 'none';
+            document.getElementById('settingsNavLink').style.display = 'none';
+            document.getElementById('profileNavLink').style.display = 'none';
+            document.getElementById('quickContributors').style.display = 'none';
+            document.getElementById('quickCategories').style.display = 'none';
+            document.getElementById('messagesNavLink').style.display = 'none';
+            document.getElementById('quickMessages').style.display = 'none';
+        }
+
+        // Load dashboard data
+        loadDashboardData();
+    });
+
+    // ============================================================
+    // NOTIFICATION SYSTEM
+    // ============================================================
+    function showNotification(message, type = 'success') {
+        const existing = document.querySelector('.notification-toast');
+        if (existing) existing.remove();
+
+        const notification = document.createElement('div');
+        notification.className = `notification-toast ${type}`;
+        notification.innerHTML = `
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${message}</span>
+            <button class="notification-close">&times;</button>
+        `;
+
+        notification.querySelector('.notification-close').addEventListener('click', function() {
+            notification.remove();
+        });
+
+        document.body.appendChild(notification);
+
+        requestAnimationFrame(() => {
+            notification.style.transform = 'translateY(0)';
+            notification.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                notification.style.transform = 'translateY(120px)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 400);
+            }
+        }, 4000);
+    }
+
+    // ============================================================
+    // HELPER FUNCTIONS
+    // ============================================================
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function formatDate(dateString) {
+        if (!dateString) return 'Recent';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
+    function getTodayDate() {
+        const date = new Date();
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    // ============================================================
+    // LOAD MESSAGES FOR DASHBOARD ALERT
+    // ============================================================
+    async function loadMessageAlert() {
+        try {
+            const messagesRef = collection(db, "messages");
+            const q = query(messagesRef, where("status", "==", "unread"));
+            const snapshot = await getDocs(q);
+            
+            const unreadCount = snapshot.size;
+            const alert = document.getElementById('messagesAlert');
+            const badge = document.getElementById('sidebarMsgBadge');
+            
+            if (unreadCount > 0) {
+                alert.style.display = 'flex';
+                document.getElementById('unreadMessagesCount').textContent = unreadCount;
+                badge.style.display = 'inline';
+                badge.textContent = unreadCount;
+            } else {
+                alert.style.display = 'none';
+                badge.style.display = 'none';
+            }
+        } catch (error) {
+            console.error('Error loading messages:', error);
+        }
+    }
+
+    // ============================================================
+    // LOAD DASHBOARD DATA
+    // ============================================================
+    async function loadDashboardData() {
+        try {
+            // Load articles
+            const articlesSnapshot = await getDocs(collection(db, "articles"));
+            let articles = [];
+            articlesSnapshot.forEach(doc => {
+                articles.push({ id: doc.id, ...doc.data() });
+            });
+
+            // If contributor, filter their articles only
+            if (!isAdmin && currentUser) {
+                articles = articles.filter(a => a.authorEmail === currentUser.email);
+            }
+
+            const total = articles.length;
+            const published = articles.filter(a => a.status === 'published').length;
+            const drafts = articles.filter(a => a.status === 'draft').length;
+
+            document.getElementById('totalArticles').textContent = total;
+            document.getElementById('publishedArticles').textContent = published;
+            document.getElementById('draftArticles').textContent = drafts;
+
+            // Load contributors (users with role = contributor) - Admin only
+            if (isAdmin) {
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                const contributors = [];
+                usersSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.role === 'contributor' && data.status === 'approved') {
+                        contributors.push(data);
+                    }
+                });
+                document.getElementById('totalContributors').textContent = contributors.length;
+
+                // Check pending registrations (Admin only)
+                const pendingUsers = [];
+                usersSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.status === 'pending') {
+                        pendingUsers.push(data);
+                    }
+                });
+
+                const pendingAlert = document.getElementById('pendingAlert');
+                if (pendingUsers.length > 0) {
+                    pendingAlert.style.display = 'flex';
+                    document.getElementById('pendingCount').textContent = pendingUsers.length;
+                } else {
+                    pendingAlert.style.display = 'none';
+                }
+
+                // Load messages alert
+                await loadMessageAlert();
+
+            } else {
+                document.getElementById('totalContributors').textContent = '-';
+            }
+
+            // Load recent activity (latest 5 articles)
+            const sorted = articles.sort((a, b) => {
+                const dateA = new Date(a.createdAt || a.date);
+                const dateB = new Date(b.createdAt || b.date);
+                return dateB - dateA;
+            });
+
+            const recent = sorted.slice(0, 5);
+            const container = document.getElementById('activityList');
+            const empty = document.getElementById('activityEmpty');
+
+            if (recent.length === 0) {
+                empty.style.display = 'block';
+                container.innerHTML = '';
+                return;
+            }
+
+            empty.style.display = 'none';
+
+            let html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+            recent.forEach(a => {
+                const statusColors = {
+                    'published': { bg: '#4CAF50', label: 'Published' },
+                    'draft': { bg: '#FF9800', label: 'Draft' },
+                    'pending': { bg: '#DC2626', label: 'Pending' }
+                };
+                const status = statusColors[a.status] || statusColors.draft;
+                const iconMap = {
+                    'published': 'fa-check-circle',
+                    'draft': 'fa-file-alt',
+                    'pending': 'fa-clock'
+                };
+                const icon = iconMap[a.status] || 'fa-file-alt';
+
+                html += `
+                    <div class="activity-item" style="border-left-color: ${status.bg};">
+                        <div class="activity-info">
+                            <div class="activity-icon" style="background: ${status.bg}20; color: ${status.bg};">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <div class="activity-text">
+                                <strong>${escapeHtml(a.title || 'Untitled')}</strong>
+                                <span class="activity-meta">
+                                    <i class="far fa-user"></i> ${escapeHtml(a.author || 'Unknown')}
+                                    <i class="far fa-calendar" style="margin-left:12px;"></i> ${formatDate(a.date || a.createdAt)}
+                                    <i class="far fa-eye" style="margin-left:12px;"></i> ${a.views || 0} views
+                                </span>
+                            </div>
+                        </div>
+                        <span class="activity-status" style="background: ${status.bg}20; color: ${status.bg};">
+                            ${status.label}
+                        </span>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+
+        } catch (error) {
+            console.error('Error loading dashboard data:', error);
+            showNotification('Error loading dashboard data', 'error');
+        }
+    }
+
+    // ============================================================
+    // LOGOUT - Firebase Sign Out
+    // ============================================================
+    document.getElementById('logoutBtn').addEventListener('click', async function() {
+        if (confirm('Are you sure you want to logout?')) {
+            try {
+                await signOut(auth);
+                window.location.href = '../Public/login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                showNotification('❌ Logout failed: ' + error.message, 'error');
+            }
+        }
+    });
+
+    // ============================================================
+    // INITIALIZE
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('currentDate').textContent = getTodayDate();
+
+        console.log('%c📊 GREY LENS Dashboard Ready', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+        console.log('%c🔥 Using Firebase Authentication', 'font-size:13px;color:#4A6A7A;');
+        console.log('%c🔑 Admin: Affan Pervaiz Awan', 'font-size:12px;color:#B8945C;');
+    });
+    </script>
+
+</body>
+</html>

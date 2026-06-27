@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contributor Login - Digital Journal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="public-style.css" />
+    
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg);
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: 40px 36px;
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .login-header .icon {
+            font-size: 2.5rem;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .login-header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--color-heading);
+            margin-bottom: 4px;
+        }
+
+        .login-header p {
+            color: var(--color-gray);
+            font-size: 0.95rem;
+        }
+
+        .login-error {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid var(--color-error);
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-heading);
+            margin-bottom: 4px;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            color: var(--color-accent);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            background: var(--color-bg);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: var(--color-white);
+            box-shadow: 0 0 0 3px rgba(74, 106, 122, 0.08);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: var(--color-primary-dark);
+            color: var(--color-white);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-login:hover {
+            background: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-login i {
+            margin-right: 8px;
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .login-footer p {
+            color: var(--color-gray);
+            font-size: 0.85rem;
+        }
+
+        .login-footer a {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            color: var(--color-primary-dark);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--color-gray);
+            font-size: 0.85rem;
+        }
+
+        .back-link i {
+            margin-right: 4px;
+        }
+
+        .back-link:hover {
+            color: var(--color-primary);
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 400px;
+            padding: 14px 18px;
+            background: var(--color-primary-dark);
+            color: var(--color-white);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid var(--color-success);
+        }
+
+        .notification-toast.error {
+            border-left-color: var(--color-error);
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: var(--color-white);
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 28px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-card">
+
+                <div class="login-header">
+                    <div class="icon"><i class="fas fa-pen-fancy"></i></div>
+                    <h1>Contributor Login</h1>
+                    <p>Sign in to write articles for Digital Journal</p>
+                </div>
+
+                <div class="login-error" id="loginError">
+                    <i class="fas fa-exclamation-circle"></i> Error message here.
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail"><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com" required autofocus />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required />
+                    </div>
+
+                    <button type="submit" class="btn-login" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+
+                <div class="login-footer">
+                    <p>
+                        Don't have an account? <a href="register.html">Register here</a>
+                    </p>
+                    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ COMPLETE FIXED: Firebase Login Script -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE FROM firebase-config.js - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    doc, 
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from '../firebase-config.js';
+
+// ============================================================
+// CHECK IF ALREADY LOGGED IN - FIXED
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Don't auto-redirect on login page - let user decide
+        // Just check status silently
+        checkUserStatus(user);
+    }
+});
+
+async function checkUserStatus(user) {
+    try {
+        // Query users collection by email since we don't have UID in users doc
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            let userData = null;
+            querySnapshot.forEach((doc) => {
+                userData = { id: doc.id, ...doc.data() };
+            });
+            
+            // Only auto-redirect if user is admin (they should go to admin panel)
+            if (userData.role === 'admin') {
+                window.location.href = '../Admin/dashboard.html';
+            } else if (userData.role === 'contributor' && userData.status === 'approved') {
+                // Check if this was a manual login
+                if (sessionStorage.getItem('justLoggedIn') === 'true') {
+                    sessionStorage.removeItem('justLoggedIn');
+                    window.location.href = 'contributor-dashboard.html';
+                }
+            } else if (userData.status === 'pending') {
+                // Show a toast but don't auto-redirect
+                showNotification('⏳ Your account is pending admin approval.', 'warning');
+            }
+        }
+    } catch (error) {
+        console.error('Error checking user status:', error);
+    }
+}
+
+// ============================================================
+// NOTIFICATION SYSTEM
+// ============================================================
+function showNotification(message, type = 'success') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    notification.querySelector('.notification-close').addEventListener('click', function() {
+        notification.remove();
+    });
+
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// LOGIN FORM HANDLER - COMPLETELY FIXED
+// ============================================================
+const loginForm = document.getElementById('loginForm');
+const loginError = document.getElementById('loginError');
+const loginBtn = document.getElementById('loginBtn');
+
+loginForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+
+    // Clear previous errors
+    loginError.classList.remove('show');
+
+    if (!email || !password) {
+        loginError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter both email and password.';
+        loginError.classList.add('show');
+        return;
+    }
+
+    try {
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+        // ✅ Use Firebase Authentication to sign in
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // ✅ Check user role and status from Firestore (USERS collection)
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        const querySnapshot = await getDocs(q);
+        
+        if (querySnapshot.empty) {
+            await signOut(auth);
+            loginError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Account not found. Please register.';
+            loginError.classList.add('show');
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            return;
+        }
+
+        let userData = null;
+        querySnapshot.forEach((doc) => {
+            userData = { id: doc.id, ...doc.data() };
+        });
+
+        // Check status
+        if (userData.status === 'pending') {
+            await signOut(auth);
+            loginError.innerHTML = '<i class="fas fa-exclamation-circle"></i> ⏳ Your account is pending admin approval. Please wait.';
+            loginError.classList.add('show');
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            return;
+        }
+
+        if (userData.status === 'rejected') {
+            await signOut(auth);
+            loginError.innerHTML = '<i class="fas fa-exclamation-circle"></i> ❌ Your account has been rejected. Contact admin.';
+            loginError.classList.add('show');
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            return;
+        }
+
+        if (userData.role !== 'contributor' && userData.role !== 'admin') {
+            await signOut(auth);
+            loginError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid account type.';
+            loginError.classList.add('show');
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            return;
+        }
+
+        // ✅ Login successful - set session flag and redirect
+        loginError.classList.remove('show');
+        
+        // Set flag to prevent redirect loop
+        sessionStorage.setItem('justLoggedIn', 'true');
+        
+        showNotification(`✅ Welcome, ${userData.name}! Redirecting...`, 'success');
+
+        console.log(`%c✅ User logged in: ${userData.name} (${email})`, 'font-size:13px;color:#4CAF50;');
+        console.log(`%c👤 Role: ${userData.role}`, 'font-size:13px;color:#4A6A7A;');
+
+        setTimeout(() => {
+            if (userData.role === 'admin') {
+                window.location.href = '../Admin/dashboard.html';
+            } else {
+                window.location.href = 'contributor-dashboard.html';
+            }
+        }, 1500);
+
+    } catch (error) {
+        console.error('Login error:', error);
+        
+        // Handle Firebase Auth errors
+        let errorMessage = 'An error occurred. Please try again.';
+        switch(error.code) {
+            case 'auth/user-not-found':
+                errorMessage = 'No account found with this email. Please register.';
+                break;
+            case 'auth/wrong-password':
+                errorMessage = 'Incorrect password. Please try again.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Invalid email address.';
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = 'Too many failed attempts. Please try again later.';
+                break;
+            case 'auth/user-disabled':
+                errorMessage = 'Account disabled. Contact admin.';
+                break;
+            default:
+                errorMessage = error.message;
+        }
+        
+        loginError.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${errorMessage}`;
+        loginError.classList.add('show');
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+    }
+});
+
+// ============================================================
+// KEYBOARD SHORTCUT: Enter to submit
+// ============================================================
+document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        loginForm.dispatchEvent(new Event('submit'));
+    }
+});
+
+console.log('%c🔐 Contributor Login Page Ready', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+console.log('%c✅ Using "users" collection (matches registration)', 'font-size:13px;color:#4CAF50;');
+console.log('%c⏳ Pending accounts cannot login', 'font-size:13px;color:#F59E0B;');
+</script>
+</body>
+</html>

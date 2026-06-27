@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register as Contributor - Digital Journal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="public-style.css" />
+    
+    <style>
+        .register-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg);
+            padding: 20px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .register-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            padding: 40px 36px;
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-md);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .register-header .icon {
+            font-size: 2.5rem;
+            color: var(--color-accent);
+            margin-bottom: 8px;
+        }
+
+        .register-header h1 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--color-heading);
+            margin-bottom: 4px;
+        }
+
+        .register-header p {
+            color: var(--color-gray);
+            font-size: 0.95rem;
+        }
+
+        .register-error {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid var(--color-error);
+        }
+
+        .register-error.show {
+            display: block;
+        }
+
+        .register-success {
+            background: #DCFCE7;
+            color: #166534;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid var(--color-success);
+        }
+
+        .register-success.show {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-heading);
+            margin-bottom: 4px;
+        }
+
+        .form-group label .required {
+            color: var(--color-error);
+            margin-left: 2px;
+        }
+
+        .form-group label i {
+            margin-right: 6px;
+            color: var(--color-accent);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            background: var(--color-bg);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background: var(--color-white);
+            box-shadow: 0 0 0 3px rgba(74, 106, 122, 0.08);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group .hint {
+            font-size: 0.75rem;
+            color: var(--color-gray);
+            margin-top: 4px;
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 12px;
+            background: var(--color-primary-dark);
+            color: var(--color-white);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-register:hover {
+            background: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-register i {
+            margin-right: 8px;
+        }
+
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .register-footer p {
+            color: var(--color-gray);
+            font-size: 0.85rem;
+        }
+
+        .register-footer a {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+
+        .register-footer a:hover {
+            color: var(--color-primary-dark);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--color-gray);
+            font-size: 0.85rem;
+        }
+
+        .back-link i {
+            margin-right: 4px;
+        }
+
+        .back-link:hover {
+            color: var(--color-primary);
+        }
+
+        .notification-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 400px;
+            padding: 14px 18px;
+            background: var(--color-primary-dark);
+            color: var(--color-white);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            transform: translateY(120px);
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-left: 4px solid var(--color-success);
+        }
+
+        .notification-toast.error {
+            border-left-color: var(--color-error);
+        }
+
+        .notification-toast .notification-close {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 0 4px;
+            margin-left: auto;
+        }
+
+        .notification-toast .notification-close:hover {
+            color: var(--color-white);
+        }
+
+        @media (max-width: 480px) {
+            .register-card {
+                padding: 28px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-page">
+        <div class="register-container">
+            <div class="register-card">
+
+                <div class="register-header">
+                    <div class="icon"><i class="fas fa-user-plus"></i></div>
+                    <h1>Become a Contributor</h1>
+                    <p>Register to write for Digital Journal</p>
+                </div>
+
+                <div class="register-error" id="registerError">
+                    <i class="fas fa-exclamation-circle"></i> Error message here.
+                </div>
+
+                <div class="register-success" id="registerSuccess">
+                    <i class="fas fa-check-circle"></i> Registration successful! Your account is pending admin approval.
+                </div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName"><i class="fas fa-user"></i> Full Name <span class="required">*</span></label>
+                        <input type="text" id="regName" placeholder="e.g., John Doe" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail"><i class="fas fa-envelope"></i> Email Address <span class="required">*</span></label>
+                        <input type="email" id="regEmail" placeholder="your@email.com" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword"><i class="fas fa-lock"></i> Password <span class="required">*</span></label>
+                        <input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6" />
+                        <div class="hint">Password must be at least 6 characters.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regConfirmPassword"><i class="fas fa-check"></i> Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regBio"><i class="fas fa-info-circle"></i> Bio / Expertise</label>
+                        <textarea id="regBio" placeholder="Tell us about your expertise and why you want to contribute..."></textarea>
+                        <div class="hint">This helps us understand your background.</div>
+                    </div>
+
+                    <button type="submit" class="btn-register" id="registerBtn">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </form>
+
+                <div class="register-footer">
+                    <p>
+                        Already have an account? <a href="login.html">Sign in here</a>
+                    </p>
+                    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ COMPLETE FIXED CODE -->
+<script type="module">
+// ============================================================
+// IMPORT FIREBASE FROM firebase-config.js - FIXED
+// ============================================================
+import { 
+    db, 
+    auth,
+    collection, 
+    getDocs, 
+    query, 
+    where, 
+    doc, 
+    setDoc,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+} from '../firebase-config.js';
+
+// ============================================================
+// CHECK IF ALREADY LOGGED IN - FIXED
+// ============================================================
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        checkUserRole(user);
+    }
+});
+
+async function checkUserRole(user) {
+    try {
+        // ✅ Check in 'users' collection (matches your admin)
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data();
+            if (userData.role === 'admin') {
+                window.location.href = '../Admin/dashboard.html';
+            } else if (userData.role === 'contributor' && userData.status === 'approved') {
+                window.location.href = 'contributor-dashboard.html';
+            } else if (userData.status === 'pending') {
+                // Show message but don't redirect - let them stay on register page
+                showNotification('⏳ Your account is pending admin approval. Please check back later.', 'warning');
+            }
+        }
+    } catch (error) {
+        console.error('Error checking user role:', error);
+    }
+}
+
+// ============================================================
+// NOTIFICATION SYSTEM - FIXED
+// ============================================================
+function showNotification(message, type = 'success') {
+    const existing = document.querySelector('.notification-toast');
+    if (existing) existing.remove();
+
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    
+    const icons = {
+        success: 'fa-check-circle',
+        error: 'fa-exclamation-circle',
+        warning: 'fa-exclamation-triangle',
+        info: 'fa-info-circle'
+    };
+    const icon = icons[type] || icons.info;
+    
+    notification.innerHTML = `
+        <i class="fas ${icon}"></i>
+        <span>${message}</span>
+        <button class="notification-close">&times;</button>
+    `;
+
+    notification.querySelector('.notification-close').addEventListener('click', function() {
+        notification.remove();
+    });
+
+    document.body.appendChild(notification);
+
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateY(0)';
+        notification.style.opacity = '1';
+    });
+
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            notification.style.transform = 'translateY(120px)';
+            notification.style.opacity = '0';
+            setTimeout(() => notification.remove(), 400);
+        }
+    }, 4000);
+}
+
+// ============================================================
+// REGISTER FORM HANDLER - COMPLETELY FIXED
+// ============================================================
+const registerForm = document.getElementById('registerForm');
+const registerError = document.getElementById('registerError');
+const registerSuccess = document.getElementById('registerSuccess');
+const registerBtn = document.getElementById('registerBtn');
+
+registerForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('regConfirmPassword').value;
+    const bio = document.getElementById('regBio').value.trim();
+
+    // Validation
+    registerError.classList.remove('show');
+    registerSuccess.classList.remove('show');
+
+    if (!name || !email || !password || !confirmPassword) {
+        registerError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please fill in all required fields.';
+        registerError.classList.add('show');
+        return;
+    }
+
+    if (password.length < 6) {
+        registerError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Password must be at least 6 characters.';
+        registerError.classList.add('show');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        registerError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Passwords do not match.';
+        registerError.classList.add('show');
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        registerError.innerHTML = '<i class="fas fa-exclamation-circle"></i> Please enter a valid email address.';
+        registerError.classList.add('show');
+        return;
+    }
+
+    try {
+        registerBtn.disabled = true;
+        registerBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+
+        // ✅ Check if email already exists in 'users' (matches admin)
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            registerError.innerHTML = '<i class="fas fa-exclamation-circle"></i> An account with this email already exists. Please login.';
+            registerError.classList.add('show');
+            registerBtn.disabled = false;
+            registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+            return;
+        }
+
+        // ✅ Create user in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // ✅ Save to 'users' with pending status (matches admin)
+        await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            name: name,
+            email: email,
+            role: 'contributor',
+            status: 'pending',
+            bio: bio || '',
+            createdAt: new Date().toISOString()
+        });
+
+        // ✅ CREATE APPROVAL REQUEST FOR ADMIN
+        await setDoc(doc(db, "approvals", user.uid), {
+            uid: user.uid,
+            name: name,
+            email: email,
+            status: 'pending',
+            type: 'contributor',
+            createdAt: new Date().toISOString()
+        });
+
+        console.log(`✅ Approval created for: ${name} (${email})`);
+
+        // ✅ Sign out the user
+        await signOut(auth);
+
+        // Show success
+        registerSuccess.innerHTML = `
+            <i class="fas fa-check-circle"></i> 
+            ✅ Registration successful! Your account is pending admin approval.
+            <br>You will be notified when approved.
+        `;
+        registerSuccess.classList.add('show');
+
+        registerForm.reset();
+        showNotification('✅ Registration successful! Waiting for admin approval.', 'success');
+
+        console.log(`%c✅ New contributor registered: ${name} (${email}) - Pending approval`, 'font-size:13px;color:#4CAF50;');
+
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 3000);
+
+    } catch (error) {
+        console.error('Registration error:', error);
+        
+        // Handle Firebase Auth errors
+        let errorMessage = 'An error occurred. Please try again.';
+        switch(error.code) {
+            case 'auth/email-already-in-use':
+                errorMessage = 'This email is already registered. Please login.';
+                break;
+            case 'auth/invalid-email':
+                errorMessage = 'Invalid email address.';
+                break;
+            case 'auth/weak-password':
+                errorMessage = 'Password is too weak. Use at least 6 characters.';
+                break;
+            case 'auth/too-many-requests':
+                errorMessage = 'Too many attempts. Please try again later.';
+                break;
+            case 'auth/network-request-failed':
+                errorMessage = 'Network error. Please check your internet connection.';
+                break;
+            default:
+                errorMessage = error.message;
+        }
+        
+        registerError.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${errorMessage}`;
+        registerError.classList.add('show');
+    } finally {
+        registerBtn.disabled = false;
+        registerBtn.innerHTML = '<i class="fas fa-user-plus"></i> Register';
+    }
+});
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+console.log('%c📝 Register Page Ready (Firebase)', 'font-size:16px;font-weight:bold;color:#2C3E50;');
+console.log('%c✅ Using "users" collection (matches admin dashboard)', 'font-size:13px;color:#4CAF50;');
+console.log('%c📧 Contributors need admin approval to login', 'font-size:13px;color:#4A6A7A;');
+console.log('%c🔐 Passwords stored securely in Firebase Auth', 'font-size:13px;color:#4CAF50;');
+</script>
+
+</body>
+</html>
